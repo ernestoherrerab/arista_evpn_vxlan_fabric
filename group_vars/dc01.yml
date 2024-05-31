@@ -6,7 +6,7 @@ evpn_overlay_bgp_rtc: true
 spine:
   defaults:
     platform: vEOS-LAB
-    bgp_as: 65520
+    bgp_as: 65521
     loopback_ipv4_pool: 10.0.2.0/24
   nodes:
     - name: dc01-sp01
@@ -86,7 +86,6 @@ l3leaf:
           uplink_switch_interfaces: ['Ethernet10', 'Ethernet10']
           mgmt_ip: 192.168.0.192/24
     - group: dc01-gw01
-      evpn_role: server
       filter:
         tags: [ gateway ]
       nodes:

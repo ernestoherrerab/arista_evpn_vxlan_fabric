@@ -1,3 +1,14 @@
+### PREFIX LIST ###
+acme_gw_prefix_lists:
+  - name: PL-LOOPBACKS-EVPN-OVERLAY
+    sequence_numbers:
+      - sequence: 30
+        action: permit 10.0.5.0/24 eq 32
+      - sequence: 40
+        action: permit 10.0.0.0/31
+      - sequence: 50
+        action: permit 10.0.0.2/31
+
 ### BGP ###
 acme_gw_router_bgp:
   neighbors:
@@ -5,3 +16,5 @@ acme_gw_router_bgp:
       remote_as: 65561
       ebgp_multihop: 2
       update_source: Loopback0
+      peer_group: EVPN-OVERLAY-PEERS
+      description: dc02-gw01a

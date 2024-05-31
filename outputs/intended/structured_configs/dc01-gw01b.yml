@@ -30,9 +30,6 @@ router_bgp:
     bfd: false
     maximum_routes: 12000
     send_community: all
-    allowas_in:
-      enabled: true
-      times: 2
   - name: EVPN-OVERLAY-PEERS
     type: evpn
     update_source: Loopback0
@@ -41,7 +38,6 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     remote_as: '65521'
-    route_reflector_client: true
   address_family_ipv4:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER
@@ -57,12 +53,12 @@ router_bgp:
     description: dc01-gw01a
   - ip_address: 10.0.9.88
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65520'
+    remote_as: '65521'
     peer: dc01-sp01
     description: dc01-sp01_Ethernet12
   - ip_address: 10.0.9.90
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65520'
+    remote_as: '65521'
     peer: dc01-sp02
     description: dc01-sp02_Ethernet12
   - ip_address: 10.0.2.1
@@ -73,32 +69,30 @@ router_bgp:
     peer_group: EVPN-OVERLAY-PEERS
     peer: dc01-sp02
     description: dc01-sp02
-  - ip_address: 10.0.4.14
-    peer_group: EVPN-OVERLAY-PEERS
-    peer: dc02-gw01b
-    description: dc02-gw01b
-    remote_as: '65561'
-    ebgp_multihop: 2
-    update_source: Loopback0
   - ip_address: 10.0.0.3
     remote_as: '65561'
     peer: dc02-gw01b
     description: dc02-gw01b
     peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 10.0.4.14
+    remote_as: '65561'
+    ebgp_multihop: 2
+    update_source: Loopback0
+    peer_group: EVPN-OVERLAY-PEERS
+    description: dc01-gw01b
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
-  bgp_cluster_id: 10.0.2.16
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
       activate: true
+      route_map_in: RM-EVPN-SOO-IN
+      route_map_out: RM-EVPN-SOO-OUT
   address_family_rtc:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
       activate: true
-      default_route_target:
-        only: true
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -239,6 +233,20 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-EVPN-SOO-IN
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - extcommunity ECL-EVPN-SOO
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-SOO-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - extcommunity soo 10.0.3.15:1 additive
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
@@ -255,6 +263,17 @@ prefix_lists:
     action: permit 10.0.2.0/24 eq 32
   - sequence: 20
     action: permit 10.0.3.0/24 eq 32
+  - sequence: 30
+    action: permit 10.0.5.0/24 eq 32
+  - sequence: 40
+    action: permit 10.0.0.0/31
+  - sequence: 50
+    action: permit 10.0.0.2/31
+ip_extcommunity_lists:
+- name: ECL-EVPN-SOO
+  entries:
+  - type: permit
+    extcommunities: soo 10.0.3.15:1
 router_bfd:
   multihop:
     interval: 1200

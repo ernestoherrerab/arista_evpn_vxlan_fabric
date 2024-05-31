@@ -1,7 +1,7 @@
 hostname: dc02-sp01
 is_deployed: true
 router_bgp:
-  as: '65560'
+  as: '65561'
   router_id: 10.0.4.1
   distance:
     external_routes: 20
@@ -20,6 +20,8 @@ router_bgp:
     bfd: false
     maximum_routes: 12000
     send_community: all
+    route_reflector_client: true
+    next_hop_self: true
   - name: EVPN-OVERLAY-PEERS
     type: evpn
     update_source: Loopback0
@@ -29,7 +31,6 @@ router_bgp:
     maximum_routes: 0
     remote_as: '65561'
     route_reflector_client: true
-    local_as: '65561'
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS

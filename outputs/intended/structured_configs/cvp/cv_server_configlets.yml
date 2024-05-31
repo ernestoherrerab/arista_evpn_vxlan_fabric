@@ -122,22 +122,24 @@ cvp_configlets:
     address 10.0.11.20/31\n!\ninterface Vxlan1\n   description dc01-gw01a_VTEP\n   vxlan
     source-interface Loopback1\n   vxlan virtual-router encapsulation mac-address
     mlag-system-id\n   vxlan udp-port 4789\n!\nip virtual-router mac-address 00:1c:73:00:00:99\n!\nip
-    routing\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 10.0.2.0/24
-    eq 32\n   seq 20 permit 10.0.3.0/24 eq 32\n!\nmlag configuration\n   domain-id
-    dc01-gw01\n   local-interface Vlan4094\n   peer-address 10.0.11.21\n   peer-link
-    Port-Channel31\n   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\narp
-    aging timeout default 275\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address
-    prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN permit 10\n
-    \  description Make routes learned over MLAG Peer-link less preferred on spines
-    to ensure optimal routing\n   set origin incomplete\n!\nrouter bfd\n   multihop
-    interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65521\n   router-id 10.0.2.15\n
-    \  distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   no bgp default ipv4-unicast\n
-    \  bgp cluster-id 10.0.2.15\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor
-    EVPN-OVERLAY-PEERS remote-as 65521\n   neighbor EVPN-OVERLAY-PEERS update-source
-    Loopback0\n   neighbor EVPN-OVERLAY-PEERS route-reflector-client\n   neighbor
-    EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n   neighbor EVPN-OVERLAY-PEERS
-    send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
-    peer group\n   neighbor IPv4-UNDERLAY-PEERS allowas-in 2\n   neighbor IPv4-UNDERLAY-PEERS
+    routing\n!\nip extcommunity-list ECL-EVPN-SOO permit soo 10.0.3.15:1\n!\nip prefix-list
+    PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 10.0.2.0/24 eq 32\n   seq 20 permit
+    10.0.3.0/24 eq 32\n   seq 30 permit 10.0.5.0/24 eq 32\n   seq 40 permit 10.0.0.0/31\n
+    \  seq 50 permit 10.0.0.2/31\n!\nmlag configuration\n   domain-id dc01-gw01\n
+    \  local-interface Vlan4094\n   peer-address 10.0.11.21\n   peer-link Port-Channel31\n
+    \  reload-delay mlag 300\n   reload-delay non-mlag 330\n!\narp aging timeout default
+    275\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map
+    RM-EVPN-SOO-IN deny 10\n   match extcommunity ECL-EVPN-SOO\n!\nroute-map RM-EVPN-SOO-IN
+    permit 20\n!\nroute-map RM-EVPN-SOO-OUT permit 10\n   set extcommunity soo 10.0.3.15:1
+    additive\n!\nroute-map RM-MLAG-PEER-IN permit 10\n   description Make routes learned
+    over MLAG Peer-link less preferred on spines to ensure optimal routing\n   set
+    origin incomplete\n!\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier
+    3\n!\nrouter bgp 65521\n   router-id 10.0.2.15\n   distance bgp 20 200 200\n   maximum-paths
+    4 ecmp 4\n   no bgp default ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer
+    group\n   neighbor EVPN-OVERLAY-PEERS remote-as 65521\n   neighbor EVPN-OVERLAY-PEERS
+    update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
+    \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
+    maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
     password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
     send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
     MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
@@ -152,14 +154,15 @@ cvp_configlets:
     \  neighbor 10.0.4.13 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.13 remote-as
     65561\n   neighbor 10.0.4.13 description dc02-gw01a\n   neighbor 10.0.4.13 ebgp-multihop
     2\n   neighbor 10.0.4.13 update-source Loopback0\n   neighbor 10.0.9.80 peer group
-    IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.80 remote-as 65520\n   neighbor 10.0.9.80
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.80 remote-as 65521\n   neighbor 10.0.9.80
     description dc01-sp01_Ethernet11\n   neighbor 10.0.9.82 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 10.0.9.82 remote-as 65520\n   neighbor 10.0.9.82 description dc01-sp02_Ethernet11\n
+    \  neighbor 10.0.9.82 remote-as 65521\n   neighbor 10.0.9.82 description dc01-sp02_Ethernet11\n
     \  neighbor 10.0.12.21 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.21
     description dc01-gw01b\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n
-    \  address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family
-    rt-membership\n      neighbor EVPN-OVERLAY-PEERS activate\n      neighbor EVPN-OVERLAY-PEERS
-    default-route-target only\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS
+    \  address-family evpn\n      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-IN
+    in\n      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out\n      neighbor
+    EVPN-OVERLAY-PEERS activate\n   !\n   address-family rt-membership\n      neighbor
+    EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS
     activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
     activate\n!\nbanner motd\n#########################################################################################\n#
     \                                                                                     \n#
@@ -200,22 +203,24 @@ cvp_configlets:
     address 10.0.11.21/31\n!\ninterface Vxlan1\n   description dc01-gw01b_VTEP\n   vxlan
     source-interface Loopback1\n   vxlan virtual-router encapsulation mac-address
     mlag-system-id\n   vxlan udp-port 4789\n!\nip virtual-router mac-address 00:1c:73:00:00:99\n!\nip
-    routing\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 10.0.2.0/24
-    eq 32\n   seq 20 permit 10.0.3.0/24 eq 32\n!\nmlag configuration\n   domain-id
-    dc01-gw01\n   local-interface Vlan4094\n   peer-address 10.0.11.20\n   peer-link
-    Port-Channel31\n   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\narp
-    aging timeout default 275\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address
-    prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN permit 10\n
-    \  description Make routes learned over MLAG Peer-link less preferred on spines
-    to ensure optimal routing\n   set origin incomplete\n!\nrouter bfd\n   multihop
-    interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65521\n   router-id 10.0.2.16\n
-    \  distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   no bgp default ipv4-unicast\n
-    \  bgp cluster-id 10.0.2.16\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor
-    EVPN-OVERLAY-PEERS remote-as 65521\n   neighbor EVPN-OVERLAY-PEERS update-source
-    Loopback0\n   neighbor EVPN-OVERLAY-PEERS route-reflector-client\n   neighbor
-    EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n   neighbor EVPN-OVERLAY-PEERS
-    send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
-    peer group\n   neighbor IPv4-UNDERLAY-PEERS allowas-in 2\n   neighbor IPv4-UNDERLAY-PEERS
+    routing\n!\nip extcommunity-list ECL-EVPN-SOO permit soo 10.0.3.15:1\n!\nip prefix-list
+    PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 10.0.2.0/24 eq 32\n   seq 20 permit
+    10.0.3.0/24 eq 32\n   seq 30 permit 10.0.5.0/24 eq 32\n   seq 40 permit 10.0.0.0/31\n
+    \  seq 50 permit 10.0.0.2/31\n!\nmlag configuration\n   domain-id dc01-gw01\n
+    \  local-interface Vlan4094\n   peer-address 10.0.11.20\n   peer-link Port-Channel31\n
+    \  reload-delay mlag 300\n   reload-delay non-mlag 330\n!\narp aging timeout default
+    275\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map
+    RM-EVPN-SOO-IN deny 10\n   match extcommunity ECL-EVPN-SOO\n!\nroute-map RM-EVPN-SOO-IN
+    permit 20\n!\nroute-map RM-EVPN-SOO-OUT permit 10\n   set extcommunity soo 10.0.3.15:1
+    additive\n!\nroute-map RM-MLAG-PEER-IN permit 10\n   description Make routes learned
+    over MLAG Peer-link less preferred on spines to ensure optimal routing\n   set
+    origin incomplete\n!\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier
+    3\n!\nrouter bgp 65521\n   router-id 10.0.2.16\n   distance bgp 20 200 200\n   maximum-paths
+    4 ecmp 4\n   no bgp default ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer
+    group\n   neighbor EVPN-OVERLAY-PEERS remote-as 65521\n   neighbor EVPN-OVERLAY-PEERS
+    update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
+    \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
+    maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
     password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
     send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
     MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
@@ -228,16 +233,17 @@ cvp_configlets:
     peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.1 description dc01-sp01\n   neighbor
     10.0.2.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.2 description dc01-sp02\n
     \  neighbor 10.0.4.14 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.14 remote-as
-    65561\n   neighbor 10.0.4.14 description dc02-gw01b\n   neighbor 10.0.4.14 ebgp-multihop
+    65561\n   neighbor 10.0.4.14 description dc01-gw01b\n   neighbor 10.0.4.14 ebgp-multihop
     2\n   neighbor 10.0.4.14 update-source Loopback0\n   neighbor 10.0.9.88 peer group
-    IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.88 remote-as 65520\n   neighbor 10.0.9.88
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.88 remote-as 65521\n   neighbor 10.0.9.88
     description dc01-sp01_Ethernet12\n   neighbor 10.0.9.90 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 10.0.9.90 remote-as 65520\n   neighbor 10.0.9.90 description dc01-sp02_Ethernet12\n
+    \  neighbor 10.0.9.90 remote-as 65521\n   neighbor 10.0.9.90 description dc01-sp02_Ethernet12\n
     \  neighbor 10.0.12.20 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.20
     description dc01-gw01a\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n
-    \  address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family
-    rt-membership\n      neighbor EVPN-OVERLAY-PEERS activate\n      neighbor EVPN-OVERLAY-PEERS
-    default-route-target only\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS
+    \  address-family evpn\n      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-IN
+    in\n      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out\n      neighbor
+    EVPN-OVERLAY-PEERS activate\n   !\n   address-family rt-membership\n      neighbor
+    EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS
     activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
     activate\n!\nbanner motd\n#########################################################################################\n#
     \                                                                                     \n#
@@ -332,43 +338,43 @@ cvp_configlets:
     update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
     \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
     maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
-    allowas-in 2\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65521\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc01-le01b\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.2.1 peer
-    group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.1 description dc01-sp01\n   neighbor
-    10.0.2.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.2 description dc01-sp02\n
-    \  neighbor 10.0.9.16 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.16 remote-as
-    65520\n   neighbor 10.0.9.16 description dc01-sp01_Ethernet1\n   neighbor 10.0.9.18
-    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.18 remote-as 65520\n   neighbor
-    10.0.9.18 description dc01-sp02_Ethernet1\n   neighbor 10.0.12.5 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \  neighbor 10.0.12.5 description dc01-le01b\n   redistribute connected route-map
-    RM-CONN-2-BGP\n   !\n   vlan 40\n      rd 65000:10040\n      route-target both
-    10040:10040\n      redistribute learned\n   !\n   vlan 41\n      rd 65000:10041\n
-    \     route-target both 10041:10041\n      redistribute learned\n   !\n   vlan
-    44\n      rd 65000:10044\n      route-target both 10044:10044\n      redistribute
-    learned\n   !\n   vlan 45\n      rd 65000:10045\n      route-target both 10045:10045\n
-    \     redistribute learned\n   !\n   vlan 50\n      rd 65000:10050\n      route-target
-    both 10050:10050\n      redistribute learned\n   !\n   vlan 51\n      rd 65000:10051\n
-    \     route-target both 10051:10051\n      redistribute learned\n   !\n   vlan
-    54\n      rd 65000:10054\n      route-target both 10054:10054\n      redistribute
-    learned\n   !\n   vlan 55\n      rd 65000:10055\n      route-target both 10055:10055\n
-    \     redistribute learned\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS
-    route-map RM-EVPN-SOO-IN in\n      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT
-    out\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family rt-membership\n
-    \     neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n      no
-    neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n
-    \     neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf ACME-DT\n      rd
-    10.0.3.7:4405\n      route-target import evpn 4405:4405\n      route-target export
-    evpn 4405:4405\n      router-id 10.0.2.7\n      neighbor 10.0.12.5 peer group
-    MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf ACME-GENERAL\n
-    \     rd 10.0.3.7:4401\n      route-target import evpn 4401:4401\n      route-target
-    export evpn 4401:4401\n      router-id 10.0.2.7\n      neighbor 10.0.12.5 peer
-    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n!\nbanner motd\n#########################################################################################\n#
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65521\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc01-le01b\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.2.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.1 description
+    dc01-sp01\n   neighbor 10.0.2.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.2
+    description dc01-sp02\n   neighbor 10.0.9.16 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.0.9.16 remote-as 65521\n   neighbor 10.0.9.16 description dc01-sp01_Ethernet1\n
+    \  neighbor 10.0.9.18 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.18 remote-as
+    65521\n   neighbor 10.0.9.18 description dc01-sp02_Ethernet1\n   neighbor 10.0.12.5
+    peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.5 description dc01-le01b\n
+    \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan 40\n      rd
+    65000:10040\n      route-target both 10040:10040\n      redistribute learned\n
+    \  !\n   vlan 41\n      rd 65000:10041\n      route-target both 10041:10041\n
+    \     redistribute learned\n   !\n   vlan 44\n      rd 65000:10044\n      route-target
+    both 10044:10044\n      redistribute learned\n   !\n   vlan 45\n      rd 65000:10045\n
+    \     route-target both 10045:10045\n      redistribute learned\n   !\n   vlan
+    50\n      rd 65000:10050\n      route-target both 10050:10050\n      redistribute
+    learned\n   !\n   vlan 51\n      rd 65000:10051\n      route-target both 10051:10051\n
+    \     redistribute learned\n   !\n   vlan 54\n      rd 65000:10054\n      route-target
+    both 10054:10054\n      redistribute learned\n   !\n   vlan 55\n      rd 65000:10055\n
+    \     route-target both 10055:10055\n      redistribute learned\n   !\n   address-family
+    evpn\n      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-IN in\n      neighbor
+    EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out\n      neighbor EVPN-OVERLAY-PEERS
+    activate\n   !\n   address-family rt-membership\n      neighbor EVPN-OVERLAY-PEERS
+    activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
+    activate\n   !\n   vrf ACME-DT\n      rd 10.0.3.7:4405\n      route-target import
+    evpn 4405:4405\n      route-target export evpn 4405:4405\n      router-id 10.0.2.7\n
+    \     neighbor 10.0.12.5 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
+    connected\n   !\n   vrf ACME-GENERAL\n      rd 10.0.3.7:4401\n      route-target
+    import evpn 4401:4401\n      route-target export evpn 4401:4401\n      router-id
+    10.0.2.7\n      neighbor 10.0.12.5 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
+    connected\n!\nbanner motd\n#########################################################################################\n#
     \                                                                                     \n#
     \      Warning Notice                                                                 \n#\n#
     \      This system is restricted solely to authorized users for legitimate business\n#
@@ -461,43 +467,43 @@ cvp_configlets:
     update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
     \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
     maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
-    allowas-in 2\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65521\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc01-le01a\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.2.1 peer
-    group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.1 description dc01-sp01\n   neighbor
-    10.0.2.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.2 description dc01-sp02\n
-    \  neighbor 10.0.9.24 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.24 remote-as
-    65520\n   neighbor 10.0.9.24 description dc01-sp01_Ethernet2\n   neighbor 10.0.9.26
-    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.26 remote-as 65520\n   neighbor
-    10.0.9.26 description dc01-sp02_Ethernet2\n   neighbor 10.0.12.4 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \  neighbor 10.0.12.4 description dc01-le01a\n   redistribute connected route-map
-    RM-CONN-2-BGP\n   !\n   vlan 40\n      rd 65000:10040\n      route-target both
-    10040:10040\n      redistribute learned\n   !\n   vlan 41\n      rd 65000:10041\n
-    \     route-target both 10041:10041\n      redistribute learned\n   !\n   vlan
-    44\n      rd 65000:10044\n      route-target both 10044:10044\n      redistribute
-    learned\n   !\n   vlan 45\n      rd 65000:10045\n      route-target both 10045:10045\n
-    \     redistribute learned\n   !\n   vlan 50\n      rd 65000:10050\n      route-target
-    both 10050:10050\n      redistribute learned\n   !\n   vlan 51\n      rd 65000:10051\n
-    \     route-target both 10051:10051\n      redistribute learned\n   !\n   vlan
-    54\n      rd 65000:10054\n      route-target both 10054:10054\n      redistribute
-    learned\n   !\n   vlan 55\n      rd 65000:10055\n      route-target both 10055:10055\n
-    \     redistribute learned\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS
-    route-map RM-EVPN-SOO-IN in\n      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT
-    out\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family rt-membership\n
-    \     neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n      no
-    neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n
-    \     neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf ACME-DT\n      rd
-    10.0.3.7:4405\n      route-target import evpn 4405:4405\n      route-target export
-    evpn 4405:4405\n      router-id 10.0.2.8\n      neighbor 10.0.12.4 peer group
-    MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf ACME-GENERAL\n
-    \     rd 10.0.3.7:4401\n      route-target import evpn 4401:4401\n      route-target
-    export evpn 4401:4401\n      router-id 10.0.2.8\n      neighbor 10.0.12.4 peer
-    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n!\nbanner motd\n#########################################################################################\n#
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65521\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc01-le01a\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.2.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.1 description
+    dc01-sp01\n   neighbor 10.0.2.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.2
+    description dc01-sp02\n   neighbor 10.0.9.24 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.0.9.24 remote-as 65521\n   neighbor 10.0.9.24 description dc01-sp01_Ethernet2\n
+    \  neighbor 10.0.9.26 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.26 remote-as
+    65521\n   neighbor 10.0.9.26 description dc01-sp02_Ethernet2\n   neighbor 10.0.12.4
+    peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.4 description dc01-le01a\n
+    \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan 40\n      rd
+    65000:10040\n      route-target both 10040:10040\n      redistribute learned\n
+    \  !\n   vlan 41\n      rd 65000:10041\n      route-target both 10041:10041\n
+    \     redistribute learned\n   !\n   vlan 44\n      rd 65000:10044\n      route-target
+    both 10044:10044\n      redistribute learned\n   !\n   vlan 45\n      rd 65000:10045\n
+    \     route-target both 10045:10045\n      redistribute learned\n   !\n   vlan
+    50\n      rd 65000:10050\n      route-target both 10050:10050\n      redistribute
+    learned\n   !\n   vlan 51\n      rd 65000:10051\n      route-target both 10051:10051\n
+    \     redistribute learned\n   !\n   vlan 54\n      rd 65000:10054\n      route-target
+    both 10054:10054\n      redistribute learned\n   !\n   vlan 55\n      rd 65000:10055\n
+    \     route-target both 10055:10055\n      redistribute learned\n   !\n   address-family
+    evpn\n      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-IN in\n      neighbor
+    EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out\n      neighbor EVPN-OVERLAY-PEERS
+    activate\n   !\n   address-family rt-membership\n      neighbor EVPN-OVERLAY-PEERS
+    activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
+    activate\n   !\n   vrf ACME-DT\n      rd 10.0.3.7:4405\n      route-target import
+    evpn 4405:4405\n      route-target export evpn 4405:4405\n      router-id 10.0.2.8\n
+    \     neighbor 10.0.12.4 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
+    connected\n   !\n   vrf ACME-GENERAL\n      rd 10.0.3.7:4401\n      route-target
+    import evpn 4401:4401\n      route-target export evpn 4401:4401\n      router-id
+    10.0.2.8\n      neighbor 10.0.12.4 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
+    connected\n!\nbanner motd\n#########################################################################################\n#
     \                                                                                     \n#
     \      Warning Notice                                                                 \n#\n#
     \      This system is restricted solely to authorized users for legitimate business\n#
@@ -590,43 +596,43 @@ cvp_configlets:
     update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
     \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
     maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
-    allowas-in 2\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65521\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc01-le02b\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.2.1 peer
-    group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.1 description dc01-sp01\n   neighbor
-    10.0.2.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.2 description dc01-sp02\n
-    \  neighbor 10.0.9.32 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.32 remote-as
-    65520\n   neighbor 10.0.9.32 description dc01-sp01_Ethernet3\n   neighbor 10.0.9.34
-    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.34 remote-as 65520\n   neighbor
-    10.0.9.34 description dc01-sp02_Ethernet3\n   neighbor 10.0.12.9 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \  neighbor 10.0.12.9 description dc01-le02b\n   redistribute connected route-map
-    RM-CONN-2-BGP\n   !\n   vlan 40\n      rd 65000:10040\n      route-target both
-    10040:10040\n      redistribute learned\n   !\n   vlan 41\n      rd 65000:10041\n
-    \     route-target both 10041:10041\n      redistribute learned\n   !\n   vlan
-    44\n      rd 65000:10044\n      route-target both 10044:10044\n      redistribute
-    learned\n   !\n   vlan 45\n      rd 65000:10045\n      route-target both 10045:10045\n
-    \     redistribute learned\n   !\n   vlan 50\n      rd 65000:10050\n      route-target
-    both 10050:10050\n      redistribute learned\n   !\n   vlan 51\n      rd 65000:10051\n
-    \     route-target both 10051:10051\n      redistribute learned\n   !\n   vlan
-    54\n      rd 65000:10054\n      route-target both 10054:10054\n      redistribute
-    learned\n   !\n   vlan 55\n      rd 65000:10055\n      route-target both 10055:10055\n
-    \     redistribute learned\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS
-    route-map RM-EVPN-SOO-IN in\n      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT
-    out\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family rt-membership\n
-    \     neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n      no
-    neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n
-    \     neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf ACME-DT\n      rd
-    10.0.3.9:4405\n      route-target import evpn 4405:4405\n      route-target export
-    evpn 4405:4405\n      router-id 10.0.2.9\n      neighbor 10.0.12.9 peer group
-    MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf ACME-GENERAL\n
-    \     rd 10.0.3.9:4401\n      route-target import evpn 4401:4401\n      route-target
-    export evpn 4401:4401\n      router-id 10.0.2.9\n      neighbor 10.0.12.9 peer
-    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n!\nbanner motd\n#########################################################################################\n#
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65521\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc01-le02b\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.2.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.1 description
+    dc01-sp01\n   neighbor 10.0.2.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.2
+    description dc01-sp02\n   neighbor 10.0.9.32 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.0.9.32 remote-as 65521\n   neighbor 10.0.9.32 description dc01-sp01_Ethernet3\n
+    \  neighbor 10.0.9.34 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.34 remote-as
+    65521\n   neighbor 10.0.9.34 description dc01-sp02_Ethernet3\n   neighbor 10.0.12.9
+    peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.9 description dc01-le02b\n
+    \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan 40\n      rd
+    65000:10040\n      route-target both 10040:10040\n      redistribute learned\n
+    \  !\n   vlan 41\n      rd 65000:10041\n      route-target both 10041:10041\n
+    \     redistribute learned\n   !\n   vlan 44\n      rd 65000:10044\n      route-target
+    both 10044:10044\n      redistribute learned\n   !\n   vlan 45\n      rd 65000:10045\n
+    \     route-target both 10045:10045\n      redistribute learned\n   !\n   vlan
+    50\n      rd 65000:10050\n      route-target both 10050:10050\n      redistribute
+    learned\n   !\n   vlan 51\n      rd 65000:10051\n      route-target both 10051:10051\n
+    \     redistribute learned\n   !\n   vlan 54\n      rd 65000:10054\n      route-target
+    both 10054:10054\n      redistribute learned\n   !\n   vlan 55\n      rd 65000:10055\n
+    \     route-target both 10055:10055\n      redistribute learned\n   !\n   address-family
+    evpn\n      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-IN in\n      neighbor
+    EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out\n      neighbor EVPN-OVERLAY-PEERS
+    activate\n   !\n   address-family rt-membership\n      neighbor EVPN-OVERLAY-PEERS
+    activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
+    activate\n   !\n   vrf ACME-DT\n      rd 10.0.3.9:4405\n      route-target import
+    evpn 4405:4405\n      route-target export evpn 4405:4405\n      router-id 10.0.2.9\n
+    \     neighbor 10.0.12.9 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
+    connected\n   !\n   vrf ACME-GENERAL\n      rd 10.0.3.9:4401\n      route-target
+    import evpn 4401:4401\n      route-target export evpn 4401:4401\n      router-id
+    10.0.2.9\n      neighbor 10.0.12.9 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
+    connected\n!\nbanner motd\n#########################################################################################\n#
     \                                                                                     \n#
     \      Warning Notice                                                                 \n#\n#
     \      This system is restricted solely to authorized users for legitimate business\n#
@@ -719,43 +725,43 @@ cvp_configlets:
     update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
     \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
     maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
-    allowas-in 2\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65521\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc01-le02a\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.2.1 peer
-    group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.1 description dc01-sp01\n   neighbor
-    10.0.2.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.2 description dc01-sp02\n
-    \  neighbor 10.0.9.40 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.40 remote-as
-    65520\n   neighbor 10.0.9.40 description dc01-sp01_Ethernet4\n   neighbor 10.0.9.42
-    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.42 remote-as 65520\n   neighbor
-    10.0.9.42 description dc01-sp02_Ethernet4\n   neighbor 10.0.12.8 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \  neighbor 10.0.12.8 description dc01-le02a\n   redistribute connected route-map
-    RM-CONN-2-BGP\n   !\n   vlan 40\n      rd 65000:10040\n      route-target both
-    10040:10040\n      redistribute learned\n   !\n   vlan 41\n      rd 65000:10041\n
-    \     route-target both 10041:10041\n      redistribute learned\n   !\n   vlan
-    44\n      rd 65000:10044\n      route-target both 10044:10044\n      redistribute
-    learned\n   !\n   vlan 45\n      rd 65000:10045\n      route-target both 10045:10045\n
-    \     redistribute learned\n   !\n   vlan 50\n      rd 65000:10050\n      route-target
-    both 10050:10050\n      redistribute learned\n   !\n   vlan 51\n      rd 65000:10051\n
-    \     route-target both 10051:10051\n      redistribute learned\n   !\n   vlan
-    54\n      rd 65000:10054\n      route-target both 10054:10054\n      redistribute
-    learned\n   !\n   vlan 55\n      rd 65000:10055\n      route-target both 10055:10055\n
-    \     redistribute learned\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS
-    route-map RM-EVPN-SOO-IN in\n      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT
-    out\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family rt-membership\n
-    \     neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n      no
-    neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n
-    \     neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf ACME-DT\n      rd
-    10.0.3.9:4405\n      route-target import evpn 4405:4405\n      route-target export
-    evpn 4405:4405\n      router-id 10.0.2.10\n      neighbor 10.0.12.8 peer group
-    MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf ACME-GENERAL\n
-    \     rd 10.0.3.9:4401\n      route-target import evpn 4401:4401\n      route-target
-    export evpn 4401:4401\n      router-id 10.0.2.10\n      neighbor 10.0.12.8 peer
-    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n!\nbanner motd\n#########################################################################################\n#
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65521\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc01-le02a\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.2.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.1 description
+    dc01-sp01\n   neighbor 10.0.2.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.2
+    description dc01-sp02\n   neighbor 10.0.9.40 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.0.9.40 remote-as 65521\n   neighbor 10.0.9.40 description dc01-sp01_Ethernet4\n
+    \  neighbor 10.0.9.42 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.42 remote-as
+    65521\n   neighbor 10.0.9.42 description dc01-sp02_Ethernet4\n   neighbor 10.0.12.8
+    peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.8 description dc01-le02a\n
+    \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan 40\n      rd
+    65000:10040\n      route-target both 10040:10040\n      redistribute learned\n
+    \  !\n   vlan 41\n      rd 65000:10041\n      route-target both 10041:10041\n
+    \     redistribute learned\n   !\n   vlan 44\n      rd 65000:10044\n      route-target
+    both 10044:10044\n      redistribute learned\n   !\n   vlan 45\n      rd 65000:10045\n
+    \     route-target both 10045:10045\n      redistribute learned\n   !\n   vlan
+    50\n      rd 65000:10050\n      route-target both 10050:10050\n      redistribute
+    learned\n   !\n   vlan 51\n      rd 65000:10051\n      route-target both 10051:10051\n
+    \     redistribute learned\n   !\n   vlan 54\n      rd 65000:10054\n      route-target
+    both 10054:10054\n      redistribute learned\n   !\n   vlan 55\n      rd 65000:10055\n
+    \     route-target both 10055:10055\n      redistribute learned\n   !\n   address-family
+    evpn\n      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-IN in\n      neighbor
+    EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out\n      neighbor EVPN-OVERLAY-PEERS
+    activate\n   !\n   address-family rt-membership\n      neighbor EVPN-OVERLAY-PEERS
+    activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
+    activate\n   !\n   vrf ACME-DT\n      rd 10.0.3.9:4405\n      route-target import
+    evpn 4405:4405\n      route-target export evpn 4405:4405\n      router-id 10.0.2.10\n
+    \     neighbor 10.0.12.8 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
+    connected\n   !\n   vrf ACME-GENERAL\n      rd 10.0.3.9:4401\n      route-target
+    import evpn 4401:4401\n      route-target export evpn 4401:4401\n      router-id
+    10.0.2.10\n      neighbor 10.0.12.8 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
+    connected\n!\nbanner motd\n#########################################################################################\n#
     \                                                                                     \n#
     \      Warning Notice                                                                 \n#\n#
     \      This system is restricted solely to authorized users for legitimate business\n#
@@ -813,15 +819,15 @@ cvp_configlets:
     Loopback0\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
     \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
     maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
-    allowas-in 2\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor 10.0.2.1 peer group EVPN-OVERLAY-PEERS\n   neighbor
-    10.0.2.1 description dc01-sp01\n   neighbor 10.0.2.2 peer group EVPN-OVERLAY-PEERS\n
-    \  neighbor 10.0.2.2 description dc01-sp02\n   neighbor 10.0.9.48 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 10.0.9.48 remote-as 65520\n   neighbor 10.0.9.48 description dc01-sp01_Ethernet5\n
-    \  neighbor 10.0.9.50 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.50 remote-as
-    65520\n   neighbor 10.0.9.50 description dc01-sp02_Ethernet5\n   redistribute
-    connected route-map RM-CONN-2-BGP\n   !\n   vlan 40\n      rd 65000:10040\n      route-target
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    10.0.2.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.1 description dc01-sp01\n
+    \  neighbor 10.0.2.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.2 description
+    dc01-sp02\n   neighbor 10.0.9.48 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.48
+    remote-as 65521\n   neighbor 10.0.9.48 description dc01-sp01_Ethernet5\n   neighbor
+    10.0.9.50 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.50 remote-as 65521\n
+    \  neighbor 10.0.9.50 description dc01-sp02_Ethernet5\n   redistribute connected
+    route-map RM-CONN-2-BGP\n   !\n   vlan 40\n      rd 65000:10040\n      route-target
     both 10040:10040\n      redistribute learned\n   !\n   vlan 41\n      rd 65000:10041\n
     \     route-target both 10041:10041\n      redistribute learned\n   !\n   vlan
     44\n      rd 65000:10044\n      route-target both 10044:10044\n      redistribute
@@ -898,15 +904,15 @@ cvp_configlets:
     Loopback0\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
     \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
     maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
-    allowas-in 2\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor 10.0.2.1 peer group EVPN-OVERLAY-PEERS\n   neighbor
-    10.0.2.1 description dc01-sp01\n   neighbor 10.0.2.2 peer group EVPN-OVERLAY-PEERS\n
-    \  neighbor 10.0.2.2 description dc01-sp02\n   neighbor 10.0.9.56 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 10.0.9.56 remote-as 65520\n   neighbor 10.0.9.56 description dc01-sp01_Ethernet6\n
-    \  neighbor 10.0.9.58 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.58 remote-as
-    65520\n   neighbor 10.0.9.58 description dc01-sp02_Ethernet6\n   redistribute
-    connected route-map RM-CONN-2-BGP\n   !\n   vlan 40\n      rd 65000:10040\n      route-target
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    10.0.2.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.1 description dc01-sp01\n
+    \  neighbor 10.0.2.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.2 description
+    dc01-sp02\n   neighbor 10.0.9.56 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.56
+    remote-as 65521\n   neighbor 10.0.9.56 description dc01-sp01_Ethernet6\n   neighbor
+    10.0.9.58 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.58 remote-as 65521\n
+    \  neighbor 10.0.9.58 description dc01-sp02_Ethernet6\n   redistribute connected
+    route-map RM-CONN-2-BGP\n   !\n   vlan 40\n      rd 65000:10040\n      route-target
     both 10040:10040\n      redistribute learned\n   !\n   vlan 41\n      rd 65000:10041\n
     \     route-target both 10041:10041\n      redistribute learned\n   !\n   vlan
     44\n      rd 65000:10044\n      route-target both 10044:10044\n      redistribute
@@ -965,30 +971,30 @@ cvp_configlets:
     prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 10.0.2.0/24 eq 32\n!\narp
     aging timeout default 275\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address
     prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nrouter bfd\n   multihop interval 1200
-    min-rx 1200 multiplier 3\n!\nrouter bgp 65520\n   router-id 10.0.2.1\n   distance
+    min-rx 1200 multiplier 3\n!\nrouter bgp 65521\n   router-id 10.0.2.1\n   distance
     bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   no bgp default ipv4-unicast\n   bgp
     cluster-id 10.0.2.1\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS
-    remote-as 65521\n   neighbor EVPN-OVERLAY-PEERS local-as 65521 no-prepend replace-as\n
-    \  neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
-    route-reflector-client\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
-    \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
-    maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
-    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
-    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
-    10.0.2.7 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.7 description dc01-le01a\n
-    \  neighbor 10.0.2.8 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.8 description
-    dc01-le01b\n   neighbor 10.0.2.9 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.9
-    description dc01-le02a\n   neighbor 10.0.2.10 peer group EVPN-OVERLAY-PEERS\n
-    \  neighbor 10.0.2.10 description dc01-le02b\n   neighbor 10.0.2.11 peer group
-    EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.11 description dc01-le03a\n   neighbor
-    10.0.2.12 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.12 description dc01-le03b\n
-    \  neighbor 10.0.2.13 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.13 description
-    dc01-srv01a\n   neighbor 10.0.2.14 peer group EVPN-OVERLAY-PEERS\n   neighbor
-    10.0.2.14 description dc01-srv01b\n   neighbor 10.0.2.15 peer group EVPN-OVERLAY-PEERS\n
-    \  neighbor 10.0.2.15 description dc01-gw01a\n   neighbor 10.0.2.16 peer group
-    EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.16 description dc01-gw01b\n   neighbor
-    10.0.9.17 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.17 remote-as 65521\n
-    \  neighbor 10.0.9.17 description dc01-le01a_Ethernet1\n   neighbor 10.0.9.25
+    remote-as 65521\n   neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor
+    EVPN-OVERLAY-PEERS route-reflector-client\n   neighbor EVPN-OVERLAY-PEERS password
+    7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n   neighbor EVPN-OVERLAY-PEERS send-community\n
+    \  neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
+    peer group\n   neighbor IPv4-UNDERLAY-PEERS next-hop-self\n   neighbor IPv4-UNDERLAY-PEERS
+    route-reflector-client\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
+    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor 10.0.2.7 peer group EVPN-OVERLAY-PEERS\n   neighbor
+    10.0.2.7 description dc01-le01a\n   neighbor 10.0.2.8 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.2.8 description dc01-le01b\n   neighbor 10.0.2.9 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.2.9 description dc01-le02a\n   neighbor 10.0.2.10 peer group
+    EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.10 description dc01-le02b\n   neighbor
+    10.0.2.11 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.11 description dc01-le03a\n
+    \  neighbor 10.0.2.12 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.12 description
+    dc01-le03b\n   neighbor 10.0.2.13 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.13
+    description dc01-srv01a\n   neighbor 10.0.2.14 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.2.14 description dc01-srv01b\n   neighbor 10.0.2.15 peer group
+    EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.15 description dc01-gw01a\n   neighbor
+    10.0.2.16 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.16 description dc01-gw01b\n
+    \  neighbor 10.0.9.17 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.17 remote-as
+    65521\n   neighbor 10.0.9.17 description dc01-le01a_Ethernet1\n   neighbor 10.0.9.25
     peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.25 remote-as 65521\n   neighbor
     10.0.9.25 description dc01-le01b_Ethernet1\n   neighbor 10.0.9.33 peer group IPv4-UNDERLAY-PEERS\n
     \  neighbor 10.0.9.33 remote-as 65521\n   neighbor 10.0.9.33 description dc01-le02a_Ethernet1\n
@@ -1048,30 +1054,30 @@ cvp_configlets:
     prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 10.0.2.0/24 eq 32\n!\narp
     aging timeout default 275\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address
     prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nrouter bfd\n   multihop interval 1200
-    min-rx 1200 multiplier 3\n!\nrouter bgp 65520\n   router-id 10.0.2.2\n   distance
+    min-rx 1200 multiplier 3\n!\nrouter bgp 65521\n   router-id 10.0.2.2\n   distance
     bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   no bgp default ipv4-unicast\n   bgp
     cluster-id 10.0.2.2\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS
-    remote-as 65521\n   neighbor EVPN-OVERLAY-PEERS local-as 65521 no-prepend replace-as\n
-    \  neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
-    route-reflector-client\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
-    \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
-    maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
-    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
-    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
-    10.0.2.7 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.7 description dc01-le01a\n
-    \  neighbor 10.0.2.8 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.8 description
-    dc01-le01b\n   neighbor 10.0.2.9 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.9
-    description dc01-le02a\n   neighbor 10.0.2.10 peer group EVPN-OVERLAY-PEERS\n
-    \  neighbor 10.0.2.10 description dc01-le02b\n   neighbor 10.0.2.11 peer group
-    EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.11 description dc01-le03a\n   neighbor
-    10.0.2.12 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.12 description dc01-le03b\n
-    \  neighbor 10.0.2.13 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.13 description
-    dc01-srv01a\n   neighbor 10.0.2.14 peer group EVPN-OVERLAY-PEERS\n   neighbor
-    10.0.2.14 description dc01-srv01b\n   neighbor 10.0.2.15 peer group EVPN-OVERLAY-PEERS\n
-    \  neighbor 10.0.2.15 description dc01-gw01a\n   neighbor 10.0.2.16 peer group
-    EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.16 description dc01-gw01b\n   neighbor
-    10.0.9.19 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.19 remote-as 65521\n
-    \  neighbor 10.0.9.19 description dc01-le01a_Ethernet2\n   neighbor 10.0.9.27
+    remote-as 65521\n   neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor
+    EVPN-OVERLAY-PEERS route-reflector-client\n   neighbor EVPN-OVERLAY-PEERS password
+    7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n   neighbor EVPN-OVERLAY-PEERS send-community\n
+    \  neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
+    peer group\n   neighbor IPv4-UNDERLAY-PEERS next-hop-self\n   neighbor IPv4-UNDERLAY-PEERS
+    route-reflector-client\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
+    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor 10.0.2.7 peer group EVPN-OVERLAY-PEERS\n   neighbor
+    10.0.2.7 description dc01-le01a\n   neighbor 10.0.2.8 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.2.8 description dc01-le01b\n   neighbor 10.0.2.9 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.2.9 description dc01-le02a\n   neighbor 10.0.2.10 peer group
+    EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.10 description dc01-le02b\n   neighbor
+    10.0.2.11 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.11 description dc01-le03a\n
+    \  neighbor 10.0.2.12 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.12 description
+    dc01-le03b\n   neighbor 10.0.2.13 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.13
+    description dc01-srv01a\n   neighbor 10.0.2.14 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.2.14 description dc01-srv01b\n   neighbor 10.0.2.15 peer group
+    EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.15 description dc01-gw01a\n   neighbor
+    10.0.2.16 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.16 description dc01-gw01b\n
+    \  neighbor 10.0.9.19 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.19 remote-as
+    65521\n   neighbor 10.0.9.19 description dc01-le01a_Ethernet2\n   neighbor 10.0.9.27
     peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.27 remote-as 65521\n   neighbor
     10.0.9.27 description dc01-le01b_Ethernet2\n   neighbor 10.0.9.35 peer group IPv4-UNDERLAY-PEERS\n
     \  neighbor 10.0.9.35 remote-as 65521\n   neighbor 10.0.9.35 description dc01-le02a_Ethernet2\n
@@ -1197,49 +1203,48 @@ cvp_configlets:
     update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
     \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
     maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
-    allowas-in 2\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65521\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc01-srv01b\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.2.1 peer
-    group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.1 description dc01-sp01\n   neighbor
-    10.0.2.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.2 description dc01-sp02\n
-    \  neighbor 10.0.9.64 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.64 remote-as
-    65520\n   neighbor 10.0.9.64 description dc01-sp01_Ethernet9\n   neighbor 10.0.9.66
-    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.66 remote-as 65520\n   neighbor
-    10.0.9.66 description dc01-sp02_Ethernet9\n   neighbor 10.0.12.17 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \  neighbor 10.0.12.17 description dc01-srv01b\n   redistribute connected route-map
-    RM-CONN-2-BGP\n   !\n   vlan 200\n      rd 65000:10200\n      route-target both
-    10200:10200\n      redistribute learned\n   !\n   vlan 201\n      rd 65000:10201\n
-    \     route-target both 10201:10201\n      redistribute learned\n   !\n   vlan
-    202\n      rd 65000:10202\n      route-target both 10202:10202\n      redistribute
-    learned\n   !\n   vlan 203\n      rd 65000:10203\n      route-target both 10203:10203\n
-    \     redistribute learned\n   !\n   vlan 208\n      rd 65000:10208\n      route-target
-    both 10208:10208\n      redistribute learned\n   !\n   vlan 209\n      rd 65000:10209\n
-    \     route-target both 10209:10209\n      redistribute learned\n   !\n   vlan
-    210\n      rd 65000:10210\n      route-target both 10210:10210\n      redistribute
-    learned\n   !\n   vlan 211\n      rd 65000:10211\n      route-target both 10211:10211\n
-    \     redistribute learned\n   !\n   vlan 41\n      rd 65000:10041\n      route-target
-    both 10041:10041\n      redistribute learned\n   !\n   vlan 45\n      rd 65000:10045\n
-    \     route-target both 10045:10045\n      redistribute learned\n   !\n   vlan
-    51\n      rd 65000:10051\n      route-target both 10051:10051\n      redistribute
-    learned\n   !\n   vlan 55\n      rd 65000:10055\n      route-target both 10055:10055\n
-    \     redistribute learned\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS
-    route-map RM-EVPN-SOO-IN in\n      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT
-    out\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family rt-membership\n
-    \     neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n      no
-    neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n
-    \     neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf ACME-DT\n      rd
-    10.0.3.13:4405\n      route-target import evpn 4405:4405\n      route-target export
-    evpn 4405:4405\n      router-id 10.0.2.13\n      neighbor 10.0.12.17 peer group
-    MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n      redistribute static\n
-    \  !\n   vrf ACME-GENERAL\n      rd 10.0.3.13:4401\n      route-target import
-    evpn 4401:4401\n      route-target export evpn 4401:4401\n      router-id 10.0.2.13\n
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65521\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc01-srv01b\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.2.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.1 description
+    dc01-sp01\n   neighbor 10.0.2.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.2
+    description dc01-sp02\n   neighbor 10.0.9.64 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.0.9.64 remote-as 65521\n   neighbor 10.0.9.64 description dc01-sp01_Ethernet9\n
+    \  neighbor 10.0.9.66 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.66 remote-as
+    65521\n   neighbor 10.0.9.66 description dc01-sp02_Ethernet9\n   neighbor 10.0.12.17
+    peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.17 description dc01-srv01b\n
+    \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan 200\n      rd
+    65000:10200\n      route-target both 10200:10200\n      redistribute learned\n
+    \  !\n   vlan 201\n      rd 65000:10201\n      route-target both 10201:10201\n
+    \     redistribute learned\n   !\n   vlan 202\n      rd 65000:10202\n      route-target
+    both 10202:10202\n      redistribute learned\n   !\n   vlan 203\n      rd 65000:10203\n
+    \     route-target both 10203:10203\n      redistribute learned\n   !\n   vlan
+    208\n      rd 65000:10208\n      route-target both 10208:10208\n      redistribute
+    learned\n   !\n   vlan 209\n      rd 65000:10209\n      route-target both 10209:10209\n
+    \     redistribute learned\n   !\n   vlan 210\n      rd 65000:10210\n      route-target
+    both 10210:10210\n      redistribute learned\n   !\n   vlan 211\n      rd 65000:10211\n
+    \     route-target both 10211:10211\n      redistribute learned\n   !\n   vlan
+    41\n      rd 65000:10041\n      route-target both 10041:10041\n      redistribute
+    learned\n   !\n   vlan 45\n      rd 65000:10045\n      route-target both 10045:10045\n
+    \     redistribute learned\n   !\n   vlan 51\n      rd 65000:10051\n      route-target
+    both 10051:10051\n      redistribute learned\n   !\n   vlan 55\n      rd 65000:10055\n
+    \     route-target both 10055:10055\n      redistribute learned\n   !\n   address-family
+    evpn\n      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-IN in\n      neighbor
+    EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out\n      neighbor EVPN-OVERLAY-PEERS
+    activate\n   !\n   address-family rt-membership\n      neighbor EVPN-OVERLAY-PEERS
+    activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
+    activate\n   !\n   vrf ACME-DT\n      rd 10.0.3.13:4405\n      route-target import
+    evpn 4405:4405\n      route-target export evpn 4405:4405\n      router-id 10.0.2.13\n
     \     neighbor 10.0.12.17 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
-    connected\n      redistribute static\n!\nbanner motd\n#########################################################################################\n#
+    connected\n      redistribute static\n   !\n   vrf ACME-GENERAL\n      rd 10.0.3.13:4401\n
+    \     route-target import evpn 4401:4401\n      route-target export evpn 4401:4401\n
+    \     router-id 10.0.2.13\n      neighbor 10.0.12.17 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     redistribute connected\n      redistribute static\n!\nbanner motd\n#########################################################################################\n#
     \                                                                                     \n#
     \      Warning Notice                                                                 \n#\n#
     \      This system is restricted solely to authorized users for legitimate business\n#
@@ -1345,49 +1350,48 @@ cvp_configlets:
     update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
     \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
     maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
-    allowas-in 2\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65521\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc01-srv01a\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.2.1 peer
-    group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.1 description dc01-sp01\n   neighbor
-    10.0.2.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.2 description dc01-sp02\n
-    \  neighbor 10.0.9.72 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.72 remote-as
-    65520\n   neighbor 10.0.9.72 description dc01-sp01_Ethernet10\n   neighbor 10.0.9.74
-    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.74 remote-as 65520\n   neighbor
-    10.0.9.74 description dc01-sp02_Ethernet10\n   neighbor 10.0.12.16 peer group
-    MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.16 description dc01-srv01a\n   redistribute
-    connected route-map RM-CONN-2-BGP\n   !\n   vlan 200\n      rd 65000:10200\n      route-target
-    both 10200:10200\n      redistribute learned\n   !\n   vlan 201\n      rd 65000:10201\n
-    \     route-target both 10201:10201\n      redistribute learned\n   !\n   vlan
-    202\n      rd 65000:10202\n      route-target both 10202:10202\n      redistribute
-    learned\n   !\n   vlan 203\n      rd 65000:10203\n      route-target both 10203:10203\n
-    \     redistribute learned\n   !\n   vlan 208\n      rd 65000:10208\n      route-target
-    both 10208:10208\n      redistribute learned\n   !\n   vlan 209\n      rd 65000:10209\n
-    \     route-target both 10209:10209\n      redistribute learned\n   !\n   vlan
-    210\n      rd 65000:10210\n      route-target both 10210:10210\n      redistribute
-    learned\n   !\n   vlan 211\n      rd 65000:10211\n      route-target both 10211:10211\n
-    \     redistribute learned\n   !\n   vlan 41\n      rd 65000:10041\n      route-target
-    both 10041:10041\n      redistribute learned\n   !\n   vlan 45\n      rd 65000:10045\n
-    \     route-target both 10045:10045\n      redistribute learned\n   !\n   vlan
-    51\n      rd 65000:10051\n      route-target both 10051:10051\n      redistribute
-    learned\n   !\n   vlan 55\n      rd 65000:10055\n      route-target both 10055:10055\n
-    \     redistribute learned\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS
-    route-map RM-EVPN-SOO-IN in\n      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT
-    out\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family rt-membership\n
-    \     neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n      no
-    neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n
-    \     neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf ACME-DT\n      rd
-    10.0.3.13:4405\n      route-target import evpn 4405:4405\n      route-target export
-    evpn 4405:4405\n      router-id 10.0.2.14\n      neighbor 10.0.12.16 peer group
-    MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n      redistribute static\n
-    \  !\n   vrf ACME-GENERAL\n      rd 10.0.3.13:4401\n      route-target import
-    evpn 4401:4401\n      route-target export evpn 4401:4401\n      router-id 10.0.2.14\n
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65521\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc01-srv01a\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.2.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.1 description
+    dc01-sp01\n   neighbor 10.0.2.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.2
+    description dc01-sp02\n   neighbor 10.0.9.72 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.0.9.72 remote-as 65521\n   neighbor 10.0.9.72 description dc01-sp01_Ethernet10\n
+    \  neighbor 10.0.9.74 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.9.74 remote-as
+    65521\n   neighbor 10.0.9.74 description dc01-sp02_Ethernet10\n   neighbor 10.0.12.16
+    peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.16 description dc01-srv01a\n
+    \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan 200\n      rd
+    65000:10200\n      route-target both 10200:10200\n      redistribute learned\n
+    \  !\n   vlan 201\n      rd 65000:10201\n      route-target both 10201:10201\n
+    \     redistribute learned\n   !\n   vlan 202\n      rd 65000:10202\n      route-target
+    both 10202:10202\n      redistribute learned\n   !\n   vlan 203\n      rd 65000:10203\n
+    \     route-target both 10203:10203\n      redistribute learned\n   !\n   vlan
+    208\n      rd 65000:10208\n      route-target both 10208:10208\n      redistribute
+    learned\n   !\n   vlan 209\n      rd 65000:10209\n      route-target both 10209:10209\n
+    \     redistribute learned\n   !\n   vlan 210\n      rd 65000:10210\n      route-target
+    both 10210:10210\n      redistribute learned\n   !\n   vlan 211\n      rd 65000:10211\n
+    \     route-target both 10211:10211\n      redistribute learned\n   !\n   vlan
+    41\n      rd 65000:10041\n      route-target both 10041:10041\n      redistribute
+    learned\n   !\n   vlan 45\n      rd 65000:10045\n      route-target both 10045:10045\n
+    \     redistribute learned\n   !\n   vlan 51\n      rd 65000:10051\n      route-target
+    both 10051:10051\n      redistribute learned\n   !\n   vlan 55\n      rd 65000:10055\n
+    \     route-target both 10055:10055\n      redistribute learned\n   !\n   address-family
+    evpn\n      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-IN in\n      neighbor
+    EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out\n      neighbor EVPN-OVERLAY-PEERS
+    activate\n   !\n   address-family rt-membership\n      neighbor EVPN-OVERLAY-PEERS
+    activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
+    activate\n   !\n   vrf ACME-DT\n      rd 10.0.3.13:4405\n      route-target import
+    evpn 4405:4405\n      route-target export evpn 4405:4405\n      router-id 10.0.2.14\n
     \     neighbor 10.0.12.16 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
-    connected\n      redistribute static\n!\nbanner motd\n#########################################################################################\n#
+    connected\n      redistribute static\n   !\n   vrf ACME-GENERAL\n      rd 10.0.3.13:4401\n
+    \     route-target import evpn 4401:4401\n      route-target export evpn 4401:4401\n
+    \     router-id 10.0.2.14\n      neighbor 10.0.12.16 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     redistribute connected\n      redistribute static\n!\nbanner motd\n#########################################################################################\n#
     \                                                                                     \n#
     \      Warning Notice                                                                 \n#\n#
     \      This system is restricted solely to authorized users for legitimate business\n#
@@ -1518,45 +1522,48 @@ cvp_configlets:
     \  mtu 1500\n   no autostate\n   ip address 10.0.11.16/31\n!\ninterface Vxlan1\n
     \  description dc02-gw01a_VTEP\n   vxlan source-interface Loopback1\n   vxlan
     virtual-router encapsulation mac-address mlag-system-id\n   vxlan udp-port 4789\n!\nip
-    virtual-router mac-address 00:1c:73:00:00:99\n!\nip routing\n!\nip prefix-list
-    PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 10.0.4.0/24 eq 32\n   seq 20 permit
-    10.0.5.0/24 eq 32\n!\nmlag configuration\n   domain-id dc02-gw01\n   local-interface
-    Vlan4094\n   peer-address 10.0.11.17\n   peer-link Port-Channel31\n   reload-delay
-    mlag 300\n   reload-delay non-mlag 330\n!\narp aging timeout default 275\n!\nroute-map
-    RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map
-    RM-MLAG-PEER-IN permit 10\n   description Make routes learned over MLAG Peer-link
-    less preferred on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter
-    bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65561\n
-    \  router-id 10.0.4.13\n   distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n
-    \  no bgp default ipv4-unicast\n   bgp cluster-id 10.0.4.13\n   neighbor EVPN-OVERLAY-PEERS
-    peer group\n   neighbor EVPN-OVERLAY-PEERS remote-as 65561\n   neighbor EVPN-OVERLAY-PEERS
-    update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS route-reflector-client\n
-    \  neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n   neighbor
-    EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes
-    0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
-    allowas-in 2\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65561\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc02-gw01b\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.0.0 peer
-    group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.0.0 remote-as 65521\n   neighbor 10.0.0.0
-    description dc01-gw01a\n   neighbor 10.0.2.15 peer group EVPN-OVERLAY-PEERS\n
-    \  neighbor 10.0.2.15 remote-as 65521\n   neighbor 10.0.2.15 description dc01-gw01a\n
-    \  neighbor 10.0.2.15 ebgp-multihop 2\n   neighbor 10.0.2.15 update-source Loopback0\n
-    \  neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 description
-    dc02-sp01\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.2
-    description dc02-sp02\n   neighbor 10.0.10.64 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 10.0.10.64 remote-as 65560\n   neighbor 10.0.10.64 description dc02-sp01_Ethernet11\n
-    \  neighbor 10.0.10.66 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.66
-    remote-as 65560\n   neighbor 10.0.10.66 description dc02-sp02_Ethernet11\n   neighbor
-    10.0.12.17 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.17 description
-    dc02-gw01b\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n   address-family
-    evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family rt-membership\n
-    \     neighbor EVPN-OVERLAY-PEERS activate\n      neighbor EVPN-OVERLAY-PEERS
-    default-route-target only\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS
+    virtual-router mac-address 00:1c:73:00:00:99\n!\nip routing\n!\nip extcommunity-list
+    ECL-EVPN-SOO permit soo 10.0.5.13:1\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n
+    \  seq 10 permit 10.0.4.0/24 eq 32\n   seq 20 permit 10.0.5.0/24 eq 32\n   seq
+    30 permit 10.0.3.0/24 eq 32\n   seq 40 permit 10.0.0.0/31\n   seq 50 permit 10.0.0.2/31\n!\nmlag
+    configuration\n   domain-id dc02-gw01\n   local-interface Vlan4094\n   peer-address
+    10.0.11.17\n   peer-link Port-Channel31\n   reload-delay mlag 300\n   reload-delay
+    non-mlag 330\n!\narp aging timeout default 275\n!\nroute-map RM-CONN-2-BGP permit
+    10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-EVPN-SOO-IN
+    deny 10\n   match extcommunity ECL-EVPN-SOO\n!\nroute-map RM-EVPN-SOO-IN permit
+    20\n!\nroute-map RM-EVPN-SOO-OUT permit 10\n   set extcommunity soo 10.0.5.13:1
+    additive\n!\nroute-map RM-MLAG-PEER-IN permit 10\n   description Make routes learned
+    over MLAG Peer-link less preferred on spines to ensure optimal routing\n   set
+    origin incomplete\n!\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier
+    3\n!\nrouter bgp 65561\n   router-id 10.0.4.13\n   distance bgp 20 200 200\n   maximum-paths
+    4 ecmp 4\n   no bgp default ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer
+    group\n   neighbor EVPN-OVERLAY-PEERS remote-as 65561\n   neighbor EVPN-OVERLAY-PEERS
+    update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
+    \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
+    maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65561\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc02-gw01b\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.0.0 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.0.0
+    remote-as 65521\n   neighbor 10.0.0.0 description dc01-gw01a\n   neighbor 10.0.2.15
+    peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.15 remote-as 65521\n   neighbor
+    10.0.2.15 description dc01-gw01a\n   neighbor 10.0.2.15 ebgp-multihop 2\n   neighbor
+    10.0.2.15 update-source Loopback0\n   neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.4.1 description dc02-sp01\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.4.2 description dc02-sp02\n   neighbor 10.0.10.64 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.64 remote-as 65561\n   neighbor 10.0.10.64
+    description dc02-sp01_Ethernet11\n   neighbor 10.0.10.66 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.0.10.66 remote-as 65561\n   neighbor 10.0.10.66 description dc02-sp02_Ethernet11\n
+    \  neighbor 10.0.12.17 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.17
+    description dc02-gw01b\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n
+    \  address-family evpn\n      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-IN
+    in\n      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out\n      neighbor
+    EVPN-OVERLAY-PEERS activate\n   !\n   address-family rt-membership\n      neighbor
+    EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS
     activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
     activate\n!\nbanner motd\n#########################################################################################\n#
     \                                                                                     \n#
@@ -1597,45 +1604,48 @@ cvp_configlets:
     \  mtu 1500\n   no autostate\n   ip address 10.0.11.17/31\n!\ninterface Vxlan1\n
     \  description dc02-gw01b_VTEP\n   vxlan source-interface Loopback1\n   vxlan
     virtual-router encapsulation mac-address mlag-system-id\n   vxlan udp-port 4789\n!\nip
-    virtual-router mac-address 00:1c:73:00:00:99\n!\nip routing\n!\nip prefix-list
-    PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 10.0.4.0/24 eq 32\n   seq 20 permit
-    10.0.5.0/24 eq 32\n!\nmlag configuration\n   domain-id dc02-gw01\n   local-interface
-    Vlan4094\n   peer-address 10.0.11.16\n   peer-link Port-Channel31\n   reload-delay
-    mlag 300\n   reload-delay non-mlag 330\n!\narp aging timeout default 275\n!\nroute-map
-    RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map
-    RM-MLAG-PEER-IN permit 10\n   description Make routes learned over MLAG Peer-link
-    less preferred on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter
-    bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65561\n
-    \  router-id 10.0.4.14\n   distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n
-    \  no bgp default ipv4-unicast\n   bgp cluster-id 10.0.4.14\n   neighbor EVPN-OVERLAY-PEERS
-    peer group\n   neighbor EVPN-OVERLAY-PEERS remote-as 65561\n   neighbor EVPN-OVERLAY-PEERS
-    update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS route-reflector-client\n
-    \  neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n   neighbor
-    EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes
-    0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
-    allowas-in 2\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65561\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc02-gw01a\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.0.2 peer
-    group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.0.2 remote-as 65521\n   neighbor 10.0.0.2
-    description dc01-gw01b\n   neighbor 10.0.2.16 peer group EVPN-OVERLAY-PEERS\n
-    \  neighbor 10.0.2.16 remote-as 65521\n   neighbor 10.0.2.16 description dc01-gw01b\n
-    \  neighbor 10.0.2.16 ebgp-multihop 2\n   neighbor 10.0.2.16 update-source Loopback0\n
-    \  neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 description
-    dc02-sp01\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.2
-    description dc02-sp02\n   neighbor 10.0.10.72 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 10.0.10.72 remote-as 65560\n   neighbor 10.0.10.72 description dc02-sp01_Ethernet12\n
-    \  neighbor 10.0.10.74 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.74
-    remote-as 65560\n   neighbor 10.0.10.74 description dc02-sp02_Ethernet12\n   neighbor
-    10.0.12.16 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.16 description
-    dc02-gw01a\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n   address-family
-    evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family rt-membership\n
-    \     neighbor EVPN-OVERLAY-PEERS activate\n      neighbor EVPN-OVERLAY-PEERS
-    default-route-target only\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS
+    virtual-router mac-address 00:1c:73:00:00:99\n!\nip routing\n!\nip extcommunity-list
+    ECL-EVPN-SOO permit soo 10.0.5.13:1\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n
+    \  seq 10 permit 10.0.4.0/24 eq 32\n   seq 20 permit 10.0.5.0/24 eq 32\n   seq
+    30 permit 10.0.3.0/24 eq 32\n   seq 40 permit 10.0.0.0/31\n   seq 50 permit 10.0.0.2/31\n!\nmlag
+    configuration\n   domain-id dc02-gw01\n   local-interface Vlan4094\n   peer-address
+    10.0.11.16\n   peer-link Port-Channel31\n   reload-delay mlag 300\n   reload-delay
+    non-mlag 330\n!\narp aging timeout default 275\n!\nroute-map RM-CONN-2-BGP permit
+    10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-EVPN-SOO-IN
+    deny 10\n   match extcommunity ECL-EVPN-SOO\n!\nroute-map RM-EVPN-SOO-IN permit
+    20\n!\nroute-map RM-EVPN-SOO-OUT permit 10\n   set extcommunity soo 10.0.5.13:1
+    additive\n!\nroute-map RM-MLAG-PEER-IN permit 10\n   description Make routes learned
+    over MLAG Peer-link less preferred on spines to ensure optimal routing\n   set
+    origin incomplete\n!\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier
+    3\n!\nrouter bgp 65561\n   router-id 10.0.4.14\n   distance bgp 20 200 200\n   maximum-paths
+    4 ecmp 4\n   no bgp default ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer
+    group\n   neighbor EVPN-OVERLAY-PEERS remote-as 65561\n   neighbor EVPN-OVERLAY-PEERS
+    update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
+    \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
+    maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65561\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc02-gw01a\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.0.2 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.0.2
+    remote-as 65521\n   neighbor 10.0.0.2 description dc01-gw01b\n   neighbor 10.0.2.16
+    peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.16 remote-as 65521\n   neighbor
+    10.0.2.16 description dc01-gw01b\n   neighbor 10.0.2.16 ebgp-multihop 2\n   neighbor
+    10.0.2.16 update-source Loopback0\n   neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.4.1 description dc02-sp01\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.4.2 description dc02-sp02\n   neighbor 10.0.10.72 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.72 remote-as 65561\n   neighbor 10.0.10.72
+    description dc02-sp01_Ethernet12\n   neighbor 10.0.10.74 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.0.10.74 remote-as 65561\n   neighbor 10.0.10.74 description dc02-sp02_Ethernet12\n
+    \  neighbor 10.0.12.16 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.16
+    description dc02-gw01a\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n
+    \  address-family evpn\n      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-IN
+    in\n      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out\n      neighbor
+    EVPN-OVERLAY-PEERS activate\n   !\n   address-family rt-membership\n      neighbor
+    EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS
     activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
     activate\n!\nbanner motd\n#########################################################################################\n#
     \                                                                                     \n#
@@ -1733,24 +1743,23 @@ cvp_configlets:
     update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
     \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
     maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
-    allowas-in 2\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65561\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc02-le01b\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.4.1 peer
-    group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 description dc02-sp01\n   neighbor
-    10.0.4.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.2 description dc02-sp02\n
-    \  neighbor 10.0.10.16 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.16
-    remote-as 65560\n   neighbor 10.0.10.16 description dc02-sp01_Ethernet1\n   neighbor
-    10.0.10.18 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.18 remote-as 65560\n
-    \  neighbor 10.0.10.18 description dc02-sp02_Ethernet1\n   neighbor 10.0.12.5
-    peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.5 description dc02-le01b\n
-    \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan 42\n      rd
-    65000:10042\n      route-target both 10042:10042\n      redistribute learned\n
-    \  !\n   vlan 43\n      rd 65000:10043\n      route-target both 10043:10043\n
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65561\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc02-le01b\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 description
+    dc02-sp01\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.2
+    description dc02-sp02\n   neighbor 10.0.10.16 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.0.10.16 remote-as 65561\n   neighbor 10.0.10.16 description dc02-sp01_Ethernet1\n
+    \  neighbor 10.0.10.18 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.18
+    remote-as 65561\n   neighbor 10.0.10.18 description dc02-sp02_Ethernet1\n   neighbor
+    10.0.12.5 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.5 description
+    dc02-le01b\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan 42\n
+    \     rd 65000:10042\n      route-target both 10042:10042\n      redistribute
+    learned\n   !\n   vlan 43\n      rd 65000:10043\n      route-target both 10043:10043\n
     \     redistribute learned\n   !\n   vlan 44\n      rd 65000:10044\n      route-target
     both 10044:10044\n      redistribute learned\n   !\n   vlan 45\n      rd 65000:10045\n
     \     route-target both 10045:10045\n      redistribute learned\n   !\n   vlan
@@ -1867,24 +1876,23 @@ cvp_configlets:
     update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
     \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
     maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
-    allowas-in 2\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65561\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc02-le01a\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.4.1 peer
-    group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 description dc02-sp01\n   neighbor
-    10.0.4.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.2 description dc02-sp02\n
-    \  neighbor 10.0.10.24 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.24
-    remote-as 65560\n   neighbor 10.0.10.24 description dc02-sp01_Ethernet2\n   neighbor
-    10.0.10.26 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.26 remote-as 65560\n
-    \  neighbor 10.0.10.26 description dc02-sp02_Ethernet2\n   neighbor 10.0.12.4
-    peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.4 description dc02-le01a\n
-    \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan 42\n      rd
-    65000:10042\n      route-target both 10042:10042\n      redistribute learned\n
-    \  !\n   vlan 43\n      rd 65000:10043\n      route-target both 10043:10043\n
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65561\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc02-le01a\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 description
+    dc02-sp01\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.2
+    description dc02-sp02\n   neighbor 10.0.10.24 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.0.10.24 remote-as 65561\n   neighbor 10.0.10.24 description dc02-sp01_Ethernet2\n
+    \  neighbor 10.0.10.26 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.26
+    remote-as 65561\n   neighbor 10.0.10.26 description dc02-sp02_Ethernet2\n   neighbor
+    10.0.12.4 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.4 description
+    dc02-le01a\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan 42\n
+    \     rd 65000:10042\n      route-target both 10042:10042\n      redistribute
+    learned\n   !\n   vlan 43\n      rd 65000:10043\n      route-target both 10043:10043\n
     \     redistribute learned\n   !\n   vlan 44\n      rd 65000:10044\n      route-target
     both 10044:10044\n      redistribute learned\n   !\n   vlan 45\n      rd 65000:10045\n
     \     route-target both 10045:10045\n      redistribute learned\n   !\n   vlan
@@ -2001,24 +2009,23 @@ cvp_configlets:
     update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
     \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
     maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
-    allowas-in 2\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65561\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc02-le02b\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.4.1 peer
-    group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 description dc02-sp01\n   neighbor
-    10.0.4.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.2 description dc02-sp02\n
-    \  neighbor 10.0.10.32 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.32
-    remote-as 65560\n   neighbor 10.0.10.32 description dc02-sp01_Ethernet3\n   neighbor
-    10.0.10.34 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.34 remote-as 65560\n
-    \  neighbor 10.0.10.34 description dc02-sp02_Ethernet3\n   neighbor 10.0.12.9
-    peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.9 description dc02-le02b\n
-    \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan 42\n      rd
-    65000:10042\n      route-target both 10042:10042\n      redistribute learned\n
-    \  !\n   vlan 43\n      rd 65000:10043\n      route-target both 10043:10043\n
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65561\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc02-le02b\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 description
+    dc02-sp01\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.2
+    description dc02-sp02\n   neighbor 10.0.10.32 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.0.10.32 remote-as 65561\n   neighbor 10.0.10.32 description dc02-sp01_Ethernet3\n
+    \  neighbor 10.0.10.34 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.34
+    remote-as 65561\n   neighbor 10.0.10.34 description dc02-sp02_Ethernet3\n   neighbor
+    10.0.12.9 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.9 description
+    dc02-le02b\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan 42\n
+    \     rd 65000:10042\n      route-target both 10042:10042\n      redistribute
+    learned\n   !\n   vlan 43\n      rd 65000:10043\n      route-target both 10043:10043\n
     \     redistribute learned\n   !\n   vlan 44\n      rd 65000:10044\n      route-target
     both 10044:10044\n      redistribute learned\n   !\n   vlan 45\n      rd 65000:10045\n
     \     route-target both 10045:10045\n      redistribute learned\n   !\n   vlan
@@ -2135,24 +2142,23 @@ cvp_configlets:
     update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
     \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
     maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
-    allowas-in 2\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65561\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc02-le02a\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.4.1 peer
-    group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 description dc02-sp01\n   neighbor
-    10.0.4.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.2 description dc02-sp02\n
-    \  neighbor 10.0.10.40 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.40
-    remote-as 65560\n   neighbor 10.0.10.40 description dc02-sp01_Ethernet4\n   neighbor
-    10.0.10.42 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.42 remote-as 65560\n
-    \  neighbor 10.0.10.42 description dc02-sp02_Ethernet4\n   neighbor 10.0.12.8
-    peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.8 description dc02-le02a\n
-    \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan 42\n      rd
-    65000:10042\n      route-target both 10042:10042\n      redistribute learned\n
-    \  !\n   vlan 43\n      rd 65000:10043\n      route-target both 10043:10043\n
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65561\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc02-le02a\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 description
+    dc02-sp01\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.2
+    description dc02-sp02\n   neighbor 10.0.10.40 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.0.10.40 remote-as 65561\n   neighbor 10.0.10.40 description dc02-sp01_Ethernet4\n
+    \  neighbor 10.0.10.42 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.42
+    remote-as 65561\n   neighbor 10.0.10.42 description dc02-sp02_Ethernet4\n   neighbor
+    10.0.12.8 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.8 description
+    dc02-le02a\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan 42\n
+    \     rd 65000:10042\n      route-target both 10042:10042\n      redistribute
+    learned\n   !\n   vlan 43\n      rd 65000:10043\n      route-target both 10043:10043\n
     \     redistribute learned\n   !\n   vlan 44\n      rd 65000:10044\n      route-target
     both 10044:10044\n      redistribute learned\n   !\n   vlan 45\n      rd 65000:10045\n
     \     route-target both 10045:10045\n      redistribute learned\n   !\n   vlan
@@ -2210,45 +2216,45 @@ cvp_configlets:
     prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 10.0.4.0/24 eq 32\n!\narp
     aging timeout default 275\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address
     prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nrouter bfd\n   multihop interval 1200
-    min-rx 1200 multiplier 3\n!\nrouter bgp 65560\n   router-id 10.0.4.1\n   distance
+    min-rx 1200 multiplier 3\n!\nrouter bgp 65561\n   router-id 10.0.4.1\n   distance
     bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   no bgp default ipv4-unicast\n   bgp
     cluster-id 10.0.4.1\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS
-    remote-as 65561\n   neighbor EVPN-OVERLAY-PEERS local-as 65561 no-prepend replace-as\n
-    \  neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
-    route-reflector-client\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
-    \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
-    maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
-    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
-    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
-    10.0.4.7 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.7 description dc02-le01a\n
-    \  neighbor 10.0.4.8 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.8 description
-    dc02-le01b\n   neighbor 10.0.4.9 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.9
-    description dc02-le02a\n   neighbor 10.0.4.10 peer group EVPN-OVERLAY-PEERS\n
-    \  neighbor 10.0.4.10 description dc02-le02b\n   neighbor 10.0.4.11 peer group
-    EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.11 description dc02-srv01a\n   neighbor
-    10.0.4.12 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.12 description dc02-srv01b\n
-    \  neighbor 10.0.4.13 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.13 description
-    dc02-gw01a\n   neighbor 10.0.4.14 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.14
-    description dc02-gw01b\n   neighbor 10.0.10.17 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 10.0.10.17 remote-as 65561\n   neighbor 10.0.10.17 description dc02-le01a_Ethernet1\n
-    \  neighbor 10.0.10.25 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.25
-    remote-as 65561\n   neighbor 10.0.10.25 description dc02-le01b_Ethernet1\n   neighbor
-    10.0.10.33 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.33 remote-as 65561\n
-    \  neighbor 10.0.10.33 description dc02-le02a_Ethernet1\n   neighbor 10.0.10.41
-    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.41 remote-as 65561\n   neighbor
-    10.0.10.41 description dc02-le02b_Ethernet1\n   neighbor 10.0.10.49 peer group
-    IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.49 remote-as 65561\n   neighbor 10.0.10.49
-    description dc02-srv01a_Ethernet1\n   neighbor 10.0.10.57 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 10.0.10.57 remote-as 65561\n   neighbor 10.0.10.57 description dc02-srv01b_Ethernet1\n
-    \  neighbor 10.0.10.65 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.65
-    remote-as 65561\n   neighbor 10.0.10.65 description dc02-gw01a_Ethernet1\n   neighbor
-    10.0.10.73 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.73 remote-as 65561\n
-    \  neighbor 10.0.10.73 description dc02-gw01b_Ethernet1\n   redistribute connected
-    route-map RM-CONN-2-BGP\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS
-    activate\n   !\n   address-family rt-membership\n      neighbor EVPN-OVERLAY-PEERS
-    activate\n      neighbor EVPN-OVERLAY-PEERS default-route-target only\n   !\n
-    \  address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor
-    IPv4-UNDERLAY-PEERS activate\n!\nbanner motd\n#########################################################################################\n#
+    remote-as 65561\n   neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor
+    EVPN-OVERLAY-PEERS route-reflector-client\n   neighbor EVPN-OVERLAY-PEERS password
+    7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n   neighbor EVPN-OVERLAY-PEERS send-community\n
+    \  neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
+    peer group\n   neighbor IPv4-UNDERLAY-PEERS next-hop-self\n   neighbor IPv4-UNDERLAY-PEERS
+    route-reflector-client\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
+    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor 10.0.4.7 peer group EVPN-OVERLAY-PEERS\n   neighbor
+    10.0.4.7 description dc02-le01a\n   neighbor 10.0.4.8 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.4.8 description dc02-le01b\n   neighbor 10.0.4.9 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.4.9 description dc02-le02a\n   neighbor 10.0.4.10 peer group
+    EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.10 description dc02-le02b\n   neighbor
+    10.0.4.11 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.11 description dc02-srv01a\n
+    \  neighbor 10.0.4.12 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.12 description
+    dc02-srv01b\n   neighbor 10.0.4.13 peer group EVPN-OVERLAY-PEERS\n   neighbor
+    10.0.4.13 description dc02-gw01a\n   neighbor 10.0.4.14 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.4.14 description dc02-gw01b\n   neighbor 10.0.10.17 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.17 remote-as 65561\n   neighbor 10.0.10.17
+    description dc02-le01a_Ethernet1\n   neighbor 10.0.10.25 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.0.10.25 remote-as 65561\n   neighbor 10.0.10.25 description dc02-le01b_Ethernet1\n
+    \  neighbor 10.0.10.33 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.33
+    remote-as 65561\n   neighbor 10.0.10.33 description dc02-le02a_Ethernet1\n   neighbor
+    10.0.10.41 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.41 remote-as 65561\n
+    \  neighbor 10.0.10.41 description dc02-le02b_Ethernet1\n   neighbor 10.0.10.49
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.49 remote-as 65561\n   neighbor
+    10.0.10.49 description dc02-srv01a_Ethernet1\n   neighbor 10.0.10.57 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.57 remote-as 65561\n   neighbor 10.0.10.57
+    description dc02-srv01b_Ethernet1\n   neighbor 10.0.10.65 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.0.10.65 remote-as 65561\n   neighbor 10.0.10.65 description dc02-gw01a_Ethernet1\n
+    \  neighbor 10.0.10.73 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.73
+    remote-as 65561\n   neighbor 10.0.10.73 description dc02-gw01b_Ethernet1\n   redistribute
+    connected route-map RM-CONN-2-BGP\n   !\n   address-family evpn\n      neighbor
+    EVPN-OVERLAY-PEERS activate\n   !\n   address-family rt-membership\n      neighbor
+    EVPN-OVERLAY-PEERS activate\n      neighbor EVPN-OVERLAY-PEERS default-route-target
+    only\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n!\nbanner motd\n#########################################################################################\n#
     \                                                                                     \n#
     \      Warning Notice                                                                 \n#\n#
     \      This system is restricted solely to authorized users for legitimate business\n#
@@ -2285,45 +2291,45 @@ cvp_configlets:
     prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 10.0.4.0/24 eq 32\n!\narp
     aging timeout default 275\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address
     prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nrouter bfd\n   multihop interval 1200
-    min-rx 1200 multiplier 3\n!\nrouter bgp 65560\n   router-id 10.0.4.2\n   distance
+    min-rx 1200 multiplier 3\n!\nrouter bgp 65561\n   router-id 10.0.4.2\n   distance
     bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   no bgp default ipv4-unicast\n   bgp
     cluster-id 10.0.4.2\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS
-    remote-as 65561\n   neighbor EVPN-OVERLAY-PEERS local-as 65561 no-prepend replace-as\n
-    \  neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
-    route-reflector-client\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
-    \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
-    maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
-    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
-    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
-    10.0.4.7 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.7 description dc02-le01a\n
-    \  neighbor 10.0.4.8 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.8 description
-    dc02-le01b\n   neighbor 10.0.4.9 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.9
-    description dc02-le02a\n   neighbor 10.0.4.10 peer group EVPN-OVERLAY-PEERS\n
-    \  neighbor 10.0.4.10 description dc02-le02b\n   neighbor 10.0.4.11 peer group
-    EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.11 description dc02-srv01a\n   neighbor
-    10.0.4.12 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.12 description dc02-srv01b\n
-    \  neighbor 10.0.4.13 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.13 description
-    dc02-gw01a\n   neighbor 10.0.4.14 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.14
-    description dc02-gw01b\n   neighbor 10.0.10.19 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 10.0.10.19 remote-as 65561\n   neighbor 10.0.10.19 description dc02-le01a_Ethernet2\n
-    \  neighbor 10.0.10.27 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.27
-    remote-as 65561\n   neighbor 10.0.10.27 description dc02-le01b_Ethernet2\n   neighbor
-    10.0.10.35 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.35 remote-as 65561\n
-    \  neighbor 10.0.10.35 description dc02-le02a_Ethernet2\n   neighbor 10.0.10.43
-    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.43 remote-as 65561\n   neighbor
-    10.0.10.43 description dc02-le02b_Ethernet2\n   neighbor 10.0.10.51 peer group
-    IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.51 remote-as 65561\n   neighbor 10.0.10.51
-    description dc02-srv01a_Ethernet2\n   neighbor 10.0.10.59 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 10.0.10.59 remote-as 65561\n   neighbor 10.0.10.59 description dc02-srv01b_Ethernet2\n
-    \  neighbor 10.0.10.67 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.67
-    remote-as 65561\n   neighbor 10.0.10.67 description dc02-gw01a_Ethernet2\n   neighbor
-    10.0.10.75 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.75 remote-as 65561\n
-    \  neighbor 10.0.10.75 description dc02-gw01b_Ethernet2\n   redistribute connected
-    route-map RM-CONN-2-BGP\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS
-    activate\n   !\n   address-family rt-membership\n      neighbor EVPN-OVERLAY-PEERS
-    activate\n      neighbor EVPN-OVERLAY-PEERS default-route-target only\n   !\n
-    \  address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor
-    IPv4-UNDERLAY-PEERS activate\n!\nbanner motd\n#########################################################################################\n#
+    remote-as 65561\n   neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor
+    EVPN-OVERLAY-PEERS route-reflector-client\n   neighbor EVPN-OVERLAY-PEERS password
+    7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n   neighbor EVPN-OVERLAY-PEERS send-community\n
+    \  neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
+    peer group\n   neighbor IPv4-UNDERLAY-PEERS next-hop-self\n   neighbor IPv4-UNDERLAY-PEERS
+    route-reflector-client\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
+    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor 10.0.4.7 peer group EVPN-OVERLAY-PEERS\n   neighbor
+    10.0.4.7 description dc02-le01a\n   neighbor 10.0.4.8 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.4.8 description dc02-le01b\n   neighbor 10.0.4.9 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.4.9 description dc02-le02a\n   neighbor 10.0.4.10 peer group
+    EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.10 description dc02-le02b\n   neighbor
+    10.0.4.11 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.11 description dc02-srv01a\n
+    \  neighbor 10.0.4.12 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.12 description
+    dc02-srv01b\n   neighbor 10.0.4.13 peer group EVPN-OVERLAY-PEERS\n   neighbor
+    10.0.4.13 description dc02-gw01a\n   neighbor 10.0.4.14 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.4.14 description dc02-gw01b\n   neighbor 10.0.10.19 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.19 remote-as 65561\n   neighbor 10.0.10.19
+    description dc02-le01a_Ethernet2\n   neighbor 10.0.10.27 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.0.10.27 remote-as 65561\n   neighbor 10.0.10.27 description dc02-le01b_Ethernet2\n
+    \  neighbor 10.0.10.35 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.35
+    remote-as 65561\n   neighbor 10.0.10.35 description dc02-le02a_Ethernet2\n   neighbor
+    10.0.10.43 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.43 remote-as 65561\n
+    \  neighbor 10.0.10.43 description dc02-le02b_Ethernet2\n   neighbor 10.0.10.51
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.51 remote-as 65561\n   neighbor
+    10.0.10.51 description dc02-srv01a_Ethernet2\n   neighbor 10.0.10.59 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.59 remote-as 65561\n   neighbor 10.0.10.59
+    description dc02-srv01b_Ethernet2\n   neighbor 10.0.10.67 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.0.10.67 remote-as 65561\n   neighbor 10.0.10.67 description dc02-gw01a_Ethernet2\n
+    \  neighbor 10.0.10.75 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.75
+    remote-as 65561\n   neighbor 10.0.10.75 description dc02-gw01b_Ethernet2\n   redistribute
+    connected route-map RM-CONN-2-BGP\n   !\n   address-family evpn\n      neighbor
+    EVPN-OVERLAY-PEERS activate\n   !\n   address-family rt-membership\n      neighbor
+    EVPN-OVERLAY-PEERS activate\n      neighbor EVPN-OVERLAY-PEERS default-route-target
+    only\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n!\nbanner motd\n#########################################################################################\n#
     \                                                                                     \n#
     \      Warning Notice                                                                 \n#\n#
     \      This system is restricted solely to authorized users for legitimate business\n#
@@ -2430,24 +2436,23 @@ cvp_configlets:
     update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
     \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
     maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
-    allowas-in 2\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65561\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc02-srv01b\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.4.1 peer
-    group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 description dc02-sp01\n   neighbor
-    10.0.4.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.2 description dc02-sp02\n
-    \  neighbor 10.0.10.48 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.48
-    remote-as 65560\n   neighbor 10.0.10.48 description dc02-sp01_Ethernet9\n   neighbor
-    10.0.10.50 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.50 remote-as 65560\n
-    \  neighbor 10.0.10.50 description dc02-sp02_Ethernet9\n   neighbor 10.0.12.13
-    peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.13 description dc02-srv01b\n
-    \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan 204\n      rd
-    65000:10204\n      route-target both 10204:10204\n      redistribute learned\n
-    \  !\n   vlan 205\n      rd 65000:10205\n      route-target both 10205:10205\n
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65561\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc02-srv01b\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 description
+    dc02-sp01\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.2
+    description dc02-sp02\n   neighbor 10.0.10.48 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.0.10.48 remote-as 65561\n   neighbor 10.0.10.48 description dc02-sp01_Ethernet9\n
+    \  neighbor 10.0.10.50 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.50
+    remote-as 65561\n   neighbor 10.0.10.50 description dc02-sp02_Ethernet9\n   neighbor
+    10.0.12.13 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.13 description
+    dc02-srv01b\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan
+    204\n      rd 65000:10204\n      route-target both 10204:10204\n      redistribute
+    learned\n   !\n   vlan 205\n      rd 65000:10205\n      route-target both 10205:10205\n
     \     redistribute learned\n   !\n   vlan 206\n      rd 65000:10206\n      route-target
     both 10206:10206\n      redistribute learned\n   !\n   vlan 207\n      rd 65000:10207\n
     \     route-target both 10207:10207\n      redistribute learned\n   !\n   vlan
@@ -2579,24 +2584,23 @@ cvp_configlets:
     update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
     \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
     maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
-    allowas-in 2\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65561\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc02-srv01a\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.4.1 peer
-    group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 description dc02-sp01\n   neighbor
-    10.0.4.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.2 description dc02-sp02\n
-    \  neighbor 10.0.10.56 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.56
-    remote-as 65560\n   neighbor 10.0.10.56 description dc02-sp01_Ethernet10\n   neighbor
-    10.0.10.58 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.58 remote-as 65560\n
-    \  neighbor 10.0.10.58 description dc02-sp02_Ethernet10\n   neighbor 10.0.12.12
-    peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.12 description dc02-srv01a\n
-    \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan 204\n      rd
-    65000:10204\n      route-target both 10204:10204\n      redistribute learned\n
-    \  !\n   vlan 205\n      rd 65000:10205\n      route-target both 10205:10205\n
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65561\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc02-srv01a\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 description
+    dc02-sp01\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.2
+    description dc02-sp02\n   neighbor 10.0.10.56 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.0.10.56 remote-as 65561\n   neighbor 10.0.10.56 description dc02-sp01_Ethernet10\n
+    \  neighbor 10.0.10.58 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.58
+    remote-as 65561\n   neighbor 10.0.10.58 description dc02-sp02_Ethernet10\n   neighbor
+    10.0.12.12 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.12 description
+    dc02-srv01a\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan
+    204\n      rd 65000:10204\n      route-target both 10204:10204\n      redistribute
+    learned\n   !\n   vlan 205\n      rd 65000:10205\n      route-target both 10205:10205\n
     \     redistribute learned\n   !\n   vlan 206\n      rd 65000:10206\n      route-target
     both 10206:10206\n      redistribute learned\n   !\n   vlan 207\n      rd 65000:10207\n
     \     route-target both 10207:10207\n      redistribute learned\n   !\n   vlan

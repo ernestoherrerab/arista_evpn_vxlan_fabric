@@ -30,9 +30,6 @@ router_bgp:
     bfd: false
     maximum_routes: 12000
     send_community: all
-    allowas_in:
-      enabled: true
-      times: 2
   - name: EVPN-OVERLAY-PEERS
     type: evpn
     update_source: Loopback0
@@ -56,12 +53,12 @@ router_bgp:
     description: dc01-le01b
   - ip_address: 10.0.9.16
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65520'
+    remote_as: '65521'
     peer: dc01-sp01
     description: dc01-sp01_Ethernet1
   - ip_address: 10.0.9.18
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65520'
+    remote_as: '65521'
     peer: dc01-sp02
     description: dc01-sp02_Ethernet1
   - ip_address: 10.0.2.1

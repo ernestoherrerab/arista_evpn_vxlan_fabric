@@ -580,7 +580,6 @@ ASN Notation: asplain
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Allowas-in | Allowed, allowed 2 times |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -590,8 +589,8 @@ ASN Notation: asplain
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 | 10.0.2.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - | - | - |
 | 10.0.2.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - | - | - |
-| 10.0.9.48 | 65520 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
-| 10.0.9.50 | 65520 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 10.0.9.48 | 65521 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 10.0.9.50 | 65521 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -637,7 +636,6 @@ router bgp 65521
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS allowas-in 2
    neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
@@ -646,10 +644,10 @@ router bgp 65521
    neighbor 10.0.2.2 peer group EVPN-OVERLAY-PEERS
    neighbor 10.0.2.2 description dc01-sp02
    neighbor 10.0.9.48 peer group IPv4-UNDERLAY-PEERS
-   neighbor 10.0.9.48 remote-as 65520
+   neighbor 10.0.9.48 remote-as 65521
    neighbor 10.0.9.48 description dc01-sp01_Ethernet5
    neighbor 10.0.9.50 peer group IPv4-UNDERLAY-PEERS
-   neighbor 10.0.9.50 remote-as 65520
+   neighbor 10.0.9.50 remote-as 65521
    neighbor 10.0.9.50 description dc01-sp02_Ethernet5
    redistribute connected route-map RM-CONN-2-BGP
    !
