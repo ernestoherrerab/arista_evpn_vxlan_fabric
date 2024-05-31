@@ -1,0 +1,246 @@
+tenants:
+  - name: acme
+    enable_mlag_ibgp_peering_vrfs: true
+    mac_vrf_vni_base: 10000
+    l2vlans:
+      - id: 43
+        name: ACME_GENERAL_FW_43
+        tags:
+          - common 
+          - firewall
+      - id: 45
+        name: ACME_GENERAL_FW_45
+        tags:
+          - common
+          - firewall
+      - id: 53
+        name: ACME_DT_FW_53
+        tags:
+          - common
+          - firewall
+      - id: 55
+        name: ACME_DT_FW_55
+        tags:
+          - common  
+          - firewall
+    vrfs:
+      - name: ACME-GENERAL
+        vrf_vni: 4401
+        mlag_ibgp_peering_vlan: 4001
+        svis:
+          - id: 42
+            enabled: true
+            ip_address_virtual: 10.4.42.1/24
+            name: ACME_GENERAL_42
+            tags:
+              - common
+          - id: 44
+            enabled: true
+            ip_address_virtual: 10.4.44.1/24
+            name: ACME_GENERAL_EXT_44
+            tags:
+              - common
+          - id: 49
+            enabled: true
+            ip_address_virtual: 10.4.49.1/24
+            name: ACME_GENERAL_49
+            tags: 
+              - common
+          - id: 204
+            enabled: true
+            ip_virtual_router_addresses:
+              - 10.0.0.89
+            nodes:
+              - node: dc02-srv01a
+                ip_address: 10.0.0.90/29
+              - node: dc02-srv01b
+                ip_address: 10.0.0.91/29
+            name: ACME_GENERAL_FW_VLANS
+            tags:
+              - firewall
+          - id: 206
+            enabled: true
+            ip_virtual_router_addresses:
+              - 10.0.0.97
+            nodes:
+              - node: dc02-srv01a
+                ip_address: 10.0.0.98/29
+              - node: dc02-srv01b
+                ip_address: 10.0.0.99/29
+            name: ACME_GENERAL_FUSION
+            tags:
+              - firewall
+          - id: 208
+            enabled: true
+            name: ACME_GENERAL_FW_VLANS_EXTENDED
+            ip_virtual_router_addresses:
+              - 10.0.0.129
+            nodes:
+              - node: dc02-srv01a
+                ip_address: 10.0.0.132/28
+              - node: dc02-srv01b
+                ip_address: 10.0.0.133/28
+            tags:
+              - firewall
+          - id: 210
+            enabled: true
+            name: ACME_GENERAL_FUSION_EXTENDED
+            ip_virtual_router_addresses:
+              - 10.0.0.145
+            nodes:
+              - node: dc02-srv01a
+                ip_address: 10.0.0.148/28
+              - node: dc02-srv01b
+                ip_address: 10.0.0.149/28
+            tags:
+              - firewall
+        static_routes:
+          - destination_address_prefix: 10.5.52.0/24
+            gateway: 10.0.0.102
+            interface: Vlan206
+            name: AGG_ACME_DT_52
+            nodes:
+              - dc02-srv01a
+              - dc02-srv01b
+          - destination_address_prefix: 10.5.53.0/24
+            gateway: 10.0.0.102
+            interface: Vlan206
+            name: AGG_ACME_DT_53
+            nodes:
+              - dc02-srv01a
+              - dc02-srv01b
+          - destination_address_prefix: 10.5.54.0/24
+            gateway: 10.0.0.102
+            interface: Vlan206
+            name: AGG_ACME_DT_54
+            nodes:
+              - dc02-srv01a
+              - dc02-srv01b
+          - destination_address_prefix: 10.5.55.0/24
+            gateway: 10.0.0.158
+            interface: Vlan210
+            name: AGG_ACME_DT_55_EXT
+            nodes:
+              - dc02-srv01a
+              - dc02-srv01b
+          - destination_address_prefix: 10.4.43.0/24
+            gateway: 10.0.0.94
+            interface: Vlan204
+            name: FW_ACME_GENERAL_43
+            nodes:
+              - dc02-srv01a
+              - dc02-srv01b
+          - destination_address_prefix: 10.4.45.0/24
+            gateway: 10.0.0.142
+            interface: Vlan208
+            name: FW_ACME_GENERAL_45_EXTENDED
+            nodes:
+              - dc02-srv01a
+              - dc02-srv01b
+      - name: ACME-DT
+        vrf_vni: 4405
+        mlag_ibgp_peering_vlan: 4005
+        svis:
+          - id: 52
+            enabled: true
+            ip_address_virtual: 10.5.52.1/24
+            name: ACME_DT_V50
+            tags:
+              - common
+          - id: 54
+            enabled: true
+            ip_address_virtual: 10.5.54.1/24
+            name: ACME_DT_V54
+            tags:
+              - common
+          - id: 205
+            enabled: true
+            ip_virtual_router_addresses:
+              - 10.0.0.105
+            nodes:
+              - node: dc02-srv01a
+                ip_address: 10.0.0.106/29
+              - node: dc02-srv01b
+                ip_address: 10.0.0.107/29
+            name: ACME_DT_FW_VLANS
+            tags:
+              - firewall
+          - id: 207
+            enabled: true
+            ip_virtual_router_addresses:
+              - 10.0.0.113
+            nodes:
+              - node: dc02-srv01a
+                ip_address: 10.0.0.114/29
+              - node: dc02-srv01b
+                ip_address: 10.0.0.115/29
+            name: ACME_DT_FUSION
+            tags:
+              - firewall
+          - id: 209
+            enabled: true
+            name: ACME_DT_FW_VLANS_EXT
+            ip_virtual_router_addresses:
+              - 10.0.0.161
+            nodes:
+              - node: dc02-srv01a
+                ip_address: 10.0.0.164/28
+              - node: dc02-srv01b
+                ip_address: 10.0.0.165/28
+            tags:
+              - firewall
+          - id: 211
+            enabled: true
+            ip_virtual_router_addresses:
+              - 10.0.0.177
+            nodes:
+              - node: dc02-srv01a
+                ip_address: 10.0.0.180/28
+              - node: dc02-srv01b
+                ip_address: 10.0.0.181/28
+            name: ACME_DT_FUSION_EXT
+            tags:
+              - firewall
+        static_routes:
+          - destination_address_prefix: 10.4.42.0/24
+            gateway: 10.0.0.118
+            interface: Vlan207
+            name: AGG_ACME_DT_42
+            nodes:
+              - dc02-srv01a
+              - dc02-srv01b
+          - destination_address_prefix: 10.4.43.0/24
+            gateway: 10.0.0.118
+            interface: Vlan207
+            name: AGG_ACME_DT_43
+            nodes:
+              - dc02-srv01a
+              - dc02-srv01b
+          - destination_address_prefix: 10.4.44.0/24
+            gateway: 10.0.0.118
+            interface: Vlan207
+            name: AGG_ACME_DT_44
+            nodes:
+              - dc02-srv01a
+              - dc02-srv01b
+          - destination_address_prefix: 10.4.45.0/24
+            gateway: 10.0.0.190
+            interface: Vlan211
+            name: AGG_ACME_DT_45
+            nodes:
+              - dc02-srv01a
+              - dc02-srv01b
+          - destination_address_prefix: 10.5.53.0/24
+            gateway: 10.0.0.110
+            interface: Vlan205
+            name: FW_ACME_DT_51
+            nodes:
+              - dc02-srv01a
+              - dc02-srv01b
+          - destination_address_prefix: 10.5.55.0/24
+            gateway: 10.0.0.174
+            interface: Vlan209
+            name: FW_ACME_DT_55_EXT
+            nodes:
+              - dc02-srv01a
+              - dc02-srv01b

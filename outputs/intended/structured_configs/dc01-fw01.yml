@@ -1,0 +1,146 @@
+hostname: dc01-fw01
+is_deployed: true
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+spanning_tree:
+  mode: mstp
+  mst_instances:
+  - id: '0'
+    priority: 32768
+local_users:
+- name: arista
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0
+- name: cvpadmin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/
+clock:
+  timezone: CET
+vrfs:
+- name: default
+  ip_routing: false
+- name: ACME-DT
+  tenant: acme
+  ip_routing: true
+- name: ACME-FUSION
+  tenant: acme
+  ip_routing: true
+- name: ACME-GENERAL
+  tenant: acme
+  ip_routing: true
+management_interfaces:
+- name: Management1
+  description: oob_management
+  shutdown: false
+  vrf: default
+  ip_address: 192.168.0.133/24
+  gateway: null
+  type: oob
+management_api_http:
+  enable_vrfs:
+  - name: default
+  enable_https: true
+loopback_interfaces:
+- name: Loopback0
+  description: Router_ID
+  shutdown: false
+  ip_address: 10.0.0.25/32
+vlans:
+- id: 51
+  name: ACME_DT_51
+  tenant: acme
+- id: 201
+  name: TRANSIT_TO_ACME_DT
+  tenant: acme
+- id: 202
+  name: FUSION_ACME_GENERAL_TO_ACME_DT
+  tenant: acme
+- id: 203
+  name: FUSION_ACME_DT_TO_ACME_GENERAL
+  tenant: acme
+- id: 41
+  name: ACME_GENERAL_41
+  tenant: acme
+- id: 200
+  name: TRANSIT_TO_ACME_GENERAL
+  tenant: acme
+ip_igmp_snooping:
+  globally_enabled: true
+vlan_interfaces:
+- name: Vlan51
+  tenant: acme
+  description: ACME_DT_51
+  shutdown: false
+  ip_address: 10.5.51.1/24
+  vrf: ACME-DT
+- name: Vlan201
+  tenant: acme
+  description: TRANSIT_TO_ACME_DT
+  shutdown: false
+  ip_address: 10.0.0.78/29
+  vrf: ACME-DT
+- name: Vlan202
+  tenant: acme
+  description: FUSION_ACME_GENERAL_TO_ACME_DT
+  shutdown: false
+  ip_address: 10.0.0.70/29
+  vrf: ACME-FUSION
+- name: Vlan203
+  tenant: acme
+  description: FUSION_ACME_DT_TO_ACME_GENERAL
+  shutdown: false
+  ip_address: 10.0.0.86/29
+  vrf: ACME-FUSION
+- name: Vlan41
+  tenant: acme
+  description: ACME_GENERAL_41
+  shutdown: false
+  ip_address: 10.4.41.1/24
+  vrf: ACME-GENERAL
+- name: Vlan200
+  tenant: acme
+  description: TRANSIT_TO_ACME_GENERAL
+  shutdown: false
+  ip_address: 10.0.0.62/29
+  vrf: ACME-GENERAL
+static_routes:
+- destination_address_prefix: 0.0.0.0/0
+  gateway: 10.0.0.73
+  name: ACME-DT-PROTECTED-VLANS
+  vrf: ACME-DT
+- destination_address_prefix: 10.4.0.0/16
+  gateway: 10.0.0.65
+  name: ACME-FUSION-GENERAL-TO-DT
+  vrf: ACME-FUSION
+- destination_address_prefix: 10.5.0.0/16
+  gateway: 10.0.0.81
+  name: ACME-FUSION-GENERAL-TO-DT
+  vrf: ACME-FUSION
+- destination_address_prefix: 0.0.0.0/0
+  gateway: 10.0.0.57
+  name: ACME-GENERAL-PROTECTED-VLANS
+  vrf: ACME-GENERAL
+metadata:
+  platform: vEOS-LAB
+lldp:
+  management_address: all
+  vrf: default
+  run: true
+arp:
+  aging:
+    timeout_default: 275
+aaa_authorization:
+  exec:
+    default: local
+banners:
+  motd: "#########################################################################################\n#                                                                                      \n#
+    \      Warning Notice                                                                 \n#\n#       This system is restricted solely
+    to authorized users for legitimate business\n#       purposes only. The actual or attempted unauthorized access, use, or modification\n#
+    \      of this system is strictly prohibited.\n#\n#########################################################################################\nEOF\n"

@@ -1,0 +1,23 @@
+---
+- name: Build ACT Topology
+  hosts: acme_fabric
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Generate ACT Topology File
+      import_role:
+        name: act-topgen
+      vars:
+          structured_folder: "../outputs/intended/structured_configs/"
+          act_connected_nodes_map:
+            server: 'veos'
+            firewall: 'veos'
+            l3_interface: 'veos'
+          act_add_cvp: true
+          act_add_ansible_node: false
+          act_add_connected_nodes: true
+          act_eos_version: "4.30.6M"
+          act_cvp_version: "2023.2.0"
+          output_folder: "../topology/"
+          output_filename: "evpn_vxlan_topology.yml"

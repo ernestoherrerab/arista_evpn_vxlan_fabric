@@ -1,0 +1,392 @@
+hostname: dc01-le03a
+is_deployed: true
+router_bgp:
+  as: '65523'
+  router_id: 10.0.2.11
+  distance:
+    external_routes: 20
+    internal_routes: 200
+    local_routes: 200
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    password: OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=
+    bfd: false
+    maximum_routes: 12000
+    send_community: all
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: false
+    password: hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 4
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  neighbors:
+  - ip_address: 10.0.9.48
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65520'
+    peer: dc01-sp01
+    description: dc01-sp01_Ethernet5
+  - ip_address: 10.0.9.50
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65520'
+    peer: dc01-sp02
+    description: dc01-sp02_Ethernet5
+  - ip_address: 10.0.2.1
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: dc01-sp01
+    description: dc01-sp01
+    remote_as: '65520'
+    route_map_out: RM-EVPN-FILTER-AS65520
+  - ip_address: 10.0.2.2
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: dc01-sp02
+    description: dc01-sp02
+    remote_as: '65520'
+    route_map_out: RM-EVPN-FILTER-AS65520
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_rtc:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  vrfs:
+  - name: ACME-DT
+    router_id: 10.0.2.11
+    rd: 10.0.3.11:4405
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 4405:4405
+      export:
+      - address_family: evpn
+        route_targets:
+        - 4405:4405
+    redistribute_routes:
+    - source_protocol: connected
+  - name: ACME-GENERAL
+    router_id: 10.0.2.11
+    rd: 10.0.3.11:4401
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 4401:4401
+      export:
+      - address_family: evpn
+        route_targets:
+        - 4401:4401
+    redistribute_routes:
+    - source_protocol: connected
+  vlans:
+  - id: 50
+    tenant: acme
+    rd: 65000:10050
+    route_targets:
+      both:
+      - 10050:10050
+    redistribute_routes:
+    - learned
+  - id: 54
+    tenant: acme
+    rd: 65000:10054
+    route_targets:
+      both:
+      - 10054:10054
+    redistribute_routes:
+    - learned
+  - id: 40
+    tenant: acme
+    rd: 65000:10040
+    route_targets:
+      both:
+      - 10040:10040
+    redistribute_routes:
+    - learned
+  - id: 44
+    tenant: acme
+    rd: 65000:10044
+    route_targets:
+      both:
+      - 10044:10044
+    redistribute_routes:
+    - learned
+  - id: 41
+    tenant: acme
+    rd: 65000:10041
+    route_targets:
+      both:
+      - 10041:10041
+    redistribute_routes:
+    - learned
+  - id: 45
+    tenant: acme
+    rd: 65000:10045
+    route_targets:
+      both:
+      - 10045:10045
+    redistribute_routes:
+    - learned
+  - id: 51
+    tenant: acme
+    rd: 65000:10051
+    route_targets:
+      both:
+      - 10051:10051
+    redistribute_routes:
+    - learned
+  - id: 55
+    tenant: acme
+    rd: 65000:10055
+    route_targets:
+      both:
+      - 10055:10055
+    redistribute_routes:
+    - learned
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+spanning_tree:
+  mode: mstp
+  mst_instances:
+  - id: '0'
+    priority: 4096
+local_users:
+- name: arista
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0
+- name: cvpadmin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/
+clock:
+  timezone: CET
+vrfs:
+- name: default
+  ip_routing: false
+- name: ACME-DT
+  tenant: acme
+  ip_routing: true
+- name: ACME-GENERAL
+  tenant: acme
+  ip_routing: true
+management_interfaces:
+- name: Management1
+  description: oob_management
+  shutdown: false
+  vrf: default
+  ip_address: 192.168.0.179/24
+  gateway: null
+  type: oob
+management_api_http:
+  enable_vrfs:
+  - name: default
+  enable_https: true
+ethernet_interfaces:
+- name: Ethernet1
+  peer: dc01-sp01
+  peer_interface: Ethernet5
+  peer_type: spine
+  description: P2P_LINK_TO_DC01-SP01_Ethernet5
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.0.9.49/31
+- name: Ethernet2
+  peer: dc01-sp02
+  peer_interface: Ethernet5
+  peer_type: spine
+  description: P2P_LINK_TO_DC01-SP02_Ethernet5
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.0.9.51/31
+- name: Ethernet3
+  peer: server11
+  peer_interface: Ethernet1
+  peer_type: server
+  port_profile: server_v40
+  description: server11_Ethernet1
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 3
+    mode: active
+loopback_interfaces:
+- name: Loopback0
+  description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 10.0.2.11/32
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
+  shutdown: false
+  ip_address: 10.0.3.11/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.0.2.0/24 eq 32
+  - sequence: 20
+    action: permit 10.0.3.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-EVPN-FILTER-AS65520
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - as 65520
+  - sequence: 20
+    type: permit
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
+vlans:
+- id: 50
+  name: ACME_DT_V50
+  tenant: acme
+- id: 54
+  name: ACME_DT_V54
+  tenant: acme
+- id: 40
+  name: ACME_GENERAL_40
+  tenant: acme
+- id: 44
+  name: ACME_GENERAL_44
+  tenant: acme
+- id: 41
+  name: ACME_GENERAL_FW_41
+  tenant: acme
+- id: 45
+  name: ACME_GENERAL_FW_45
+  tenant: acme
+- id: 51
+  name: ACME_DT_FW_51
+  tenant: acme
+- id: 55
+  name: ACME_DT_FW_55
+  tenant: acme
+ip_igmp_snooping:
+  globally_enabled: true
+ip_virtual_router_mac_address: 00:1c:73:00:00:99
+vlan_interfaces:
+- name: Vlan50
+  tenant: acme
+  tags:
+  - common
+  description: ACME_DT_V50
+  shutdown: false
+  ip_address_virtual: 10.5.50.1/24
+  vrf: ACME-DT
+- name: Vlan54
+  tenant: acme
+  tags:
+  - common
+  description: ACME_DT_V54
+  shutdown: false
+  ip_address_virtual: 10.5.54.1/24
+  vrf: ACME-DT
+- name: Vlan40
+  tenant: acme
+  tags:
+  - common
+  description: ACME_GENERAL_40
+  shutdown: false
+  ip_address_virtual: 10.4.40.1/24
+  vrf: ACME-GENERAL
+- name: Vlan44
+  tenant: acme
+  tags:
+  - common
+  description: ACME_GENERAL_44
+  shutdown: false
+  ip_address_virtual: 10.4.44.1/24
+  vrf: ACME-GENERAL
+vxlan_interface:
+  Vxlan1:
+    description: dc01-le03a_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Loopback1
+      vlans:
+      - id: 50
+        vni: 10050
+      - id: 54
+        vni: 10054
+      - id: 40
+        vni: 10040
+      - id: 44
+        vni: 10044
+      - id: 41
+        vni: 10041
+      - id: 45
+        vni: 10045
+      - id: 51
+        vni: 10051
+      - id: 55
+        vni: 10055
+      vrfs:
+      - name: ACME-DT
+        vni: 4405
+      - name: ACME-GENERAL
+        vni: 4401
+port_channel_interfaces:
+- name: Port-Channel3
+  description: server11_LINK_TO_SRV18
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '40'
+  spanning_tree_portfast: edge
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0101
+    route_target: 03:03:02:02:01:01
+  lacp_id: 0303.0202.0101
+metadata:
+  platform: vEOS-LAB
+lldp:
+  management_address: all
+  vrf: default
+  run: true
+arp:
+  aging:
+    timeout_default: 275
+aaa_authorization:
+  exec:
+    default: local
+banners:
+  motd: "#########################################################################################\n#                                                                                      \n#
+    \      Warning Notice                                                                 \n#\n#       This system is restricted solely
+    to authorized users for legitimate business\n#       purposes only. The actual or attempted unauthorized access, use, or modification\n#
+    \      of this system is strictly prohibited.\n#\n#########################################################################################\nEOF\n"

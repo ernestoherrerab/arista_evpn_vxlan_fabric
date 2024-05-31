@@ -1,0 +1,172 @@
+port_profiles:
+  - profile: server_v42
+    mode: access
+    vlans: '42'
+    spanning_tree_portfast: edge 
+  - profile: server_v43
+    mode: access
+    vlans: '43'
+    spanning_tree_portfast: edge 
+  - profile: server_v44
+    mode: access
+    vlans: '44'
+    spanning_tree_portfast: edge 
+  - profile: server_v45
+    mode: access
+    vlans: '45'
+    spanning_tree_portfast: edge 
+  - profile: server_v49
+    mode: access
+    vlans: '49'
+    spanning_tree_portfast: edge 
+  - profile: server_v52
+    mode: access
+    vlans: '52'
+    spanning_tree_portfast: edge 
+  - profile: server_v53
+    mode: access
+    vlans: '53'
+    spanning_tree_portfast: edge 
+  - profile: server_v54
+    mode: access
+    vlans: '54'
+    spanning_tree_portfast: edge 
+  - profile: server_v55
+    mode: access
+    vlans: '55'
+    spanning_tree_portfast: edge 
+  - profile: dc02_fw_01
+    mode: trunk
+    vlans: 43,53,204-207
+  - profile: dc02_fw_02
+    mode: trunk
+    vlans: 45,55,208-211    
+
+servers:
+  - name: server17
+    adapters:
+      - endpoint_ports: [ Ethernet1, Ethernet2 ]
+        switch_ports: [ Ethernet3, Ethernet3 ]
+        switches: [ dc02-le01a, dc02-le01b ]
+        profile: server_v45
+        port_channel:
+          description: LINK_TO_SRV17
+          mode: active
+  - name: server18
+    adapters:
+      - endpoint_ports: [ Ethernet1, Ethernet2 ]
+        switch_ports: [ Ethernet4, Ethernet4 ]
+        switches: [ dc02-le01a, dc02-le01b ]
+        profile: server_v43
+        port_channel:
+          description: LINK_TO_SRV18
+          mode: active
+  - name: server19
+    adapters:
+      - endpoint_ports: [ Ethernet1, Ethernet2 ]
+        switch_ports: [ Ethernet3, Ethernet3 ]
+        switches: [ dc02-le02a, dc02-le02b ]
+        profile: server_v42
+        port_channel:
+          description: LINK_TO_SRV19
+          mode: active
+  - name: server20
+    adapters:
+      - endpoint_ports: [ Ethernet1, Ethernet2 ]
+        switch_ports: [ Ethernet4, Ethernet4 ]
+        switches: [ dc02-le02a, dc02-le02b ]
+        profile: server_v49
+        port_channel:
+          description: LINK_TO_SRV20
+          mode: active
+  - name: server22
+    adapters:
+      - endpoint_ports: [ Ethernet1, Ethernet2 ]
+        switch_ports: [ Ethernet5, Ethernet5 ]
+        switches: [ dc02-le01a, dc02-le01b ]
+        profile: server_v44
+        port_channel:
+          description: LINK_TO_SRV22
+          mode: active
+  - name: server23
+    adapters:
+      - endpoint_ports: [ Ethernet1, Ethernet2 ]
+        switch_ports: [ Ethernet6, Ethernet6 ]
+        switches: [ dc02-le01a, dc02-le01b ]
+        profile: server_v52
+        port_channel:
+          description: LINK_TO_SRV23
+          mode: active
+  - name: server24
+    adapters:
+      - endpoint_ports: [ Ethernet1, Ethernet2 ]
+        switch_ports: [ Ethernet5, Ethernet5 ]
+        switches: [ dc02-le02a, dc02-le02b ]
+        profile: server_v44
+        port_channel:
+          description: LINK_TO_SRV24
+          mode: active
+  - name: server25
+    adapters:
+      - endpoint_ports: [ Ethernet1, Ethernet2 ]
+        switch_ports: [ Ethernet6, Ethernet6 ]
+        switches: [ dc02-le02a, dc02-le02b ]
+        profile: server_v52
+        port_channel:
+          description: LINK_TO_SRV25
+          mode: active
+  - name: server27
+    adapters:
+      - endpoint_ports: [ Ethernet1, Ethernet2 ]
+        switch_ports: [ Ethernet7, Ethernet7 ]
+        switches: [ dc02-le01a, dc02-le01b ]
+        profile: server_v53
+        port_channel:
+          description: LINK_TO_SRV27
+          mode: active
+  - name: server28
+    adapters:
+      - endpoint_ports: [ Ethernet1, Ethernet2 ]
+        switch_ports: [ Ethernet8, Ethernet8 ]
+        switches: [ dc02-le01a, dc02-le01b ]
+        profile: server_v55
+        port_channel:
+          description: LINK_TO_SRV28
+          mode: active
+  - name: server29
+    adapters:
+      - endpoint_ports: [ Ethernet1, Ethernet2 ]
+        switch_ports: [ Ethernet7, Ethernet7 ]
+        switches: [ dc02-le02a, dc02-le02b ]
+        profile: server_v53
+        port_channel:
+          description: LINK_TO_SRV29
+          mode: active
+  - name: server30
+    adapters:
+      - endpoint_ports: [ Ethernet1, Ethernet2 ]
+        switch_ports: [ Ethernet8, Ethernet8 ]
+        switches: [ dc02-le02a, dc02-le02b ]
+        profile: server_v54
+        port_channel:
+          description: LINK_TO_SRV30
+          mode: active
+firewalls:
+  - name: dc02_fw01
+    adapters:
+      - endpoint_ports: [ Ethernet1, Ethernet2 ]
+        switch_ports: [ Ethernet27, Ethernet27 ]
+        switches: [ dc02-srv01a, dc02-srv01b ]
+        profile: dc02_fw_01
+        port_channel:
+          description: LINK_TO_DC02-FW01
+          mode: active
+  - name: dc02_fw02
+    adapters:
+      - endpoint_ports: [ Ethernet1, Ethernet2 ]
+        switch_ports: [ Ethernet28, Ethernet28 ]
+        switches: [ dc02-srv01a, dc02-srv01b ]
+        profile: dc02_fw_02
+        port_channel:
+          description: LINK_TO_DC02-FW02
+          mode: active

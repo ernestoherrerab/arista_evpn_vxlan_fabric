@@ -1,0 +1,608 @@
+hostname: dc02-le02b
+is_deployed: true
+router_bgp:
+  as: '65562'
+  router_id: 10.0.4.10
+  distance:
+    external_routes: 20
+    internal_routes: 200
+    local_routes: 200
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  peer_groups:
+  - name: MLAG-IPv4-UNDERLAY-PEER
+    type: ipv4
+    remote_as: '65562'
+    next_hop_self: true
+    description: dc02-le02a
+    password: fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z
+    bfd: false
+    maximum_routes: 12000
+    send_community: all
+    route_map_in: RM-MLAG-PEER-IN
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    password: OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=
+    bfd: false
+    maximum_routes: 12000
+    send_community: all
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: false
+    password: hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 4
+  address_family_ipv4:
+    peer_groups:
+    - name: MLAG-IPv4-UNDERLAY-PEER
+      activate: true
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  neighbors:
+  - ip_address: 10.0.12.8
+    peer_group: MLAG-IPv4-UNDERLAY-PEER
+    peer: dc02-le02a
+    description: dc02-le02a
+  - ip_address: 10.0.10.40
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65560'
+    peer: dc02-sp01
+    description: dc02-sp01_Ethernet4
+  - ip_address: 10.0.10.42
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65560'
+    peer: dc02-sp02
+    description: dc02-sp02_Ethernet4
+  - ip_address: 10.0.4.1
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: dc02-sp01
+    description: dc02-sp01
+    remote_as: '65560'
+  - ip_address: 10.0.4.2
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: dc02-sp02
+    description: dc02-sp02
+    remote_as: '65560'
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_rtc:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  vrfs:
+  - name: ACME-DT
+    router_id: 10.0.4.10
+    rd: 10.0.5.9:4405
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 4405:4405
+      export:
+      - address_family: evpn
+        route_targets:
+        - 4405:4405
+    redistribute_routes:
+    - source_protocol: connected
+    neighbors:
+    - ip_address: 10.0.12.8
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - name: ACME-GENERAL
+    router_id: 10.0.4.10
+    rd: 10.0.5.9:4401
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 4401:4401
+      export:
+      - address_family: evpn
+        route_targets:
+        - 4401:4401
+    redistribute_routes:
+    - source_protocol: connected
+    neighbors:
+    - ip_address: 10.0.12.8
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+  vlans:
+  - id: 52
+    tenant: acme
+    rd: 65000:10052
+    route_targets:
+      both:
+      - 10052:10052
+    redistribute_routes:
+    - learned
+  - id: 54
+    tenant: acme
+    rd: 65000:10054
+    route_targets:
+      both:
+      - 10054:10054
+    redistribute_routes:
+    - learned
+  - id: 42
+    tenant: acme
+    rd: 65000:10042
+    route_targets:
+      both:
+      - 10042:10042
+    redistribute_routes:
+    - learned
+  - id: 44
+    tenant: acme
+    rd: 65000:10044
+    route_targets:
+      both:
+      - 10044:10044
+    redistribute_routes:
+    - learned
+  - id: 49
+    tenant: acme
+    rd: 65000:10049
+    route_targets:
+      both:
+      - 10049:10049
+    redistribute_routes:
+    - learned
+  - id: 43
+    tenant: acme
+    rd: 65000:10043
+    route_targets:
+      both:
+      - 10043:10043
+    redistribute_routes:
+    - learned
+  - id: 45
+    tenant: acme
+    rd: 65000:10045
+    route_targets:
+      both:
+      - 10045:10045
+    redistribute_routes:
+    - learned
+  - id: 53
+    tenant: acme
+    rd: 65000:10053
+    route_targets:
+      both:
+      - 10053:10053
+    redistribute_routes:
+    - learned
+  - id: 55
+    tenant: acme
+    rd: 65000:10055
+    route_targets:
+      both:
+      - 10055:10055
+    redistribute_routes:
+    - learned
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+spanning_tree:
+  mode: mstp
+  mst_instances:
+  - id: '0'
+    priority: 4096
+  no_spanning_tree_vlan: 4093-4094
+local_users:
+- name: arista
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0
+- name: cvpadmin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/
+clock:
+  timezone: CET
+vrfs:
+- name: default
+  ip_routing: false
+- name: ACME-DT
+  tenant: acme
+  ip_routing: true
+- name: ACME-GENERAL
+  tenant: acme
+  ip_routing: true
+management_interfaces:
+- name: Management1
+  description: oob_management
+  shutdown: false
+  vrf: default
+  ip_address: 192.168.0.188/24
+  gateway: null
+  type: oob
+management_api_http:
+  enable_vrfs:
+  - name: default
+  enable_https: true
+vlans:
+- id: 4093
+  tenant: system
+  name: LEAF_PEER_L3
+  trunk_groups:
+  - LEAF_PEER_L3
+- id: 4094
+  tenant: system
+  name: MLAG_PEER
+  trunk_groups:
+  - MLAG
+- id: 52
+  name: ACME_DT_V50
+  tenant: acme
+- id: 54
+  name: ACME_DT_V54
+  tenant: acme
+- id: 4005
+  name: MLAG_iBGP_ACME-DT
+  trunk_groups:
+  - LEAF_PEER_L3
+  tenant: acme
+- id: 42
+  name: ACME_GENERAL_42
+  tenant: acme
+- id: 44
+  name: ACME_GENERAL_EXT_44
+  tenant: acme
+- id: 49
+  name: ACME_GENERAL_49
+  tenant: acme
+- id: 4001
+  name: MLAG_iBGP_ACME-GENERAL
+  trunk_groups:
+  - LEAF_PEER_L3
+  tenant: acme
+- id: 43
+  name: ACME_GENERAL_FW_43
+  tenant: acme
+- id: 45
+  name: ACME_GENERAL_FW_45
+  tenant: acme
+- id: 53
+  name: ACME_DT_FW_53
+  tenant: acme
+- id: 55
+  name: ACME_DT_FW_55
+  tenant: acme
+vlan_interfaces:
+- name: Vlan4093
+  description: MLAG_PEER_L3_PEERING
+  shutdown: false
+  mtu: 1500
+  ip_address: 10.0.12.9/31
+- name: Vlan4094
+  description: MLAG_PEER
+  shutdown: false
+  ip_address: 10.0.11.9/31
+  no_autostate: true
+  mtu: 1500
+- name: Vlan52
+  tenant: acme
+  tags:
+  - common
+  description: ACME_DT_V50
+  shutdown: false
+  ip_address_virtual: 10.5.52.1/24
+  vrf: ACME-DT
+- name: Vlan54
+  tenant: acme
+  tags:
+  - common
+  description: ACME_DT_V54
+  shutdown: false
+  ip_address_virtual: 10.5.54.1/24
+  vrf: ACME-DT
+- name: Vlan4005
+  tenant: acme
+  type: underlay_peering
+  shutdown: false
+  description: 'MLAG_PEER_L3_iBGP: vrf ACME-DT'
+  vrf: ACME-DT
+  mtu: 1500
+  ip_address: 10.0.12.9/31
+- name: Vlan42
+  tenant: acme
+  tags:
+  - common
+  description: ACME_GENERAL_42
+  shutdown: false
+  ip_address_virtual: 10.4.42.1/24
+  vrf: ACME-GENERAL
+- name: Vlan44
+  tenant: acme
+  tags:
+  - common
+  description: ACME_GENERAL_EXT_44
+  shutdown: false
+  ip_address_virtual: 10.4.44.1/24
+  vrf: ACME-GENERAL
+- name: Vlan49
+  tenant: acme
+  tags:
+  - common
+  description: ACME_GENERAL_49
+  shutdown: false
+  ip_address_virtual: 10.4.49.1/24
+  vrf: ACME-GENERAL
+- name: Vlan4001
+  tenant: acme
+  type: underlay_peering
+  shutdown: false
+  description: 'MLAG_PEER_L3_iBGP: vrf ACME-GENERAL'
+  vrf: ACME-GENERAL
+  mtu: 1500
+  ip_address: 10.0.12.9/31
+port_channel_interfaces:
+- name: Port-Channel31
+  description: MLAG_PEER_dc02-le02a_Po31
+  type: switched
+  shutdown: false
+  mode: trunk
+  trunk_groups:
+  - LEAF_PEER_L3
+  - MLAG
+- name: Port-Channel3
+  description: server19_LINK_TO_SRV19
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '42'
+  spanning_tree_portfast: edge
+  mlag: 3
+- name: Port-Channel4
+  description: server20_LINK_TO_SRV20
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '49'
+  spanning_tree_portfast: edge
+  mlag: 4
+- name: Port-Channel5
+  description: server24_LINK_TO_SRV24
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '44'
+  spanning_tree_portfast: edge
+  mlag: 5
+- name: Port-Channel6
+  description: server25_LINK_TO_SRV25
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '52'
+  spanning_tree_portfast: edge
+  mlag: 6
+- name: Port-Channel7
+  description: server29_LINK_TO_SRV29
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '53'
+  spanning_tree_portfast: edge
+  mlag: 7
+- name: Port-Channel8
+  description: server30_LINK_TO_SRV30
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '54'
+  spanning_tree_portfast: edge
+  mlag: 8
+ethernet_interfaces:
+- name: Ethernet31
+  peer: dc02-le02a
+  peer_interface: Ethernet31
+  peer_type: mlag_peer
+  description: MLAG_PEER_dc02-le02a_Ethernet31
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 31
+    mode: active
+- name: Ethernet32
+  peer: dc02-le02a
+  peer_interface: Ethernet32
+  peer_type: mlag_peer
+  description: MLAG_PEER_dc02-le02a_Ethernet32
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 31
+    mode: active
+- name: Ethernet1
+  peer: dc02-sp01
+  peer_interface: Ethernet4
+  peer_type: spine
+  description: P2P_LINK_TO_DC02-SP01_Ethernet4
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.0.10.41/31
+- name: Ethernet2
+  peer: dc02-sp02
+  peer_interface: Ethernet4
+  peer_type: spine
+  description: P2P_LINK_TO_DC02-SP02_Ethernet4
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.0.10.43/31
+- name: Ethernet3
+  peer: server19
+  peer_interface: Ethernet2
+  peer_type: server
+  port_profile: server_v42
+  description: server19_Ethernet2
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 3
+    mode: active
+- name: Ethernet4
+  peer: server20
+  peer_interface: Ethernet2
+  peer_type: server
+  port_profile: server_v49
+  description: server20_Ethernet2
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 4
+    mode: active
+- name: Ethernet5
+  peer: server24
+  peer_interface: Ethernet2
+  peer_type: server
+  port_profile: server_v44
+  description: server24_Ethernet2
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 5
+    mode: active
+- name: Ethernet6
+  peer: server25
+  peer_interface: Ethernet2
+  peer_type: server
+  port_profile: server_v52
+  description: server25_Ethernet2
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 6
+    mode: active
+- name: Ethernet7
+  peer: server29
+  peer_interface: Ethernet2
+  peer_type: server
+  port_profile: server_v53
+  description: server29_Ethernet2
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 7
+    mode: active
+- name: Ethernet8
+  peer: server30
+  peer_interface: Ethernet2
+  peer_type: server
+  port_profile: server_v54
+  description: server30_Ethernet2
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 8
+    mode: active
+mlag_configuration:
+  domain_id: dc02-le02
+  local_interface: Vlan4094
+  peer_address: 10.0.11.8
+  peer_link: Port-Channel31
+  reload_delay_mlag: '300'
+  reload_delay_non_mlag: '330'
+route_maps:
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - origin incomplete
+    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+loopback_interfaces:
+- name: Loopback0
+  description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 10.0.4.10/32
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
+  shutdown: false
+  ip_address: 10.0.5.9/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.0.4.0/24 eq 32
+  - sequence: 20
+    action: permit 10.0.5.0/24 eq 32
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
+ip_igmp_snooping:
+  globally_enabled: true
+ip_virtual_router_mac_address: 00:1c:73:00:00:99
+vxlan_interface:
+  Vxlan1:
+    description: dc02-le02b_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Loopback1
+      virtual_router_encapsulation_mac_address: mlag-system-id
+      vlans:
+      - id: 52
+        vni: 10052
+      - id: 54
+        vni: 10054
+      - id: 42
+        vni: 10042
+      - id: 44
+        vni: 10044
+      - id: 49
+        vni: 10049
+      - id: 43
+        vni: 10043
+      - id: 45
+        vni: 10045
+      - id: 53
+        vni: 10053
+      - id: 55
+        vni: 10055
+      vrfs:
+      - name: ACME-DT
+        vni: 4405
+      - name: ACME-GENERAL
+        vni: 4401
+metadata:
+  platform: vEOS-LAB
+lldp:
+  management_address: all
+  vrf: default
+  run: true
+arp:
+  aging:
+    timeout_default: 275
+aaa_authorization:
+  exec:
+    default: local
+banners:
+  motd: "#########################################################################################\n#                                                                                      \n#
+    \      Warning Notice                                                                 \n#\n#       This system is restricted solely
+    to authorized users for legitimate business\n#       purposes only. The actual or attempted unauthorized access, use, or modification\n#
+    \      of this system is strictly prohibited.\n#\n#########################################################################################\nEOF\n"

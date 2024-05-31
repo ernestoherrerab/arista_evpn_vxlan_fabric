@@ -1,0 +1,278 @@
+hostname: dc02-sp02
+is_deployed: true
+router_bgp:
+  as: '65560'
+  router_id: 10.0.4.2
+  distance:
+    external_routes: 20
+    internal_routes: 200
+    local_routes: 200
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    password: OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=
+    bfd: false
+    maximum_routes: 12000
+    send_community: all
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: false
+    password: hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 4
+    next_hop_unchanged: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  neighbors:
+  - ip_address: 10.0.10.19
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65561'
+    peer: dc02-le01a
+    description: dc02-le01a_Ethernet2
+  - ip_address: 10.0.10.27
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65561'
+    peer: dc02-le01b
+    description: dc02-le01b_Ethernet2
+  - ip_address: 10.0.10.35
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65562'
+    peer: dc02-le02a
+    description: dc02-le02a_Ethernet2
+  - ip_address: 10.0.10.43
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65562'
+    peer: dc02-le02b
+    description: dc02-le02b_Ethernet2
+  - ip_address: 10.0.10.51
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65597'
+    peer: dc02-srv01a
+    description: dc02-srv01a_Ethernet2
+  - ip_address: 10.0.10.59
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65597'
+    peer: dc02-srv01b
+    description: dc02-srv01b_Ethernet2
+  - ip_address: 10.0.10.67
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65599'
+    peer: dc02-gw01a
+    description: dc02-gw01a_Ethernet2
+  - ip_address: 10.0.10.75
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65599'
+    peer: dc02-gw01b
+    description: dc02-gw01b_Ethernet2
+  - ip_address: 10.0.4.13
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: dc02-gw01a
+    description: dc02-gw01a
+    remote_as: '65599'
+  - ip_address: 10.0.4.14
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: dc02-gw01b
+    description: dc02-gw01b
+    remote_as: '65599'
+  - ip_address: 10.0.4.7
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: dc02-le01a
+    description: dc02-le01a
+    remote_as: '65561'
+  - ip_address: 10.0.4.8
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: dc02-le01b
+    description: dc02-le01b
+    remote_as: '65561'
+  - ip_address: 10.0.4.9
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: dc02-le02a
+    description: dc02-le02a
+    remote_as: '65562'
+  - ip_address: 10.0.4.10
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: dc02-le02b
+    description: dc02-le02b
+    remote_as: '65562'
+  - ip_address: 10.0.4.11
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: dc02-srv01a
+    description: dc02-srv01a
+    remote_as: '65597'
+  - ip_address: 10.0.4.12
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: dc02-srv01b
+    description: dc02-srv01b
+    remote_as: '65597'
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_rtc:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+      default_route_target:
+        only: true
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+spanning_tree:
+  mode: none
+local_users:
+- name: arista
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0
+- name: cvpadmin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/
+clock:
+  timezone: CET
+vrfs:
+- name: default
+  ip_routing: false
+management_interfaces:
+- name: Management1
+  description: oob_management
+  shutdown: false
+  vrf: default
+  ip_address: 192.168.0.190/24
+  gateway: null
+  type: oob
+management_api_http:
+  enable_vrfs:
+  - name: default
+  enable_https: true
+ethernet_interfaces:
+- name: Ethernet1
+  peer: dc02-le01a
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC02-LE01A_Ethernet2
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.0.10.18/31
+- name: Ethernet2
+  peer: dc02-le01b
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC02-LE01B_Ethernet2
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.0.10.26/31
+- name: Ethernet3
+  peer: dc02-le02a
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC02-LE02A_Ethernet2
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.0.10.34/31
+- name: Ethernet4
+  peer: dc02-le02b
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC02-LE02B_Ethernet2
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.0.10.42/31
+- name: Ethernet9
+  peer: dc02-srv01a
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC02-SRV01A_Ethernet2
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.0.10.50/31
+- name: Ethernet10
+  peer: dc02-srv01b
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC02-SRV01B_Ethernet2
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.0.10.58/31
+- name: Ethernet11
+  peer: dc02-gw01a
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC02-GW01A_Ethernet2
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.0.10.66/31
+- name: Ethernet12
+  peer: dc02-gw01b
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC02-GW01B_Ethernet2
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.0.10.74/31
+loopback_interfaces:
+- name: Loopback0
+  description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 10.0.4.2/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.0.4.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
+metadata:
+  platform: vEOS-LAB
+lldp:
+  management_address: all
+  vrf: default
+  run: true
+arp:
+  aging:
+    timeout_default: 275
+aaa_authorization:
+  exec:
+    default: local
+banners:
+  motd: "#########################################################################################\n#                                                                                      \n#
+    \      Warning Notice                                                                 \n#\n#       This system is restricted solely
+    to authorized users for legitimate business\n#       purposes only. The actual or attempted unauthorized access, use, or modification\n#
+    \      of this system is strictly prohibited.\n#\n#########################################################################################\nEOF\n"

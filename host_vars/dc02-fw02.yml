@@ -1,0 +1,130 @@
+### GENERAL
+is_deployed: true
+
+### PORT-CHANNELS
+port_channel_interfaces:
+  - name: Port-channel1
+    description: LINK_TO_DC02_SRV01
+    shutdown: false
+    mode: trunk
+    vlans: 45,55,208-211
+    type: switched
+
+### ETHERNET INTERFACES
+ethernet_interfaces:
+  - name: Ethernet1
+    description: LINK_TO_DC02_SRV01A_27
+    shutdown: false
+    mode: trunk
+    vlans: 45,55,208-211
+    type: port-channel-member
+    channel_group:
+      id: 1
+      mode: active
+  - name: Ethernet2
+    description: LINK_TO_DC02_SRV01B_27
+    shutdown: false
+    mode: trunk
+    vlans: 45,55,208-211
+    type: port-channel-member
+    channel_group:
+      id: 1
+      mode: active
+
+### NETWORK SERVICES
+tenants:
+  - name: acme
+    vrfs:
+      - name: ACME-GENERAL
+        svis:
+          - id: 45
+            name: ACME_GENERAL_45
+            enabled: true
+            ip_address: 10.4.45.3/24
+            structured_config: 
+              vrrp_ids:
+                - id: 45
+                  priority_level: 120
+                  ipv4:
+                   address: 10.4.45.1
+                  preempt:
+                   enabled: true
+          - id: 208
+            name: TRANSIT_TO_ACME_GENERAL_EXT
+            enabled: true
+            ip_address: 10.0.0.141/28
+            structured_config: 
+              vrrp_ids:
+                - id: 208
+                  priority_level: 120
+                  ipv4:
+                   address: 10.0.0.142
+                  preempt:
+                   enabled: true
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.0.0.129
+            name: ACME-GENERAL-PROTECTED-VLANS-EXT
+      - name: ACME-DT
+        svis:
+          - id: 55
+            name: ACME_DT_55
+            enabled: true
+            ip_address: 10.5.55.3/24
+            structured_config: 
+              vrrp_ids:
+                - id: 55
+                  priority_level: 120
+                  ipv4:
+                   address: 10.5.55.1
+                  preempt:
+                   enabled: true
+          - id: 209
+            name: TRANSIT_TO_ACME_DT_EXT
+            enabled: true
+            ip_address: 10.0.0.173/28
+            structured_config: 
+              vrrp_ids:
+                - id: 209
+                  priority_level: 120
+                  ipv4:
+                   address: 10.0.0.174
+                  preempt:
+                   enabled: true
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.0.0.161
+            name: ACME-DT-PROTECTED-VLANS_EXTENDED
+      - name: ACME-FUSION
+        svis:
+          - id: 210
+            name: FUSION_ACME_GENERAL_TO_ACME_DT_EXT
+            enabled: true
+            ip_address: 10.0.0.157/28
+            structured_config: 
+              vrrp_ids:
+                - id: 210
+                  priority_level: 120
+                  ipv4:
+                   address: 10.0.0.158
+                  preempt:
+                   enabled: true
+          - id: 211
+            name: FUSION_ACME_DT_TO_ACME_GENERAL
+            enabled: true
+            ip_address: 10.0.0.189/28
+            structured_config: 
+              vrrp_ids:
+                - id: 211
+                  priority_level: 120
+                  ipv4:
+                   address: 10.0.0.190
+                  preempt:
+                   enabled: true
+        static_routes:
+          - destination_address_prefix: 10.4.0.0/16
+            gateway: 10.0.0.145
+            name: ACME-FUSION-GENERAL-TO-DT
+          - destination_address_prefix: 10.5.0.0/16
+            gateway: 10.0.0.177
+            name: ACME-FUSION-GENERAL-TO-DT

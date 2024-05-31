@@ -1,0 +1,125 @@
+### DC VARIABLES ###
+dc_name: dc01
+evpn_overlay_bgp_rtc: true
+evpn_prevent_readvertise_to_server: true
+
+### SPINES ###
+spine:
+  defaults:
+    platform: vEOS-LAB
+    bgp_as: 65520
+    loopback_ipv4_pool: 10.0.2.0/24
+  nodes:
+    - name: dc01-sp01
+      id: 1
+      mgmt_ip: 192.168.0.181/24
+    - name: dc01-sp02
+      id: 2
+      mgmt_ip: 192.168.0.182/24
+
+### FIREWALLS ###
+firewall:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 10.0.0.24/29
+    spanning_tree_mode: mstp
+  nodes:
+    - name: dc01-fw01
+      id: 1
+      mgmt_ip: 192.168.0.133/24    
+    - name: dc01-fw02
+      id: 2
+      mgmt_ip: 192.168.0.167/24   
+
+### LEAFS ###
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 10.0.2.0/24
+    loopback_ipv4_offset: 4
+    vtep_loopback_ipv4_pool: 10.0.3.0/24
+    uplink_interfaces: ['Ethernet1', 'Ethernet2']
+    uplink_switches: ['dc01-sp01', 'dc01-sp02']
+    max_uplink_switches: 4
+    uplink_ipv4_pool: 10.0.9.0/24
+    mlag_peer_ipv4_pool: 10.0.11.0/24
+    mlag_peer_l3_ipv4_pool: 10.0.12.0/24
+    mlag_interfaces: [Ethernet31, Ethernet32]
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 4096
+    virtual_router_mac_address: 00:1c:73:00:00:99
+  node_groups:
+    - group: dc01-le01
+      filter:
+        tags: [ common ]
+      bgp_as: 65521
+      nodes:
+        - name: dc01-le01a
+          id: 3
+          uplink_switch_interfaces: ['Ethernet1', 'Ethernet1']
+          mgmt_ip: 192.168.0.175/24
+        - name: dc01-le01b
+          id: 4
+          uplink_switch_interfaces: ['Ethernet2', 'Ethernet2']
+          mgmt_ip: 192.168.0.176/24
+    - group: dc01-le02
+      filter:
+        tags: [ common ]
+      bgp_as: 65522
+      nodes:
+        - name: dc01-le02a
+          id: 5
+          uplink_switch_interfaces: ['Ethernet3', 'Ethernet3']
+          mgmt_ip: 192.168.0.177/24
+        - name: dc01-le02b
+          id: 6
+          uplink_switch_interfaces: ['Ethernet4', 'Ethernet4']
+          mgmt_ip: 192.168.0.178/24
+    - group: dc01-srv01
+      filter:
+        tags: [ firewall ]
+      bgp_as: 65557
+      nodes:
+        - name: dc01-srv01a
+          id: 9
+          uplink_switch_interfaces: ['Ethernet9', 'Ethernet9']
+          mgmt_ip: 192.168.0.191/24
+        - name: dc01-srv01b
+          id: 10
+          uplink_switch_interfaces: ['Ethernet10', 'Ethernet10']
+          mgmt_ip: 192.168.0.192/24
+    - group: dc01-gw01
+      bgp_as: 65559
+      evpn_role: server
+      nodes:
+        - name: dc01-gw01a
+          id: 11
+          uplink_switch_interfaces: ['Ethernet11', 'Ethernet11']
+          evpn_route_servers:
+            - dc01-sp01
+            - dc01-sp02
+            - dc02-gw01a
+          mgmt_ip: 192.168.0.197/24
+        - name: dc01-gw01b
+          id: 12
+          uplink_switch_interfaces: ['Ethernet12', 'Ethernet12']
+          evpn_route_servers:
+            - dc01-sp01
+            - dc01-sp02
+            - dc02-gw01b
+          mgmt_ip: 192.168.0.198/24
+  nodes:
+    - name: dc01-le03a
+      filter:
+        tags: [ common ]
+      id: 7
+      bgp_as: 65523
+      uplink_switch_interfaces: ['Ethernet5', 'Ethernet5']
+      mgmt_ip: 192.168.0.179/24
+    - name: dc01-le03b
+      filter:
+        tags: [ common ]
+      id: 8
+      bgp_as: 65524
+      uplink_switch_interfaces: ['Ethernet6', 'Ethernet6']
+      mgmt_ip: 192.168.0.180/24

@@ -1,0 +1,177 @@
+### GENERAL 
+design:
+  type: l3ls-evpn
+fabric_name: acme_fabric
+p2p_uplinks_mtu: 1500
+
+# BGP SETTINGS ###
+bgp_update_wait_install: false
+bgp_update_wait_for_convergence: false
+bgp_default_ipv4_unicast: false
+evpn_ebgp_multihop: 4
+bgp_distance:
+  external_routes: 20
+  internal_routes: 200
+  local_routes: 200
+bgp_peer_groups:
+  ipv4_underlay_peers:
+    password: "OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI="
+    bfd: false
+  mlag_ipv4_underlay_peer:
+    password: "fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z"
+    bfd: false
+  evpn_overlay_peers:
+    password: "hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf"
+    bfd: false
+bfd_multihop:
+  interval: 1200
+  min_rx: 1200
+  multiplier: 3
+
+### RD/RT Format ###
+overlay_rd_type:
+  admin_subfield: 65000
+  vrf_admin_subfield: vtep_loopback
+
+### CLI CONFIG GEN ###
+custom_structured_configuration_prefix: [ cs_fabric_]
+custom_structured_configuration_list_merge: append
+
+### Local Users ###
+local_users:
+  arista:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/
+
+# Terminattr Daemon
+daemon_terminattr:
+  cvaddrs: [192.168.0.5:9910]
+  cvauth: 
+    method: token
+    token_file: /tmp/token
+  cvvrf: default
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+
+### Management Interface ###
+mgmt_vrf_routing: false
+mgmt_interface_vrf: default
+
+### DNS ###
+#cs_fabric_dns_domain: acme.com
+#name_servers: 
+#  - 10.255.0.2
+#cs_fabric_domain_list:
+#  - acme.com
+
+### NTP
+#ntp_settings:
+#  servers:
+#    - name: 0.pool.ntp.org
+#    - name: 1.pool.ntp.org
+timezone: 'CET'
+
+### LLDP ###
+cs_fabric_lldp:
+  management_address: all
+  vrf: default
+  run: true
+
+### ARP Timers ###
+cs_fabric_arp:
+  aging:
+    timeout_default: 275
+
+### AAA FOR SCP ###
+cs_fabric_aaa_authorization:
+   exec:
+    default: local
+
+### DCI ###
+l3_edge:
+  p2p_links_ip_pools:
+    - name: evpn-gws-dci 
+      ipv4_pool: 10.0.0.0/28
+  p2p_links_profiles:
+    - name: dci-profile
+      id: 1
+      ip_pool: evpn-gws-dci
+      include_in_underlay_protocol: true
+  p2p_links:
+    - id: 1
+      profile: dci-profile
+      nodes: [dc01-gw01a, dc02-gw01a]
+      interfaces: [Ethernet25, Ethernet25]
+      as: [65559, 65599]
+    - id: 2
+      profile: dci-profile
+      nodes: [dc01-gw01b, dc02-gw01b]
+      interfaces: [Ethernet26, Ethernet26]
+      as: [65559, 65599]
+    - id: 3
+      profile: dci-profile
+      nodes: [dc01-gw02a, dc02-gw02a]
+      interfaces: [Ethernet25, Ethernet25]
+      as: [65559, 65599]
+    - id: 4
+      profile: dci-profile
+      nodes: [dc01-gw02b, dc02-gw02b]
+      interfaces: [Ethernet26, Ethernet26]
+      as: [65559, 65599]
+
+### BANNER ###
+cs_fabric_banners:
+  motd: |
+    #########################################################################################
+    #                                                                                      
+    #       Warning Notice                                                                 
+    #
+    #       This system is restricted solely to authorized users for legitimate business
+    #       purposes only. The actual or attempted unauthorized access, use, or modification
+    #       of this system is strictly prohibited.
+    #
+    #########################################################################################
+    EOF
+
+connected_endpoints_keys:
+  servers:
+    type: server
+  firewalls:
+    type: firewall
+
+node_type_keys:
+  - key: spine
+    type: spine
+    default_underlay_routing_protocol: ebgp
+    default_overlay_routing_protocol: ebgp
+    default_evpn_role: server
+    ip_addressing:
+      p2p_uplinks_ip: 'ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2'
+      p2p_uplinks_peer_ip: 'ip_addressing/avd-v2-spine-p2p-uplinks-peer-ip.j2'
+  - key: l3leaf
+    type: l3leaf
+    default_underlay_routing_protocol: ebgp
+    default_overlay_routing_protocol: ebgp
+    connected_endpoints: true
+    default_evpn_role: client
+    mlag_support: true
+    network_services:
+      l2: true
+      l3: true
+    vtep: true
+  - key: firewall
+    type: firewall
+    default_underlay_routing_protocol: none
+    default_overlay_routing_protocol: none
+    network_services:
+      l2: true
+      l3: true
+  - key: server
+    type: server
+    default_underlay_routing_protocol: none
+    default_overlay_routing_protocol: none
