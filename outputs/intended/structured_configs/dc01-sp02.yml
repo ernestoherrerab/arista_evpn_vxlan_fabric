@@ -27,8 +27,9 @@ router_bgp:
     password: hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf
     send_community: all
     maximum_routes: 0
-    ebgp_multihop: 4
-    next_hop_unchanged: true
+    remote_as: '65521'
+    route_reflector_client: true
+    local_as: '65521'
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
@@ -51,94 +52,85 @@ router_bgp:
     description: dc01-le01b_Ethernet2
   - ip_address: 10.0.9.35
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65522'
+    remote_as: '65521'
     peer: dc01-le02a
     description: dc01-le02a_Ethernet2
   - ip_address: 10.0.9.43
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65522'
+    remote_as: '65521'
     peer: dc01-le02b
     description: dc01-le02b_Ethernet2
   - ip_address: 10.0.9.51
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65523'
+    remote_as: '65521'
     peer: dc01-le03a
     description: dc01-le03a_Ethernet2
   - ip_address: 10.0.9.59
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65524'
+    remote_as: '65521'
     peer: dc01-le03b
     description: dc01-le03b_Ethernet2
   - ip_address: 10.0.9.67
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65557'
+    remote_as: '65521'
     peer: dc01-srv01a
     description: dc01-srv01a_Ethernet2
   - ip_address: 10.0.9.75
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65557'
+    remote_as: '65521'
     peer: dc01-srv01b
     description: dc01-srv01b_Ethernet2
   - ip_address: 10.0.9.83
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65559'
+    remote_as: '65521'
     peer: dc01-gw01a
     description: dc01-gw01a_Ethernet2
   - ip_address: 10.0.9.91
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65559'
+    remote_as: '65521'
     peer: dc01-gw01b
     description: dc01-gw01b_Ethernet2
   - ip_address: 10.0.2.15
     peer_group: EVPN-OVERLAY-PEERS
     peer: dc01-gw01a
     description: dc01-gw01a
-    remote_as: '65559'
   - ip_address: 10.0.2.16
     peer_group: EVPN-OVERLAY-PEERS
     peer: dc01-gw01b
     description: dc01-gw01b
-    remote_as: '65559'
   - ip_address: 10.0.2.7
     peer_group: EVPN-OVERLAY-PEERS
     peer: dc01-le01a
     description: dc01-le01a
-    remote_as: '65521'
   - ip_address: 10.0.2.8
     peer_group: EVPN-OVERLAY-PEERS
     peer: dc01-le01b
     description: dc01-le01b
-    remote_as: '65521'
   - ip_address: 10.0.2.9
     peer_group: EVPN-OVERLAY-PEERS
     peer: dc01-le02a
     description: dc01-le02a
-    remote_as: '65522'
   - ip_address: 10.0.2.10
     peer_group: EVPN-OVERLAY-PEERS
     peer: dc01-le02b
     description: dc01-le02b
-    remote_as: '65522'
   - ip_address: 10.0.2.11
     peer_group: EVPN-OVERLAY-PEERS
     peer: dc01-le03a
     description: dc01-le03a
-    remote_as: '65523'
   - ip_address: 10.0.2.12
     peer_group: EVPN-OVERLAY-PEERS
     peer: dc01-le03b
     description: dc01-le03b
-    remote_as: '65524'
   - ip_address: 10.0.2.13
     peer_group: EVPN-OVERLAY-PEERS
     peer: dc01-srv01a
     description: dc01-srv01a
-    remote_as: '65557'
   - ip_address: 10.0.2.14
     peer_group: EVPN-OVERLAY-PEERS
     peer: dc01-srv01b
     description: dc01-srv01b
-    remote_as: '65557'
+  bgp_cluster_id: 10.0.2.2
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS

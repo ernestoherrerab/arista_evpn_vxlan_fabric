@@ -1,3 +1,19 @@
+### BGP PEER GROUPS ###
+bgp_peer_groups:
+  ipv4_underlay_peers:
+    password: "OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI="
+    bfd: false
+    structured_config:
+      allowas_in: 
+        enabled: true 
+        times: 2
+  mlag_ipv4_underlay_peer:
+    password: "fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z"
+    bfd: false
+  evpn_overlay_peers:
+    password: "hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf"
+    bfd: false
+
 tenants:
   - name: acme
     enable_mlag_ibgp_peering_vrfs: true

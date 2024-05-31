@@ -13,16 +13,6 @@ bgp_distance:
   external_routes: 20
   internal_routes: 200
   local_routes: 200
-bgp_peer_groups:
-  ipv4_underlay_peers:
-    password: "OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI="
-    bfd: false
-  mlag_ipv4_underlay_peer:
-    password: "fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z"
-    bfd: false
-  evpn_overlay_peers:
-    password: "hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf"
-    bfd: false
 bfd_multihop:
   interval: 1200
   min_rx: 1200
@@ -34,7 +24,7 @@ overlay_rd_type:
   vrf_admin_subfield: vtep_loopback
 
 ### CLI CONFIG GEN ###
-custom_structured_configuration_prefix: [ cs_fabric_]
+custom_structured_configuration_prefix: [ acme_fabric_, acme_gw_]
 custom_structured_configuration_list_merge: append
 
 ### Local Users ###
@@ -63,10 +53,10 @@ mgmt_vrf_routing: false
 mgmt_interface_vrf: default
 
 ### DNS ###
-#cs_fabric_dns_domain: acme.com
+#acme_fabric_dns_domain: acme.com
 #name_servers: 
 #  - 10.255.0.2
-#cs_fabric_domain_list:
+#acme_fabric_domain_list:
 #  - acme.com
 
 ### NTP
@@ -77,18 +67,18 @@ mgmt_interface_vrf: default
 timezone: 'CET'
 
 ### LLDP ###
-cs_fabric_lldp:
+acme_fabric_lldp:
   management_address: all
   vrf: default
   run: true
 
 ### ARP Timers ###
-cs_fabric_arp:
+acme_fabric_arp:
   aging:
     timeout_default: 275
 
 ### AAA FOR SCP ###
-cs_fabric_aaa_authorization:
+acme_fabric_aaa_authorization:
    exec:
     default: local
 
@@ -107,25 +97,15 @@ l3_edge:
       profile: dci-profile
       nodes: [dc01-gw01a, dc02-gw01a]
       interfaces: [Ethernet25, Ethernet25]
-      as: [65559, 65599]
+      as: [65521, 65561]
     - id: 2
       profile: dci-profile
       nodes: [dc01-gw01b, dc02-gw01b]
       interfaces: [Ethernet26, Ethernet26]
-      as: [65559, 65599]
-    - id: 3
-      profile: dci-profile
-      nodes: [dc01-gw02a, dc02-gw02a]
-      interfaces: [Ethernet25, Ethernet25]
-      as: [65559, 65599]
-    - id: 4
-      profile: dci-profile
-      nodes: [dc01-gw02b, dc02-gw02b]
-      interfaces: [Ethernet26, Ethernet26]
-      as: [65559, 65599]
+      as: [65521, 65561]
 
 ### BANNER ###
-cs_fabric_banners:
+acme_fabric_banners:
   motd: |
     #########################################################################################
     #                                                                                      
@@ -148,7 +128,7 @@ node_type_keys:
   - key: spine
     type: spine
     default_underlay_routing_protocol: ebgp
-    default_overlay_routing_protocol: ebgp
+    default_overlay_routing_protocol: ibgp
     default_evpn_role: server
     ip_addressing:
       p2p_uplinks_ip: 'ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2'
@@ -156,7 +136,7 @@ node_type_keys:
   - key: l3leaf
     type: l3leaf
     default_underlay_routing_protocol: ebgp
-    default_overlay_routing_protocol: ebgp
+    default_overlay_routing_protocol: ibgp
     connected_endpoints: true
     default_evpn_role: client
     mlag_support: true

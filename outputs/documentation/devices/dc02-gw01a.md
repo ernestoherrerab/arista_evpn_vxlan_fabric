@@ -264,90 +264,12 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 42 | ACME_GENERAL_42 | - |
-| 43 | ACME_GENERAL_FW_43 | - |
-| 44 | ACME_GENERAL_EXT_44 | - |
-| 45 | ACME_GENERAL_FW_45 | - |
-| 49 | ACME_GENERAL_49 | - |
-| 52 | ACME_DT_V50 | - |
-| 53 | ACME_DT_FW_53 | - |
-| 54 | ACME_DT_V54 | - |
-| 55 | ACME_DT_FW_55 | - |
-| 204 | ACME_GENERAL_FW_VLANS | - |
-| 205 | ACME_DT_FW_VLANS | - |
-| 206 | ACME_GENERAL_FUSION | - |
-| 207 | ACME_DT_FUSION | - |
-| 208 | ACME_GENERAL_FW_VLANS_EXTENDED | - |
-| 209 | ACME_DT_FW_VLANS_EXT | - |
-| 210 | ACME_GENERAL_FUSION_EXTENDED | - |
-| 211 | ACME_DT_FUSION_EXT | - |
-| 4001 | MLAG_iBGP_ACME-GENERAL | LEAF_PEER_L3 |
-| 4005 | MLAG_iBGP_ACME-DT | LEAF_PEER_L3 |
 | 4093 | LEAF_PEER_L3 | LEAF_PEER_L3 |
 | 4094 | MLAG_PEER | MLAG |
 
 ### VLANs Device Configuration
 
 ```eos
-!
-vlan 42
-   name ACME_GENERAL_42
-!
-vlan 43
-   name ACME_GENERAL_FW_43
-!
-vlan 44
-   name ACME_GENERAL_EXT_44
-!
-vlan 45
-   name ACME_GENERAL_FW_45
-!
-vlan 49
-   name ACME_GENERAL_49
-!
-vlan 52
-   name ACME_DT_V50
-!
-vlan 53
-   name ACME_DT_FW_53
-!
-vlan 54
-   name ACME_DT_V54
-!
-vlan 55
-   name ACME_DT_FW_55
-!
-vlan 204
-   name ACME_GENERAL_FW_VLANS
-!
-vlan 205
-   name ACME_DT_FW_VLANS
-!
-vlan 206
-   name ACME_GENERAL_FUSION
-!
-vlan 207
-   name ACME_DT_FUSION
-!
-vlan 208
-   name ACME_GENERAL_FW_VLANS_EXTENDED
-!
-vlan 209
-   name ACME_DT_FW_VLANS_EXT
-!
-vlan 210
-   name ACME_GENERAL_FUSION_EXTENDED
-!
-vlan 211
-   name ACME_DT_FUSION_EXT
-!
-vlan 4001
-   name MLAG_iBGP_ACME-GENERAL
-   trunk group LEAF_PEER_L3
-!
-vlan 4005
-   name MLAG_iBGP_ACME-DT
-   trunk group LEAF_PEER_L3
 !
 vlan 4093
    name LEAF_PEER_L3
@@ -479,21 +401,6 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan42 | ACME_GENERAL_42 | ACME-GENERAL | - | False |
-| Vlan44 | ACME_GENERAL_EXT_44 | ACME-GENERAL | - | False |
-| Vlan49 | ACME_GENERAL_49 | ACME-GENERAL | - | False |
-| Vlan52 | ACME_DT_V50 | ACME-DT | - | False |
-| Vlan54 | ACME_DT_V54 | ACME-DT | - | False |
-| Vlan204 | ACME_GENERAL_FW_VLANS | ACME-GENERAL | - | False |
-| Vlan205 | ACME_DT_FW_VLANS | ACME-DT | - | False |
-| Vlan206 | ACME_GENERAL_FUSION | ACME-GENERAL | - | False |
-| Vlan207 | ACME_DT_FUSION | ACME-DT | - | False |
-| Vlan208 | ACME_GENERAL_FW_VLANS_EXTENDED | ACME-GENERAL | - | False |
-| Vlan209 | ACME_DT_FW_VLANS_EXT | ACME-DT | - | False |
-| Vlan210 | ACME_GENERAL_FUSION_EXTENDED | ACME-GENERAL | - | False |
-| Vlan211 | ACME_DT_FUSION_EXT | ACME-DT | - | False |
-| Vlan4001 | MLAG_PEER_L3_iBGP: vrf ACME-GENERAL | ACME-GENERAL | 1500 | False |
-| Vlan4005 | MLAG_PEER_L3_iBGP: vrf ACME-DT | ACME-DT | 1500 | False |
 | Vlan4093 | MLAG_PEER_L3_PEERING | default | 1500 | False |
 | Vlan4094 | MLAG_PEER | default | 1500 | False |
 
@@ -501,111 +408,12 @@ interface Loopback1
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan42 |  ACME-GENERAL  |  -  |  10.4.42.1/24  |  -  |  -  |  -  |  -  |
-| Vlan44 |  ACME-GENERAL  |  -  |  10.4.44.1/24  |  -  |  -  |  -  |  -  |
-| Vlan49 |  ACME-GENERAL  |  -  |  10.4.49.1/24  |  -  |  -  |  -  |  -  |
-| Vlan52 |  ACME-DT  |  -  |  10.5.52.1/24  |  -  |  -  |  -  |  -  |
-| Vlan54 |  ACME-DT  |  -  |  10.5.54.1/24  |  -  |  -  |  -  |  -  |
-| Vlan204 |  ACME-GENERAL  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan205 |  ACME-DT  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan206 |  ACME-GENERAL  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan207 |  ACME-DT  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan208 |  ACME-GENERAL  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan209 |  ACME-DT  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan210 |  ACME-GENERAL  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan211 |  ACME-DT  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4001 |  ACME-GENERAL  |  10.0.12.16/31  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4005 |  ACME-DT  |  10.0.12.16/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4093 |  default  |  10.0.12.16/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  10.0.11.16/31  |  -  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 
 ```eos
-!
-interface Vlan42
-   description ACME_GENERAL_42
-   no shutdown
-   vrf ACME-GENERAL
-   ip address virtual 10.4.42.1/24
-!
-interface Vlan44
-   description ACME_GENERAL_EXT_44
-   no shutdown
-   vrf ACME-GENERAL
-   ip address virtual 10.4.44.1/24
-!
-interface Vlan49
-   description ACME_GENERAL_49
-   no shutdown
-   vrf ACME-GENERAL
-   ip address virtual 10.4.49.1/24
-!
-interface Vlan52
-   description ACME_DT_V50
-   no shutdown
-   vrf ACME-DT
-   ip address virtual 10.5.52.1/24
-!
-interface Vlan54
-   description ACME_DT_V54
-   no shutdown
-   vrf ACME-DT
-   ip address virtual 10.5.54.1/24
-!
-interface Vlan204
-   description ACME_GENERAL_FW_VLANS
-   no shutdown
-   vrf ACME-GENERAL
-!
-interface Vlan205
-   description ACME_DT_FW_VLANS
-   no shutdown
-   vrf ACME-DT
-!
-interface Vlan206
-   description ACME_GENERAL_FUSION
-   no shutdown
-   vrf ACME-GENERAL
-!
-interface Vlan207
-   description ACME_DT_FUSION
-   no shutdown
-   vrf ACME-DT
-!
-interface Vlan208
-   description ACME_GENERAL_FW_VLANS_EXTENDED
-   no shutdown
-   vrf ACME-GENERAL
-!
-interface Vlan209
-   description ACME_DT_FW_VLANS_EXT
-   no shutdown
-   vrf ACME-DT
-!
-interface Vlan210
-   description ACME_GENERAL_FUSION_EXTENDED
-   no shutdown
-   vrf ACME-GENERAL
-!
-interface Vlan211
-   description ACME_DT_FUSION_EXT
-   no shutdown
-   vrf ACME-DT
-!
-interface Vlan4001
-   description MLAG_PEER_L3_iBGP: vrf ACME-GENERAL
-   no shutdown
-   mtu 1500
-   vrf ACME-GENERAL
-   ip address 10.0.12.16/31
-!
-interface Vlan4005
-   description MLAG_PEER_L3_iBGP: vrf ACME-DT
-   no shutdown
-   mtu 1500
-   vrf ACME-DT
-   ip address 10.0.12.16/31
 !
 interface Vlan4093
    description MLAG_PEER_L3_PEERING
@@ -631,35 +439,6 @@ interface Vlan4094
 | UDP port | 4789 |
 | EVPN MLAG Shared Router MAC | mlag-system-id |
 
-##### VLAN to VNI, Flood List and Multicast Group Mappings
-
-| VLAN | VNI | Flood List | Multicast Group |
-| ---- | --- | ---------- | --------------- |
-| 42 | 10042 | - | - |
-| 43 | 10043 | - | - |
-| 44 | 10044 | - | - |
-| 45 | 10045 | - | - |
-| 49 | 10049 | - | - |
-| 52 | 10052 | - | - |
-| 53 | 10053 | - | - |
-| 54 | 10054 | - | - |
-| 55 | 10055 | - | - |
-| 204 | 10204 | - | - |
-| 205 | 10205 | - | - |
-| 206 | 10206 | - | - |
-| 207 | 10207 | - | - |
-| 208 | 10208 | - | - |
-| 209 | 10209 | - | - |
-| 210 | 10210 | - | - |
-| 211 | 10211 | - | - |
-
-##### VRF to VNI and Multicast Group Mappings
-
-| VRF | VNI | Multicast Group |
-| ---- | --- | --------------- |
-| ACME-DT | 4405 | - |
-| ACME-GENERAL | 4401 | - |
-
 #### VXLAN Interface Device Configuration
 
 ```eos
@@ -669,25 +448,6 @@ interface Vxlan1
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
-   vxlan vlan 42 vni 10042
-   vxlan vlan 43 vni 10043
-   vxlan vlan 44 vni 10044
-   vxlan vlan 45 vni 10045
-   vxlan vlan 49 vni 10049
-   vxlan vlan 52 vni 10052
-   vxlan vlan 53 vni 10053
-   vxlan vlan 54 vni 10054
-   vxlan vlan 55 vni 10055
-   vxlan vlan 204 vni 10204
-   vxlan vlan 205 vni 10205
-   vxlan vlan 206 vni 10206
-   vxlan vlan 207 vni 10207
-   vxlan vlan 208 vni 10208
-   vxlan vlan 209 vni 10209
-   vxlan vlan 210 vni 10210
-   vxlan vlan 211 vni 10211
-   vxlan vrf ACME-DT vni 4405
-   vxlan vrf ACME-GENERAL vni 4401
 ```
 
 ## Routing
@@ -721,16 +481,12 @@ ip virtual-router mac-address 00:1c:73:00:00:99
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| ACME-DT | True |
-| ACME-GENERAL | True |
 
 #### IP Routing Device Configuration
 
 ```eos
 !
 ip routing
-ip routing vrf ACME-DT
-ip routing vrf ACME-GENERAL
 ```
 
 ### IPv6 Routing
@@ -740,8 +496,6 @@ ip routing vrf ACME-GENERAL
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| ACME-DT | false |
-| ACME-GENERAL | false |
 | default | false |
 
 ### ARP
@@ -763,7 +517,11 @@ ASN Notation: asplain
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65599 | 10.0.4.13 |
+| 65561 | 10.0.4.13 |
+
+| BGP AS | Cluster ID |
+| ------ | --------- |
+| 65561 | 10.0.4.13 |
 
 | BGP Tuning |
 | ---------- |
@@ -778,9 +536,9 @@ ASN Notation: asplain
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
-| Next-hop unchanged | True |
+| Remote AS | 65561 |
+| Route Reflector Client | Yes |
 | Source | Loopback0 |
-| Ebgp multihop | 4 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
@@ -789,6 +547,7 @@ ASN Notation: asplain
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
+| Allowas-in | Allowed, allowed 2 times |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -797,7 +556,7 @@ ASN Notation: asplain
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65599 |
+| Remote AS | 65561 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |
@@ -806,15 +565,13 @@ ASN Notation: asplain
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 10.0.0.0 | 65559 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 10.0.2.15 | 65559 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - | - | - |
-| 10.0.4.1 | 65560 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - | - | - |
-| 10.0.4.2 | 65560 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - | - | - |
-| 10.0.10.64 | 65560 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 10.0.10.66 | 65560 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 10.0.0.0 | 65521 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 10.0.2.15 | 65521 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
+| 10.0.4.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
+| 10.0.4.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
+| 10.0.10.64 | 65560 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 10.0.10.66 | 65560 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 | 10.0.12.17 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
-| 10.0.12.17 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | ACME-DT | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - |
-| 10.0.12.17 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | ACME-GENERAL | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -824,57 +581,30 @@ ASN Notation: asplain
 | ---------- | -------- | ------------- |
 | EVPN-OVERLAY-PEERS | True | default |
 
-#### Router BGP VLANs
-
-| VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
-| ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 42 | 65000:10042 | 10042:10042 | - | - | learned |
-| 43 | 65000:10043 | 10043:10043 | - | - | learned |
-| 44 | 65000:10044 | 10044:10044 | - | - | learned |
-| 45 | 65000:10045 | 10045:10045 | - | - | learned |
-| 49 | 65000:10049 | 10049:10049 | - | - | learned |
-| 52 | 65000:10052 | 10052:10052 | - | - | learned |
-| 53 | 65000:10053 | 10053:10053 | - | - | learned |
-| 54 | 65000:10054 | 10054:10054 | - | - | learned |
-| 55 | 65000:10055 | 10055:10055 | - | - | learned |
-| 204 | 65000:10204 | 10204:10204 | - | - | learned |
-| 205 | 65000:10205 | 10205:10205 | - | - | learned |
-| 206 | 65000:10206 | 10206:10206 | - | - | learned |
-| 207 | 65000:10207 | 10207:10207 | - | - | learned |
-| 208 | 65000:10208 | 10208:10208 | - | - | learned |
-| 209 | 65000:10209 | 10209:10209 | - | - | learned |
-| 210 | 65000:10210 | 10210:10210 | - | - | learned |
-| 211 | 65000:10211 | 10211:10211 | - | - | learned |
-
-#### Router BGP VRFs
-
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| ACME-DT | 10.0.5.13:4405 | connected |
-| ACME-GENERAL | 10.0.5.13:4401 | connected |
-
 #### Router BGP Device Configuration
 
 ```eos
 !
-router bgp 65599
+router bgp 65561
    router-id 10.0.4.13
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
    no bgp default ipv4-unicast
+   bgp cluster-id 10.0.4.13
    neighbor EVPN-OVERLAY-PEERS peer group
-   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
+   neighbor EVPN-OVERLAY-PEERS remote-as 65561
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
-   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 4
+   neighbor EVPN-OVERLAY-PEERS route-reflector-client
    neighbor EVPN-OVERLAY-PEERS password 7 <removed>
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
+   neighbor IPv4-UNDERLAY-PEERS allowas-in 2
    neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
-   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65599
+   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65561
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
    neighbor MLAG-IPv4-UNDERLAY-PEER description dc02-gw01b
    neighbor MLAG-IPv4-UNDERLAY-PEER password 7 <removed>
@@ -882,16 +612,16 @@ router bgp 65599
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor 10.0.0.0 peer group IPv4-UNDERLAY-PEERS
-   neighbor 10.0.0.0 remote-as 65559
+   neighbor 10.0.0.0 remote-as 65521
    neighbor 10.0.0.0 description dc01-gw01a
    neighbor 10.0.2.15 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.0.2.15 remote-as 65559
+   neighbor 10.0.2.15 remote-as 65521
    neighbor 10.0.2.15 description dc01-gw01a
+   neighbor 10.0.2.15 ebgp-multihop 2
+   neighbor 10.0.2.15 update-source Loopback0
    neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.0.4.1 remote-as 65560
    neighbor 10.0.4.1 description dc02-sp01
    neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.0.4.2 remote-as 65560
    neighbor 10.0.4.2 description dc02-sp02
    neighbor 10.0.10.64 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.0.10.64 remote-as 65560
@@ -902,91 +632,6 @@ router bgp 65599
    neighbor 10.0.12.17 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 10.0.12.17 description dc02-gw01b
    redistribute connected route-map RM-CONN-2-BGP
-   !
-   vlan 204
-      rd 65000:10204
-      route-target both 10204:10204
-      redistribute learned
-   !
-   vlan 205
-      rd 65000:10205
-      route-target both 10205:10205
-      redistribute learned
-   !
-   vlan 206
-      rd 65000:10206
-      route-target both 10206:10206
-      redistribute learned
-   !
-   vlan 207
-      rd 65000:10207
-      route-target both 10207:10207
-      redistribute learned
-   !
-   vlan 208
-      rd 65000:10208
-      route-target both 10208:10208
-      redistribute learned
-   !
-   vlan 209
-      rd 65000:10209
-      route-target both 10209:10209
-      redistribute learned
-   !
-   vlan 210
-      rd 65000:10210
-      route-target both 10210:10210
-      redistribute learned
-   !
-   vlan 211
-      rd 65000:10211
-      route-target both 10211:10211
-      redistribute learned
-   !
-   vlan 42
-      rd 65000:10042
-      route-target both 10042:10042
-      redistribute learned
-   !
-   vlan 43
-      rd 65000:10043
-      route-target both 10043:10043
-      redistribute learned
-   !
-   vlan 44
-      rd 65000:10044
-      route-target both 10044:10044
-      redistribute learned
-   !
-   vlan 45
-      rd 65000:10045
-      route-target both 10045:10045
-      redistribute learned
-   !
-   vlan 49
-      rd 65000:10049
-      route-target both 10049:10049
-      redistribute learned
-   !
-   vlan 52
-      rd 65000:10052
-      route-target both 10052:10052
-      redistribute learned
-   !
-   vlan 53
-      rd 65000:10053
-      route-target both 10053:10053
-      redistribute learned
-   !
-   vlan 54
-      rd 65000:10054
-      route-target both 10054:10054
-      redistribute learned
-   !
-   vlan 55
-      rd 65000:10055
-      route-target both 10055:10055
-      redistribute learned
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
@@ -999,22 +644,6 @@ router bgp 65599
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
-   !
-   vrf ACME-DT
-      rd 10.0.5.13:4405
-      route-target import evpn 4405:4405
-      route-target export evpn 4405:4405
-      router-id 10.0.4.13
-      neighbor 10.0.12.17 peer group MLAG-IPv4-UNDERLAY-PEER
-      redistribute connected
-   !
-   vrf ACME-GENERAL
-      rd 10.0.5.13:4401
-      route-target import evpn 4401:4401
-      route-target export evpn 4401:4401
-      router-id 10.0.4.13
-      neighbor 10.0.12.17 peer group MLAG-IPv4-UNDERLAY-PEER
-      redistribute connected
 ```
 
 ## BFD
@@ -1106,14 +735,8 @@ route-map RM-MLAG-PEER-IN permit 10
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
-| ACME-DT | enabled |
-| ACME-GENERAL | enabled |
 
 ### VRF Instances Device Configuration
 
 ```eos
-!
-vrf instance ACME-DT
-!
-vrf instance ACME-GENERAL
 ```

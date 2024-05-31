@@ -1,7 +1,6 @@
 ### DC VARIABLES ###
 dc_name: dc02
 evpn_overlay_bgp_rtc: true
-#evpn_prevent_readvertise_to_server: true
 
 # Spine Variables
 spine:
@@ -38,6 +37,7 @@ l3leaf:
     loopback_ipv4_pool: 10.0.4.0/24
     vtep_loopback_ipv4_pool: 10.0.5.0/24
     loopback_ipv4_offset: 4
+    bgp_as: 65561
     uplink_interfaces: ['Ethernet1', 'Ethernet2']
     uplink_switches: ['dc02-sp01', 'dc02-sp02']
     max_uplink_switches: 4
@@ -52,7 +52,6 @@ l3leaf:
     - group: dc02-le01
       filter:
         tags: [ common ]
-      bgp_as: 65561
       nodes:
         - name: dc02-le01a
           id: 3
@@ -65,7 +64,6 @@ l3leaf:
     - group: dc02-le02
       filter:
         tags: [ common ]
-      bgp_as: 65562
       nodes:
         - name: dc02-le02a
           id: 5
@@ -78,7 +76,6 @@ l3leaf:
     - group: dc02-srv01
       filter:
         tags: [ firewall ]
-      bgp_as: 65597
       nodes:
         - name: dc02-srv01a
           id: 7
@@ -89,8 +86,9 @@ l3leaf:
           uplink_switch_interfaces: ['Ethernet10', 'Ethernet10']
           mgmt_ip: 192.168.0.194/24
     - group: dc02-gw01
-      bgp_as: 65599
       evpn_role: server
+      filter:
+        tags: [ gateway ]
       nodes:
         - name: dc02-gw01a
           id: 9

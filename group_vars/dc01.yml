@@ -1,7 +1,6 @@
 ### DC VARIABLES ###
 dc_name: dc01
 evpn_overlay_bgp_rtc: true
-evpn_prevent_readvertise_to_server: true
 
 ### SPINES ###
 spine:
@@ -38,6 +37,7 @@ l3leaf:
     loopback_ipv4_pool: 10.0.2.0/24
     loopback_ipv4_offset: 4
     vtep_loopback_ipv4_pool: 10.0.3.0/24
+    bgp_as: 65521
     uplink_interfaces: ['Ethernet1', 'Ethernet2']
     uplink_switches: ['dc01-sp01', 'dc01-sp02']
     max_uplink_switches: 4
@@ -52,7 +52,6 @@ l3leaf:
     - group: dc01-le01
       filter:
         tags: [ common ]
-      bgp_as: 65521
       nodes:
         - name: dc01-le01a
           id: 3
@@ -65,7 +64,6 @@ l3leaf:
     - group: dc01-le02
       filter:
         tags: [ common ]
-      bgp_as: 65522
       nodes:
         - name: dc01-le02a
           id: 5
@@ -78,7 +76,6 @@ l3leaf:
     - group: dc01-srv01
       filter:
         tags: [ firewall ]
-      bgp_as: 65557
       nodes:
         - name: dc01-srv01a
           id: 9
@@ -89,8 +86,9 @@ l3leaf:
           uplink_switch_interfaces: ['Ethernet10', 'Ethernet10']
           mgmt_ip: 192.168.0.192/24
     - group: dc01-gw01
-      bgp_as: 65559
       evpn_role: server
+      filter:
+        tags: [ gateway ]
       nodes:
         - name: dc01-gw01a
           id: 11
@@ -113,13 +111,11 @@ l3leaf:
       filter:
         tags: [ common ]
       id: 7
-      bgp_as: 65523
       uplink_switch_interfaces: ['Ethernet5', 'Ethernet5']
       mgmt_ip: 192.168.0.179/24
     - name: dc01-le03b
       filter:
         tags: [ common ]
       id: 8
-      bgp_as: 65524
       uplink_switch_interfaces: ['Ethernet6', 'Ethernet6']
       mgmt_ip: 192.168.0.180/24

@@ -1,0 +1,7 @@
+### BGP ###
+acme_gw_router_bgp:
+  neighbors:
+    - ip_address: 10.0.4.14
+      remote_as: 65561
+      ebgp_multihop: 2
+      update_source: Loopback0

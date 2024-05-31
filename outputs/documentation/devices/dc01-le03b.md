@@ -43,6 +43,7 @@
 - [Filters](#filters)
   - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
+  - [IP Extended Community Lists](#ip-extended-community-lists)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
@@ -554,7 +555,7 @@ ASN Notation: asplain
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65524 | 10.0.2.12 |
+| 65521 | 10.0.2.12 |
 
 | BGP Tuning |
 | ---------- |
@@ -569,8 +570,8 @@ ASN Notation: asplain
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
+| Remote AS | 65521 |
 | Source | Loopback0 |
-| Ebgp multihop | 4 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
@@ -579,6 +580,7 @@ ASN Notation: asplain
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
+| Allowas-in | Allowed, allowed 2 times |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -586,10 +588,10 @@ ASN Notation: asplain
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 10.0.2.1 | 65520 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - | - | - |
-| 10.0.2.2 | 65520 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - | - | - |
-| 10.0.9.56 | 65520 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 10.0.9.58 | 65520 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 10.0.2.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - | - | - |
+| 10.0.2.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - | - | - |
+| 10.0.9.56 | 65520 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 10.0.9.58 | 65520 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -623,29 +625,26 @@ ASN Notation: asplain
 
 ```eos
 !
-router bgp 65524
+router bgp 65521
    router-id 10.0.2.12
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
    no bgp default ipv4-unicast
    neighbor EVPN-OVERLAY-PEERS peer group
+   neighbor EVPN-OVERLAY-PEERS remote-as 65521
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
-   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 4
    neighbor EVPN-OVERLAY-PEERS password 7 <removed>
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
+   neighbor IPv4-UNDERLAY-PEERS allowas-in 2
    neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 10.0.2.1 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.0.2.1 remote-as 65520
    neighbor 10.0.2.1 description dc01-sp01
-   neighbor 10.0.2.1 route-map RM-EVPN-FILTER-AS65520 out
    neighbor 10.0.2.2 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.0.2.2 remote-as 65520
    neighbor 10.0.2.2 description dc01-sp02
-   neighbor 10.0.2.2 route-map RM-EVPN-FILTER-AS65520 out
    neighbor 10.0.9.56 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.0.9.56 remote-as 65520
    neighbor 10.0.9.56 description dc01-sp01_Ethernet6
@@ -695,6 +694,8 @@ router bgp 65524
       redistribute learned
    !
    address-family evpn
+      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-IN in
+      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family rt-membership
@@ -784,12 +785,18 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 | -------- | ---- | ----- | --- | ------------- | -------- |
 | 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
 
-##### RM-EVPN-FILTER-AS65520
+##### RM-EVPN-SOO-IN
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65520 | - | - | - |
+| 10 | deny | extcommunity ECL-EVPN-SOO | - | - | - |
 | 20 | permit | - | - | - | - |
+
+##### RM-EVPN-SOO-OUT
+
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | permit | - | extcommunity soo 10.0.3.12:1 additive | - | - |
 
 #### Route-maps Device Configuration
 
@@ -798,10 +805,28 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
-route-map RM-EVPN-FILTER-AS65520 deny 10
-   match as 65520
+route-map RM-EVPN-SOO-IN deny 10
+   match extcommunity ECL-EVPN-SOO
 !
-route-map RM-EVPN-FILTER-AS65520 permit 20
+route-map RM-EVPN-SOO-IN permit 20
+!
+route-map RM-EVPN-SOO-OUT permit 10
+   set extcommunity soo 10.0.3.12:1 additive
+```
+
+### IP Extended Community Lists
+
+#### IP Extended Community Lists Summary
+
+| List Name | Type | Extended Communities |
+| --------- | ---- | -------------------- |
+| ECL-EVPN-SOO | permit | soo 10.0.3.12:1 |
+
+#### IP Extended Community Lists Device Configuration
+
+```eos
+!
+ip extcommunity-list ECL-EVPN-SOO permit soo 10.0.3.12:1
 ```
 
 ## VRF Instances

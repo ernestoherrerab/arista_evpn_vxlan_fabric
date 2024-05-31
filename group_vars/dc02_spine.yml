@@ -1,0 +1,11 @@
+### BGP ###
+bgp_peer_groups:
+  ipv4_underlay_peers:
+    password: "OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI="
+    bfd: false
+  evpn_overlay_peers:
+    password: "hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf"
+    bfd: false
+    structured_config:
+      local_as: 65561
+      remote_as: 65561
