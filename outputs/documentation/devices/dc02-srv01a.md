@@ -881,9 +881,11 @@ router bgp 65597
    neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS
    neighbor 10.0.4.1 remote-as 65560
    neighbor 10.0.4.1 description dc02-sp01
+   neighbor 10.0.4.1 route-map RM-EVPN-FILTER-AS65560 out
    neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS
    neighbor 10.0.4.2 remote-as 65560
    neighbor 10.0.4.2 description dc02-sp02
+   neighbor 10.0.4.2 route-map RM-EVPN-FILTER-AS65560 out
    neighbor 10.0.10.48 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.0.10.48 remote-as 65560
    neighbor 10.0.10.48 description dc02-sp01_Ethernet9
@@ -1049,6 +1051,13 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 | -------- | ---- | ----- | --- | ------------- | -------- |
 | 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
 
+##### RM-EVPN-FILTER-AS65560
+
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | deny | as 65560 | - | - | - |
+| 20 | permit | - | - | - | - |
+
 ##### RM-MLAG-PEER-IN
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
@@ -1061,6 +1070,11 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
 route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+!
+route-map RM-EVPN-FILTER-AS65560 deny 10
+   match as 65560
+!
+route-map RM-EVPN-FILTER-AS65560 permit 20
 !
 route-map RM-MLAG-PEER-IN permit 10
    description Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing

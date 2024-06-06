@@ -91,6 +91,8 @@ l3leaf:
     - group: dc01-gw01
       bgp_as: 65559
       evpn_role: server
+      filter:
+        tags: [ gateway ]
       nodes:
         - name: dc01-gw01a
           id: 11
@@ -108,18 +110,20 @@ l3leaf:
             - dc01-sp02
             - dc02-gw01b
           mgmt_ip: 192.168.0.198/24
-  nodes:
-    - name: dc01-le03a
+    - group: dc01-le03
       filter:
         tags: [ common ]
-      id: 7
-      bgp_as: 65523
-      uplink_switch_interfaces: ['Ethernet5', 'Ethernet5']
-      mgmt_ip: 192.168.0.179/24
-    - name: dc01-le03b
-      filter:
-        tags: [ common ]
-      id: 8
-      bgp_as: 65524
-      uplink_switch_interfaces: ['Ethernet6', 'Ethernet6']
-      mgmt_ip: 192.168.0.180/24
+      mlag: false
+      nodes: 
+        - name: dc01-le03a
+          id: 7
+          bgp_as: 65523
+          uplink_switch_interfaces: ['Ethernet5', 'Ethernet5']
+          mgmt_ip: 192.168.0.179/24
+        - name: dc01-le03b
+          filter:
+            tags: [ common ]
+          id: 8
+          bgp_as: 65524
+          uplink_switch_interfaces: ['Ethernet6', 'Ethernet6']
+          mgmt_ip: 192.168.0.180/24
