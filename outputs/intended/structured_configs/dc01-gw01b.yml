@@ -608,7 +608,7 @@ router_bfd:
     min_rx: 1200
     multiplier: 3
 ip_igmp_snooping:
-  globally_enabled: true
+  globally_enabled: false
 ip_virtual_router_mac_address: 00:1c:73:00:00:99
 vxlan_interface:
   Vxlan1:

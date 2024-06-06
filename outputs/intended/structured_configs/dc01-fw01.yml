@@ -72,7 +72,7 @@ vlans:
   name: TRANSIT_TO_ACME_GENERAL
   tenant: acme
 ip_igmp_snooping:
-  globally_enabled: true
+  globally_enabled: false
 vlan_interfaces:
 - name: Vlan51
   tenant: acme

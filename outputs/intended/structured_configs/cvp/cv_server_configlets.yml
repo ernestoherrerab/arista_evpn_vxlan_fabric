@@ -2,11 +2,12 @@ cvp_configlets:
   acme_dc01-fw01: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc01-fw01\n!\nspanning-tree mode mstp\nspanning-tree
-    mst 0 priority 32768\n!\naaa authorization exec default local\n!\nno enable password\nno
-    aaa root\n!\nusername arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc01-fw01\n!\nspanning-tree
+    mode mstp\nspanning-tree mst 0 priority 32768\n!\naaa authorization exec default
+    local\n!\nno enable password\nno aaa root\n!\nusername arista privilege 15 role
+    network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 41\n   name ACME_GENERAL_41\n!\nvlan 51\n   name ACME_DT_51\n!\nvlan
     200\n   name TRANSIT_TO_ACME_GENERAL\n!\nvlan 201\n   name TRANSIT_TO_ACME_DT\n!\nvlan
@@ -46,11 +47,12 @@ cvp_configlets:
   acme_dc01-fw02: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc01-fw02\n!\nspanning-tree mode mstp\nspanning-tree
-    mst 0 priority 32768\n!\naaa authorization exec default local\n!\nno enable password\nno
-    aaa root\n!\nusername arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc01-fw02\n!\nspanning-tree
+    mode mstp\nspanning-tree mst 0 priority 32768\n!\naaa authorization exec default
+    local\n!\nno enable password\nno aaa root\n!\nusername arista privilege 15 role
+    network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 45\n   name ACME_GENERAL_45\n!\nvlan 55\n   name ACME_DT_55\n!\nvlan
     208\n   name TRANSIT_TO_ACME_GENERAL_EXTENDED\n!\nvlan 209\n   name TRANSIT_TO_ACME_DT_EXTENDED\n!\nvlan
@@ -94,12 +96,12 @@ cvp_configlets:
   acme_dc01-gw01a: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc01-gw01a\n!\nspanning-tree mode mstp\nno spanning-tree
-    vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa authorization exec
-    default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
-    15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc01-gw01a\n!\nspanning-tree
+    mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa
+    authorization exec default local\n!\nno enable password\nno aaa root\n!\nusername
+    arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 40\n   name ACME_GENERAL_40\n!\nvlan 41\n   name ACME_GENERAL_FW_41\n!\nvlan
     44\n   name ACME_GENERAL_44\n!\nvlan 45\n   name ACME_GENERAL_FW_45\n!\nvlan 50\n
@@ -236,12 +238,12 @@ cvp_configlets:
   acme_dc01-gw01b: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc01-gw01b\n!\nspanning-tree mode mstp\nno spanning-tree
-    vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa authorization exec
-    default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
-    15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc01-gw01b\n!\nspanning-tree
+    mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa
+    authorization exec default local\n!\nno enable password\nno aaa root\n!\nusername
+    arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 40\n   name ACME_GENERAL_40\n!\nvlan 41\n   name ACME_GENERAL_FW_41\n!\nvlan
     44\n   name ACME_GENERAL_44\n!\nvlan 45\n   name ACME_GENERAL_FW_45\n!\nvlan 50\n
@@ -378,12 +380,12 @@ cvp_configlets:
   acme_dc01-le01a: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc01-le01a\n!\nspanning-tree mode mstp\nno spanning-tree
-    vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa authorization exec
-    default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
-    15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc01-le01a\n!\nspanning-tree
+    mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa
+    authorization exec default local\n!\nno enable password\nno aaa root\n!\nusername
+    arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 40\n   name ACME_GENERAL_40\n!\nvlan 41\n   name ACME_GENERAL_FW_41\n!\nvlan
     44\n   name ACME_GENERAL_44\n!\nvlan 45\n   name ACME_GENERAL_FW_45\n!\nvlan 50\n
@@ -506,12 +508,12 @@ cvp_configlets:
   acme_dc01-le01b: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc01-le01b\n!\nspanning-tree mode mstp\nno spanning-tree
-    vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa authorization exec
-    default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
-    15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc01-le01b\n!\nspanning-tree
+    mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa
+    authorization exec default local\n!\nno enable password\nno aaa root\n!\nusername
+    arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 40\n   name ACME_GENERAL_40\n!\nvlan 41\n   name ACME_GENERAL_FW_41\n!\nvlan
     44\n   name ACME_GENERAL_44\n!\nvlan 45\n   name ACME_GENERAL_FW_45\n!\nvlan 50\n
@@ -634,12 +636,12 @@ cvp_configlets:
   acme_dc01-le02a: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc01-le02a\n!\nspanning-tree mode mstp\nno spanning-tree
-    vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa authorization exec
-    default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
-    15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc01-le02a\n!\nspanning-tree
+    mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa
+    authorization exec default local\n!\nno enable password\nno aaa root\n!\nusername
+    arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 40\n   name ACME_GENERAL_40\n!\nvlan 41\n   name ACME_GENERAL_FW_41\n!\nvlan
     44\n   name ACME_GENERAL_44\n!\nvlan 45\n   name ACME_GENERAL_FW_45\n!\nvlan 50\n
@@ -762,12 +764,12 @@ cvp_configlets:
   acme_dc01-le02b: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc01-le02b\n!\nspanning-tree mode mstp\nno spanning-tree
-    vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa authorization exec
-    default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
-    15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc01-le02b\n!\nspanning-tree
+    mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa
+    authorization exec default local\n!\nno enable password\nno aaa root\n!\nusername
+    arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 40\n   name ACME_GENERAL_40\n!\nvlan 41\n   name ACME_GENERAL_FW_41\n!\nvlan
     44\n   name ACME_GENERAL_44\n!\nvlan 45\n   name ACME_GENERAL_FW_45\n!\nvlan 50\n
@@ -890,11 +892,12 @@ cvp_configlets:
   acme_dc01-le03a: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc01-le03a\n!\nspanning-tree mode mstp\nspanning-tree
-    mst 0 priority 4096\n!\naaa authorization exec default local\n!\nno enable password\nno
-    aaa root\n!\nusername arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc01-le03a\n!\nspanning-tree
+    mode mstp\nspanning-tree mst 0 priority 4096\n!\naaa authorization exec default
+    local\n!\nno enable password\nno aaa root\n!\nusername arista privilege 15 role
+    network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 40\n   name ACME_GENERAL_40\n!\nvlan 41\n   name ACME_GENERAL_FW_41\n!\nvlan
     44\n   name ACME_GENERAL_44\n!\nvlan 45\n   name ACME_GENERAL_FW_45\n!\nvlan 50\n
@@ -974,11 +977,12 @@ cvp_configlets:
   acme_dc01-le03b: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc01-le03b\n!\nspanning-tree mode mstp\nspanning-tree
-    mst 0 priority 4096\n!\naaa authorization exec default local\n!\nno enable password\nno
-    aaa root\n!\nusername arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc01-le03b\n!\nspanning-tree
+    mode mstp\nspanning-tree mst 0 priority 4096\n!\naaa authorization exec default
+    local\n!\nno enable password\nno aaa root\n!\nusername arista privilege 15 role
+    network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 40\n   name ACME_GENERAL_40\n!\nvlan 41\n   name ACME_GENERAL_FW_41\n!\nvlan
     44\n   name ACME_GENERAL_44\n!\nvlan 45\n   name ACME_GENERAL_FW_45\n!\nvlan 50\n
@@ -1230,12 +1234,12 @@ cvp_configlets:
   acme_dc01-srv01a: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc01-srv01a\n!\nspanning-tree mode mstp\nno spanning-tree
-    vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa authorization exec
-    default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
-    15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc01-srv01a\n!\nspanning-tree
+    mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa
+    authorization exec default local\n!\nno enable password\nno aaa root\n!\nusername
+    arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 41\n   name ACME_GENERAL_FW_41\n!\nvlan 45\n   name ACME_GENERAL_FW_45\n!\nvlan
     51\n   name ACME_DT_FW_51\n!\nvlan 55\n   name ACME_DT_FW_55\n!\nvlan 200\n   name
@@ -1377,12 +1381,12 @@ cvp_configlets:
   acme_dc01-srv01b: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc01-srv01b\n!\nspanning-tree mode mstp\nno spanning-tree
-    vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa authorization exec
-    default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
-    15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc01-srv01b\n!\nspanning-tree
+    mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa
+    authorization exec default local\n!\nno enable password\nno aaa root\n!\nusername
+    arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 41\n   name ACME_GENERAL_FW_41\n!\nvlan 45\n   name ACME_GENERAL_FW_45\n!\nvlan
     51\n   name ACME_DT_FW_51\n!\nvlan 55\n   name ACME_DT_FW_55\n!\nvlan 200\n   name
@@ -1524,11 +1528,12 @@ cvp_configlets:
   acme_dc02-fw01: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc02-fw01\n!\nspanning-tree mode mstp\nspanning-tree
-    mst 0 priority 32768\n!\naaa authorization exec default local\n!\nno enable password\nno
-    aaa root\n!\nusername arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc02-fw01\n!\nspanning-tree
+    mode mstp\nspanning-tree mst 0 priority 32768\n!\naaa authorization exec default
+    local\n!\nno enable password\nno aaa root\n!\nusername arista privilege 15 role
+    network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 43\n   name ACME_GENERAL_43\n!\nvlan 53\n   name ACME_DT_53\n!\nvlan
     204\n   name TRANSIT_TO_ACME_GENERAL\n!\nvlan 205\n   name TRANSIT_TO_ACME_DT\n!\nvlan
@@ -1568,11 +1573,12 @@ cvp_configlets:
   acme_dc02-fw02: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc02-fw02\n!\nspanning-tree mode mstp\nspanning-tree
-    mst 0 priority 32768\n!\naaa authorization exec default local\n!\nno enable password\nno
-    aaa root\n!\nusername arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc02-fw02\n!\nspanning-tree
+    mode mstp\nspanning-tree mst 0 priority 32768\n!\naaa authorization exec default
+    local\n!\nno enable password\nno aaa root\n!\nusername arista privilege 15 role
+    network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 45\n   name ACME_GENERAL_45\n!\nvlan 55\n   name ACME_DT_55\n!\nvlan
     208\n   name TRANSIT_TO_ACME_GENERAL_EXT\n!\nvlan 209\n   name TRANSIT_TO_ACME_DT_EXT\n!\nvlan
@@ -1616,12 +1622,12 @@ cvp_configlets:
   acme_dc02-gw01a: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc02-gw01a\n!\nspanning-tree mode mstp\nno spanning-tree
-    vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa authorization exec
-    default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
-    15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc02-gw01a\n!\nspanning-tree
+    mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa
+    authorization exec default local\n!\nno enable password\nno aaa root\n!\nusername
+    arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 42\n   name ACME_GENERAL_42\n!\nvlan 43\n   name ACME_GENERAL_FW_43\n!\nvlan
     44\n   name ACME_GENERAL_EXT_44\n!\nvlan 45\n   name ACME_GENERAL_FW_45\n!\nvlan
@@ -1686,68 +1692,73 @@ cvp_configlets:
     \  domain-id dc02-gw01\n   local-interface Vlan4094\n   peer-address 10.0.11.17\n
     \  peer-link Port-Channel31\n   reload-delay mlag 300\n   reload-delay non-mlag
     330\n!\narp aging timeout default 275\n!\nroute-map RM-CONN-2-BGP permit 10\n
-    \  match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN
-    permit 10\n   description Make routes learned over MLAG Peer-link less preferred
-    on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter bfd\n
-    \  multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65599\n   router-id
-    10.0.4.13\n   distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   no bgp default
-    ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS
-    next-hop-unchanged\n   neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor
-    EVPN-OVERLAY-PEERS ebgp-multihop 4\n   neighbor EVPN-OVERLAY-PEERS password 7
-    hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n   neighbor EVPN-OVERLAY-PEERS send-community\n
-    \  neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
-    peer group\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65599\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc02-gw01b\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.0.0 peer
-    group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.0.0 remote-as 65559\n   neighbor 10.0.0.0
-    description dc01-gw01a\n   neighbor 10.0.2.15 peer group EVPN-OVERLAY-PEERS\n
-    \  neighbor 10.0.2.15 remote-as 65559\n   neighbor 10.0.2.15 description dc01-gw01a\n
-    \  neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 remote-as
-    65560\n   neighbor 10.0.4.1 description dc02-sp01\n   neighbor 10.0.4.2 peer group
-    EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.2 remote-as 65560\n   neighbor 10.0.4.2
-    description dc02-sp02\n   neighbor 10.0.10.64 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 10.0.10.64 remote-as 65560\n   neighbor 10.0.10.64 description dc02-sp01_Ethernet11\n
-    \  neighbor 10.0.10.66 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.66
-    remote-as 65560\n   neighbor 10.0.10.66 description dc02-sp02_Ethernet11\n   neighbor
-    10.0.12.17 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.17 description
-    dc02-gw01b\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan 204\n
-    \     rd 65000:10204\n      route-target both 10204:10204\n      redistribute
-    learned\n   !\n   vlan 205\n      rd 65000:10205\n      route-target both 10205:10205\n
-    \     redistribute learned\n   !\n   vlan 206\n      rd 65000:10206\n      route-target
-    both 10206:10206\n      redistribute learned\n   !\n   vlan 207\n      rd 65000:10207\n
-    \     route-target both 10207:10207\n      redistribute learned\n   !\n   vlan
-    208\n      rd 65000:10208\n      route-target both 10208:10208\n      redistribute
-    learned\n   !\n   vlan 209\n      rd 65000:10209\n      route-target both 10209:10209\n
-    \     redistribute learned\n   !\n   vlan 210\n      rd 65000:10210\n      route-target
-    both 10210:10210\n      redistribute learned\n   !\n   vlan 211\n      rd 65000:10211\n
-    \     route-target both 10211:10211\n      redistribute learned\n   !\n   vlan
-    42\n      rd 65000:10042\n      route-target both 10042:10042\n      redistribute
-    learned\n   !\n   vlan 43\n      rd 65000:10043\n      route-target both 10043:10043\n
-    \     redistribute learned\n   !\n   vlan 44\n      rd 65000:10044\n      route-target
-    both 10044:10044\n      redistribute learned\n   !\n   vlan 45\n      rd 65000:10045\n
-    \     route-target both 10045:10045\n      redistribute learned\n   !\n   vlan
-    49\n      rd 65000:10049\n      route-target both 10049:10049\n      redistribute
-    learned\n   !\n   vlan 52\n      rd 65000:10052\n      route-target both 10052:10052\n
-    \     redistribute learned\n   !\n   vlan 53\n      rd 65000:10053\n      route-target
-    both 10053:10053\n      redistribute learned\n   !\n   vlan 54\n      rd 65000:10054\n
-    \     route-target both 10054:10054\n      redistribute learned\n   !\n   vlan
-    55\n      rd 65000:10055\n      route-target both 10055:10055\n      redistribute
-    learned\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n
-    \  !\n   address-family rt-membership\n      neighbor EVPN-OVERLAY-PEERS activate\n
-    \     neighbor EVPN-OVERLAY-PEERS default-route-target only\n   !\n   address-family
-    ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS
-    activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf ACME-DT\n
-    \     rd 10.0.5.13:4405\n      route-target import evpn 4405:4405\n      route-target
-    export evpn 4405:4405\n      router-id 10.0.4.13\n      neighbor 10.0.12.17 peer
-    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf ACME-GENERAL\n
-    \     rd 10.0.5.13:4401\n      route-target import evpn 4401:4401\n      route-target
-    export evpn 4401:4401\n      router-id 10.0.4.13\n      neighbor 10.0.12.17 peer
-    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n!\nbanner motd\n#########################################################################################\n#
+    \  match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-EVPN-FILTER-AS65559
+    deny 10\n   match as 65559\n!\nroute-map RM-EVPN-FILTER-AS65559 permit 20\n!\nroute-map
+    RM-EVPN-FILTER-AS65560 deny 10\n   match as 65560\n!\nroute-map RM-EVPN-FILTER-AS65560
+    permit 20\n!\nroute-map RM-MLAG-PEER-IN permit 10\n   description Make routes
+    learned over MLAG Peer-link less preferred on spines to ensure optimal routing\n
+    \  set origin incomplete\n!\nrouter bfd\n   multihop interval 1200 min-rx 1200
+    multiplier 3\n!\nrouter bgp 65599\n   router-id 10.0.4.13\n   distance bgp 20
+    200 200\n   maximum-paths 4 ecmp 4\n   no bgp default ipv4-unicast\n   neighbor
+    EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged\n
+    \  neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
+    ebgp-multihop 4\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
+    \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
+    maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65599\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc02-gw01b\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.0.0 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.0.0
+    remote-as 65559\n   neighbor 10.0.0.0 description dc01-gw01a\n   neighbor 10.0.2.15
+    peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.15 remote-as 65559\n   neighbor
+    10.0.2.15 description dc01-gw01a\n   neighbor 10.0.2.15 route-map RM-EVPN-FILTER-AS65559
+    out\n   neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1
+    remote-as 65560\n   neighbor 10.0.4.1 description dc02-sp01\n   neighbor 10.0.4.1
+    route-map RM-EVPN-FILTER-AS65560 out\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.4.2 remote-as 65560\n   neighbor 10.0.4.2 description dc02-sp02\n
+    \  neighbor 10.0.4.2 route-map RM-EVPN-FILTER-AS65560 out\n   neighbor 10.0.10.64
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.64 remote-as 65560\n   neighbor
+    10.0.10.64 description dc02-sp01_Ethernet11\n   neighbor 10.0.10.66 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.66 remote-as 65560\n   neighbor 10.0.10.66
+    description dc02-sp02_Ethernet11\n   neighbor 10.0.12.17 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \  neighbor 10.0.12.17 description dc02-gw01b\n   redistribute connected route-map
+    RM-CONN-2-BGP\n   !\n   vlan 204\n      rd 65000:10204\n      route-target both
+    10204:10204\n      redistribute learned\n   !\n   vlan 205\n      rd 65000:10205\n
+    \     route-target both 10205:10205\n      redistribute learned\n   !\n   vlan
+    206\n      rd 65000:10206\n      route-target both 10206:10206\n      redistribute
+    learned\n   !\n   vlan 207\n      rd 65000:10207\n      route-target both 10207:10207\n
+    \     redistribute learned\n   !\n   vlan 208\n      rd 65000:10208\n      route-target
+    both 10208:10208\n      redistribute learned\n   !\n   vlan 209\n      rd 65000:10209\n
+    \     route-target both 10209:10209\n      redistribute learned\n   !\n   vlan
+    210\n      rd 65000:10210\n      route-target both 10210:10210\n      redistribute
+    learned\n   !\n   vlan 211\n      rd 65000:10211\n      route-target both 10211:10211\n
+    \     redistribute learned\n   !\n   vlan 42\n      rd 65000:10042\n      route-target
+    both 10042:10042\n      redistribute learned\n   !\n   vlan 43\n      rd 65000:10043\n
+    \     route-target both 10043:10043\n      redistribute learned\n   !\n   vlan
+    44\n      rd 65000:10044\n      route-target both 10044:10044\n      redistribute
+    learned\n   !\n   vlan 45\n      rd 65000:10045\n      route-target both 10045:10045\n
+    \     redistribute learned\n   !\n   vlan 49\n      rd 65000:10049\n      route-target
+    both 10049:10049\n      redistribute learned\n   !\n   vlan 52\n      rd 65000:10052\n
+    \     route-target both 10052:10052\n      redistribute learned\n   !\n   vlan
+    53\n      rd 65000:10053\n      route-target both 10053:10053\n      redistribute
+    learned\n   !\n   vlan 54\n      rd 65000:10054\n      route-target both 10054:10054\n
+    \     redistribute learned\n   !\n   vlan 55\n      rd 65000:10055\n      route-target
+    both 10055:10055\n      redistribute learned\n   !\n   address-family evpn\n      neighbor
+    EVPN-OVERLAY-PEERS activate\n   !\n   address-family rt-membership\n      neighbor
+    EVPN-OVERLAY-PEERS activate\n      neighbor EVPN-OVERLAY-PEERS default-route-target
+    only\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
+    activate\n   !\n   vrf ACME-DT\n      rd 10.0.5.13:4405\n      route-target import
+    evpn 4405:4405\n      route-target export evpn 4405:4405\n      router-id 10.0.4.13\n
+    \     neighbor 10.0.12.17 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
+    connected\n   !\n   vrf ACME-GENERAL\n      rd 10.0.5.13:4401\n      route-target
+    import evpn 4401:4401\n      route-target export evpn 4401:4401\n      router-id
+    10.0.4.13\n      neighbor 10.0.12.17 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
+    connected\n!\nbanner motd\n#########################################################################################\n#
     \                                                                                     \n#
     \      Warning Notice                                                                 \n#\n#
     \      This system is restricted solely to authorized users for legitimate business\n#
@@ -1758,12 +1769,12 @@ cvp_configlets:
   acme_dc02-gw01b: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc02-gw01b\n!\nspanning-tree mode mstp\nno spanning-tree
-    vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa authorization exec
-    default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
-    15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc02-gw01b\n!\nspanning-tree
+    mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa
+    authorization exec default local\n!\nno enable password\nno aaa root\n!\nusername
+    arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 42\n   name ACME_GENERAL_42\n!\nvlan 43\n   name ACME_GENERAL_FW_43\n!\nvlan
     44\n   name ACME_GENERAL_EXT_44\n!\nvlan 45\n   name ACME_GENERAL_FW_45\n!\nvlan
@@ -1828,68 +1839,73 @@ cvp_configlets:
     \  domain-id dc02-gw01\n   local-interface Vlan4094\n   peer-address 10.0.11.16\n
     \  peer-link Port-Channel31\n   reload-delay mlag 300\n   reload-delay non-mlag
     330\n!\narp aging timeout default 275\n!\nroute-map RM-CONN-2-BGP permit 10\n
-    \  match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN
-    permit 10\n   description Make routes learned over MLAG Peer-link less preferred
-    on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter bfd\n
-    \  multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65599\n   router-id
-    10.0.4.14\n   distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   no bgp default
-    ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS
-    next-hop-unchanged\n   neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor
-    EVPN-OVERLAY-PEERS ebgp-multihop 4\n   neighbor EVPN-OVERLAY-PEERS password 7
-    hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n   neighbor EVPN-OVERLAY-PEERS send-community\n
-    \  neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
-    peer group\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65599\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc02-gw01a\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.0.2 peer
-    group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.0.2 remote-as 65559\n   neighbor 10.0.0.2
-    description dc01-gw01b\n   neighbor 10.0.2.16 peer group EVPN-OVERLAY-PEERS\n
-    \  neighbor 10.0.2.16 remote-as 65559\n   neighbor 10.0.2.16 description dc01-gw01b\n
-    \  neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 remote-as
-    65560\n   neighbor 10.0.4.1 description dc02-sp01\n   neighbor 10.0.4.2 peer group
-    EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.2 remote-as 65560\n   neighbor 10.0.4.2
-    description dc02-sp02\n   neighbor 10.0.10.72 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 10.0.10.72 remote-as 65560\n   neighbor 10.0.10.72 description dc02-sp01_Ethernet12\n
-    \  neighbor 10.0.10.74 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.74
-    remote-as 65560\n   neighbor 10.0.10.74 description dc02-sp02_Ethernet12\n   neighbor
-    10.0.12.16 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.16 description
-    dc02-gw01a\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan 204\n
-    \     rd 65000:10204\n      route-target both 10204:10204\n      redistribute
-    learned\n   !\n   vlan 205\n      rd 65000:10205\n      route-target both 10205:10205\n
-    \     redistribute learned\n   !\n   vlan 206\n      rd 65000:10206\n      route-target
-    both 10206:10206\n      redistribute learned\n   !\n   vlan 207\n      rd 65000:10207\n
-    \     route-target both 10207:10207\n      redistribute learned\n   !\n   vlan
-    208\n      rd 65000:10208\n      route-target both 10208:10208\n      redistribute
-    learned\n   !\n   vlan 209\n      rd 65000:10209\n      route-target both 10209:10209\n
-    \     redistribute learned\n   !\n   vlan 210\n      rd 65000:10210\n      route-target
-    both 10210:10210\n      redistribute learned\n   !\n   vlan 211\n      rd 65000:10211\n
-    \     route-target both 10211:10211\n      redistribute learned\n   !\n   vlan
-    42\n      rd 65000:10042\n      route-target both 10042:10042\n      redistribute
-    learned\n   !\n   vlan 43\n      rd 65000:10043\n      route-target both 10043:10043\n
-    \     redistribute learned\n   !\n   vlan 44\n      rd 65000:10044\n      route-target
-    both 10044:10044\n      redistribute learned\n   !\n   vlan 45\n      rd 65000:10045\n
-    \     route-target both 10045:10045\n      redistribute learned\n   !\n   vlan
-    49\n      rd 65000:10049\n      route-target both 10049:10049\n      redistribute
-    learned\n   !\n   vlan 52\n      rd 65000:10052\n      route-target both 10052:10052\n
-    \     redistribute learned\n   !\n   vlan 53\n      rd 65000:10053\n      route-target
-    both 10053:10053\n      redistribute learned\n   !\n   vlan 54\n      rd 65000:10054\n
-    \     route-target both 10054:10054\n      redistribute learned\n   !\n   vlan
-    55\n      rd 65000:10055\n      route-target both 10055:10055\n      redistribute
-    learned\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n
-    \  !\n   address-family rt-membership\n      neighbor EVPN-OVERLAY-PEERS activate\n
-    \     neighbor EVPN-OVERLAY-PEERS default-route-target only\n   !\n   address-family
-    ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS
-    activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf ACME-DT\n
-    \     rd 10.0.5.13:4405\n      route-target import evpn 4405:4405\n      route-target
-    export evpn 4405:4405\n      router-id 10.0.4.14\n      neighbor 10.0.12.16 peer
-    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf ACME-GENERAL\n
-    \     rd 10.0.5.13:4401\n      route-target import evpn 4401:4401\n      route-target
-    export evpn 4401:4401\n      router-id 10.0.4.14\n      neighbor 10.0.12.16 peer
-    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n!\nbanner motd\n#########################################################################################\n#
+    \  match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-EVPN-FILTER-AS65559
+    deny 10\n   match as 65559\n!\nroute-map RM-EVPN-FILTER-AS65559 permit 20\n!\nroute-map
+    RM-EVPN-FILTER-AS65560 deny 10\n   match as 65560\n!\nroute-map RM-EVPN-FILTER-AS65560
+    permit 20\n!\nroute-map RM-MLAG-PEER-IN permit 10\n   description Make routes
+    learned over MLAG Peer-link less preferred on spines to ensure optimal routing\n
+    \  set origin incomplete\n!\nrouter bfd\n   multihop interval 1200 min-rx 1200
+    multiplier 3\n!\nrouter bgp 65599\n   router-id 10.0.4.14\n   distance bgp 20
+    200 200\n   maximum-paths 4 ecmp 4\n   no bgp default ipv4-unicast\n   neighbor
+    EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged\n
+    \  neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
+    ebgp-multihop 4\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
+    \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
+    maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65599\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc02-gw01a\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.0.2 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.0.2
+    remote-as 65559\n   neighbor 10.0.0.2 description dc01-gw01b\n   neighbor 10.0.2.16
+    peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.2.16 remote-as 65559\n   neighbor
+    10.0.2.16 description dc01-gw01b\n   neighbor 10.0.2.16 route-map RM-EVPN-FILTER-AS65559
+    out\n   neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1
+    remote-as 65560\n   neighbor 10.0.4.1 description dc02-sp01\n   neighbor 10.0.4.1
+    route-map RM-EVPN-FILTER-AS65560 out\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.4.2 remote-as 65560\n   neighbor 10.0.4.2 description dc02-sp02\n
+    \  neighbor 10.0.4.2 route-map RM-EVPN-FILTER-AS65560 out\n   neighbor 10.0.10.72
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.72 remote-as 65560\n   neighbor
+    10.0.10.72 description dc02-sp01_Ethernet12\n   neighbor 10.0.10.74 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.74 remote-as 65560\n   neighbor 10.0.10.74
+    description dc02-sp02_Ethernet12\n   neighbor 10.0.12.16 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \  neighbor 10.0.12.16 description dc02-gw01a\n   redistribute connected route-map
+    RM-CONN-2-BGP\n   !\n   vlan 204\n      rd 65000:10204\n      route-target both
+    10204:10204\n      redistribute learned\n   !\n   vlan 205\n      rd 65000:10205\n
+    \     route-target both 10205:10205\n      redistribute learned\n   !\n   vlan
+    206\n      rd 65000:10206\n      route-target both 10206:10206\n      redistribute
+    learned\n   !\n   vlan 207\n      rd 65000:10207\n      route-target both 10207:10207\n
+    \     redistribute learned\n   !\n   vlan 208\n      rd 65000:10208\n      route-target
+    both 10208:10208\n      redistribute learned\n   !\n   vlan 209\n      rd 65000:10209\n
+    \     route-target both 10209:10209\n      redistribute learned\n   !\n   vlan
+    210\n      rd 65000:10210\n      route-target both 10210:10210\n      redistribute
+    learned\n   !\n   vlan 211\n      rd 65000:10211\n      route-target both 10211:10211\n
+    \     redistribute learned\n   !\n   vlan 42\n      rd 65000:10042\n      route-target
+    both 10042:10042\n      redistribute learned\n   !\n   vlan 43\n      rd 65000:10043\n
+    \     route-target both 10043:10043\n      redistribute learned\n   !\n   vlan
+    44\n      rd 65000:10044\n      route-target both 10044:10044\n      redistribute
+    learned\n   !\n   vlan 45\n      rd 65000:10045\n      route-target both 10045:10045\n
+    \     redistribute learned\n   !\n   vlan 49\n      rd 65000:10049\n      route-target
+    both 10049:10049\n      redistribute learned\n   !\n   vlan 52\n      rd 65000:10052\n
+    \     route-target both 10052:10052\n      redistribute learned\n   !\n   vlan
+    53\n      rd 65000:10053\n      route-target both 10053:10053\n      redistribute
+    learned\n   !\n   vlan 54\n      rd 65000:10054\n      route-target both 10054:10054\n
+    \     redistribute learned\n   !\n   vlan 55\n      rd 65000:10055\n      route-target
+    both 10055:10055\n      redistribute learned\n   !\n   address-family evpn\n      neighbor
+    EVPN-OVERLAY-PEERS activate\n   !\n   address-family rt-membership\n      neighbor
+    EVPN-OVERLAY-PEERS activate\n      neighbor EVPN-OVERLAY-PEERS default-route-target
+    only\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
+    activate\n   !\n   vrf ACME-DT\n      rd 10.0.5.13:4405\n      route-target import
+    evpn 4405:4405\n      route-target export evpn 4405:4405\n      router-id 10.0.4.14\n
+    \     neighbor 10.0.12.16 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
+    connected\n   !\n   vrf ACME-GENERAL\n      rd 10.0.5.13:4401\n      route-target
+    import evpn 4401:4401\n      route-target export evpn 4401:4401\n      router-id
+    10.0.4.14\n      neighbor 10.0.12.16 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
+    connected\n!\nbanner motd\n#########################################################################################\n#
     \                                                                                     \n#
     \      Warning Notice                                                                 \n#\n#
     \      This system is restricted solely to authorized users for legitimate business\n#
@@ -1900,12 +1916,12 @@ cvp_configlets:
   acme_dc02-le01a: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc02-le01a\n!\nspanning-tree mode mstp\nno spanning-tree
-    vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa authorization exec
-    default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
-    15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc02-le01a\n!\nspanning-tree
+    mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa
+    authorization exec default local\n!\nno enable password\nno aaa root\n!\nusername
+    arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 42\n   name ACME_GENERAL_42\n!\nvlan 43\n   name ACME_GENERAL_FW_43\n!\nvlan
     44\n   name ACME_GENERAL_EXT_44\n!\nvlan 45\n   name ACME_GENERAL_FW_45\n!\nvlan
@@ -1973,30 +1989,33 @@ cvp_configlets:
     \  domain-id dc02-le01\n   local-interface Vlan4094\n   peer-address 10.0.11.5\n
     \  peer-link Port-Channel31\n   reload-delay mlag 300\n   reload-delay non-mlag
     330\n!\narp aging timeout default 275\n!\nroute-map RM-CONN-2-BGP permit 10\n
-    \  match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN
-    permit 10\n   description Make routes learned over MLAG Peer-link less preferred
-    on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter bfd\n
-    \  multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65561\n   router-id
-    10.0.4.7\n   distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   no bgp default
-    ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS
-    update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 4\n   neighbor
-    EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n   neighbor EVPN-OVERLAY-PEERS
-    send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
-    peer group\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65561\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc02-le01b\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.4.1 peer
-    group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 remote-as 65560\n   neighbor 10.0.4.1
-    description dc02-sp01\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n   neighbor
-    10.0.4.2 remote-as 65560\n   neighbor 10.0.4.2 description dc02-sp02\n   neighbor
-    10.0.10.16 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.16 remote-as 65560\n
-    \  neighbor 10.0.10.16 description dc02-sp01_Ethernet1\n   neighbor 10.0.10.18
-    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.18 remote-as 65560\n   neighbor
-    10.0.10.18 description dc02-sp02_Ethernet1\n   neighbor 10.0.12.5 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \  match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-EVPN-FILTER-AS65560
+    deny 10\n   match as 65560\n!\nroute-map RM-EVPN-FILTER-AS65560 permit 20\n!\nroute-map
+    RM-MLAG-PEER-IN permit 10\n   description Make routes learned over MLAG Peer-link
+    less preferred on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter
+    bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65561\n
+    \  router-id 10.0.4.7\n   distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n
+    \  no bgp default ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor
+    EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop
+    4\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
+    \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
+    maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65561\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc02-le01b\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 remote-as
+    65560\n   neighbor 10.0.4.1 description dc02-sp01\n   neighbor 10.0.4.1 route-map
+    RM-EVPN-FILTER-AS65560 out\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.4.2 remote-as 65560\n   neighbor 10.0.4.2 description dc02-sp02\n
+    \  neighbor 10.0.4.2 route-map RM-EVPN-FILTER-AS65560 out\n   neighbor 10.0.10.16
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.16 remote-as 65560\n   neighbor
+    10.0.10.16 description dc02-sp01_Ethernet1\n   neighbor 10.0.10.18 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.18 remote-as 65560\n   neighbor 10.0.10.18
+    description dc02-sp02_Ethernet1\n   neighbor 10.0.12.5 peer group MLAG-IPv4-UNDERLAY-PEER\n
     \  neighbor 10.0.12.5 description dc02-le01b\n   redistribute connected route-map
     RM-CONN-2-BGP\n   !\n   vlan 42\n      rd 65000:10042\n      route-target both
     10042:10042\n      redistribute learned\n   !\n   vlan 43\n      rd 65000:10043\n
@@ -2030,12 +2049,12 @@ cvp_configlets:
   acme_dc02-le01b: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc02-le01b\n!\nspanning-tree mode mstp\nno spanning-tree
-    vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa authorization exec
-    default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
-    15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc02-le01b\n!\nspanning-tree
+    mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa
+    authorization exec default local\n!\nno enable password\nno aaa root\n!\nusername
+    arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 42\n   name ACME_GENERAL_42\n!\nvlan 43\n   name ACME_GENERAL_FW_43\n!\nvlan
     44\n   name ACME_GENERAL_EXT_44\n!\nvlan 45\n   name ACME_GENERAL_FW_45\n!\nvlan
@@ -2103,30 +2122,33 @@ cvp_configlets:
     \  domain-id dc02-le01\n   local-interface Vlan4094\n   peer-address 10.0.11.4\n
     \  peer-link Port-Channel31\n   reload-delay mlag 300\n   reload-delay non-mlag
     330\n!\narp aging timeout default 275\n!\nroute-map RM-CONN-2-BGP permit 10\n
-    \  match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN
-    permit 10\n   description Make routes learned over MLAG Peer-link less preferred
-    on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter bfd\n
-    \  multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65561\n   router-id
-    10.0.4.8\n   distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   no bgp default
-    ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS
-    update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 4\n   neighbor
-    EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n   neighbor EVPN-OVERLAY-PEERS
-    send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
-    peer group\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65561\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc02-le01a\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.4.1 peer
-    group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 remote-as 65560\n   neighbor 10.0.4.1
-    description dc02-sp01\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n   neighbor
-    10.0.4.2 remote-as 65560\n   neighbor 10.0.4.2 description dc02-sp02\n   neighbor
-    10.0.10.24 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.24 remote-as 65560\n
-    \  neighbor 10.0.10.24 description dc02-sp01_Ethernet2\n   neighbor 10.0.10.26
-    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.26 remote-as 65560\n   neighbor
-    10.0.10.26 description dc02-sp02_Ethernet2\n   neighbor 10.0.12.4 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \  match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-EVPN-FILTER-AS65560
+    deny 10\n   match as 65560\n!\nroute-map RM-EVPN-FILTER-AS65560 permit 20\n!\nroute-map
+    RM-MLAG-PEER-IN permit 10\n   description Make routes learned over MLAG Peer-link
+    less preferred on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter
+    bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65561\n
+    \  router-id 10.0.4.8\n   distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n
+    \  no bgp default ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor
+    EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop
+    4\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
+    \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
+    maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65561\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc02-le01a\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 remote-as
+    65560\n   neighbor 10.0.4.1 description dc02-sp01\n   neighbor 10.0.4.1 route-map
+    RM-EVPN-FILTER-AS65560 out\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.4.2 remote-as 65560\n   neighbor 10.0.4.2 description dc02-sp02\n
+    \  neighbor 10.0.4.2 route-map RM-EVPN-FILTER-AS65560 out\n   neighbor 10.0.10.24
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.24 remote-as 65560\n   neighbor
+    10.0.10.24 description dc02-sp01_Ethernet2\n   neighbor 10.0.10.26 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.26 remote-as 65560\n   neighbor 10.0.10.26
+    description dc02-sp02_Ethernet2\n   neighbor 10.0.12.4 peer group MLAG-IPv4-UNDERLAY-PEER\n
     \  neighbor 10.0.12.4 description dc02-le01a\n   redistribute connected route-map
     RM-CONN-2-BGP\n   !\n   vlan 42\n      rd 65000:10042\n      route-target both
     10042:10042\n      redistribute learned\n   !\n   vlan 43\n      rd 65000:10043\n
@@ -2160,12 +2182,12 @@ cvp_configlets:
   acme_dc02-le02a: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc02-le02a\n!\nspanning-tree mode mstp\nno spanning-tree
-    vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa authorization exec
-    default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
-    15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc02-le02a\n!\nspanning-tree
+    mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa
+    authorization exec default local\n!\nno enable password\nno aaa root\n!\nusername
+    arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 42\n   name ACME_GENERAL_42\n!\nvlan 43\n   name ACME_GENERAL_FW_43\n!\nvlan
     44\n   name ACME_GENERAL_EXT_44\n!\nvlan 45\n   name ACME_GENERAL_FW_45\n!\nvlan
@@ -2233,30 +2255,33 @@ cvp_configlets:
     \  domain-id dc02-le02\n   local-interface Vlan4094\n   peer-address 10.0.11.9\n
     \  peer-link Port-Channel31\n   reload-delay mlag 300\n   reload-delay non-mlag
     330\n!\narp aging timeout default 275\n!\nroute-map RM-CONN-2-BGP permit 10\n
-    \  match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN
-    permit 10\n   description Make routes learned over MLAG Peer-link less preferred
-    on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter bfd\n
-    \  multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65562\n   router-id
-    10.0.4.9\n   distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   no bgp default
-    ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS
-    update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 4\n   neighbor
-    EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n   neighbor EVPN-OVERLAY-PEERS
-    send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
-    peer group\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65562\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc02-le02b\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.4.1 peer
-    group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 remote-as 65560\n   neighbor 10.0.4.1
-    description dc02-sp01\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n   neighbor
-    10.0.4.2 remote-as 65560\n   neighbor 10.0.4.2 description dc02-sp02\n   neighbor
-    10.0.10.32 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.32 remote-as 65560\n
-    \  neighbor 10.0.10.32 description dc02-sp01_Ethernet3\n   neighbor 10.0.10.34
-    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.34 remote-as 65560\n   neighbor
-    10.0.10.34 description dc02-sp02_Ethernet3\n   neighbor 10.0.12.9 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \  match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-EVPN-FILTER-AS65560
+    deny 10\n   match as 65560\n!\nroute-map RM-EVPN-FILTER-AS65560 permit 20\n!\nroute-map
+    RM-MLAG-PEER-IN permit 10\n   description Make routes learned over MLAG Peer-link
+    less preferred on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter
+    bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65562\n
+    \  router-id 10.0.4.9\n   distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n
+    \  no bgp default ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor
+    EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop
+    4\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
+    \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
+    maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65562\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc02-le02b\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 remote-as
+    65560\n   neighbor 10.0.4.1 description dc02-sp01\n   neighbor 10.0.4.1 route-map
+    RM-EVPN-FILTER-AS65560 out\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.4.2 remote-as 65560\n   neighbor 10.0.4.2 description dc02-sp02\n
+    \  neighbor 10.0.4.2 route-map RM-EVPN-FILTER-AS65560 out\n   neighbor 10.0.10.32
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.32 remote-as 65560\n   neighbor
+    10.0.10.32 description dc02-sp01_Ethernet3\n   neighbor 10.0.10.34 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.34 remote-as 65560\n   neighbor 10.0.10.34
+    description dc02-sp02_Ethernet3\n   neighbor 10.0.12.9 peer group MLAG-IPv4-UNDERLAY-PEER\n
     \  neighbor 10.0.12.9 description dc02-le02b\n   redistribute connected route-map
     RM-CONN-2-BGP\n   !\n   vlan 42\n      rd 65000:10042\n      route-target both
     10042:10042\n      redistribute learned\n   !\n   vlan 43\n      rd 65000:10043\n
@@ -2290,12 +2315,12 @@ cvp_configlets:
   acme_dc02-le02b: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc02-le02b\n!\nspanning-tree mode mstp\nno spanning-tree
-    vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa authorization exec
-    default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
-    15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc02-le02b\n!\nspanning-tree
+    mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa
+    authorization exec default local\n!\nno enable password\nno aaa root\n!\nusername
+    arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 42\n   name ACME_GENERAL_42\n!\nvlan 43\n   name ACME_GENERAL_FW_43\n!\nvlan
     44\n   name ACME_GENERAL_EXT_44\n!\nvlan 45\n   name ACME_GENERAL_FW_45\n!\nvlan
@@ -2363,30 +2388,33 @@ cvp_configlets:
     \  domain-id dc02-le02\n   local-interface Vlan4094\n   peer-address 10.0.11.8\n
     \  peer-link Port-Channel31\n   reload-delay mlag 300\n   reload-delay non-mlag
     330\n!\narp aging timeout default 275\n!\nroute-map RM-CONN-2-BGP permit 10\n
-    \  match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN
-    permit 10\n   description Make routes learned over MLAG Peer-link less preferred
-    on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter bfd\n
-    \  multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65562\n   router-id
-    10.0.4.10\n   distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   no bgp default
-    ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS
-    update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 4\n   neighbor
-    EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n   neighbor EVPN-OVERLAY-PEERS
-    send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
-    peer group\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65562\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc02-le02a\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.4.1 peer
-    group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 remote-as 65560\n   neighbor 10.0.4.1
-    description dc02-sp01\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n   neighbor
-    10.0.4.2 remote-as 65560\n   neighbor 10.0.4.2 description dc02-sp02\n   neighbor
-    10.0.10.40 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.40 remote-as 65560\n
-    \  neighbor 10.0.10.40 description dc02-sp01_Ethernet4\n   neighbor 10.0.10.42
-    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.42 remote-as 65560\n   neighbor
-    10.0.10.42 description dc02-sp02_Ethernet4\n   neighbor 10.0.12.8 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \  match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-EVPN-FILTER-AS65560
+    deny 10\n   match as 65560\n!\nroute-map RM-EVPN-FILTER-AS65560 permit 20\n!\nroute-map
+    RM-MLAG-PEER-IN permit 10\n   description Make routes learned over MLAG Peer-link
+    less preferred on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter
+    bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65562\n
+    \  router-id 10.0.4.10\n   distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n
+    \  no bgp default ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor
+    EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop
+    4\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
+    \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
+    maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65562\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc02-le02a\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 remote-as
+    65560\n   neighbor 10.0.4.1 description dc02-sp01\n   neighbor 10.0.4.1 route-map
+    RM-EVPN-FILTER-AS65560 out\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.4.2 remote-as 65560\n   neighbor 10.0.4.2 description dc02-sp02\n
+    \  neighbor 10.0.4.2 route-map RM-EVPN-FILTER-AS65560 out\n   neighbor 10.0.10.40
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.40 remote-as 65560\n   neighbor
+    10.0.10.40 description dc02-sp01_Ethernet4\n   neighbor 10.0.10.42 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.42 remote-as 65560\n   neighbor 10.0.10.42
+    description dc02-sp02_Ethernet4\n   neighbor 10.0.12.8 peer group MLAG-IPv4-UNDERLAY-PEER\n
     \  neighbor 10.0.12.8 description dc02-le02a\n   redistribute connected route-map
     RM-CONN-2-BGP\n   !\n   vlan 42\n      rd 65000:10042\n      route-target both
     10042:10042\n      redistribute learned\n   !\n   vlan 43\n      rd 65000:10043\n
@@ -2576,12 +2604,12 @@ cvp_configlets:
   acme_dc02-srv01a: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc02-srv01a\n!\nspanning-tree mode mstp\nno spanning-tree
-    vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa authorization exec
-    default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
-    15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc02-srv01a\n!\nspanning-tree
+    mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa
+    authorization exec default local\n!\nno enable password\nno aaa root\n!\nusername
+    arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 43\n   name ACME_GENERAL_FW_43\n!\nvlan 45\n   name ACME_GENERAL_FW_45\n!\nvlan
     53\n   name ACME_DT_FW_53\n!\nvlan 55\n   name ACME_DT_FW_55\n!\nvlan 204\n   name
@@ -2660,33 +2688,36 @@ cvp_configlets:
     route vrf ACME-GENERAL 10.4.43.0/24 Vlan204 10.0.0.94 name FW_ACME_GENERAL_43\nip
     route vrf ACME-GENERAL 10.4.45.0/24 Vlan208 10.0.0.142 name FW_ACME_GENERAL_45_EXTENDED\n!\narp
     aging timeout default 275\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address
-    prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN permit 10\n
-    \  description Make routes learned over MLAG Peer-link less preferred on spines
-    to ensure optimal routing\n   set origin incomplete\n!\nrouter bfd\n   multihop
-    interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65597\n   router-id 10.0.4.11\n
-    \  distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   no bgp default ipv4-unicast\n
-    \  neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS update-source
-    Loopback0\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 4\n   neighbor EVPN-OVERLAY-PEERS
-    password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n   neighbor EVPN-OVERLAY-PEERS send-community\n
-    \  neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
-    peer group\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65597\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc02-srv01b\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.4.1 peer
-    group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 remote-as 65560\n   neighbor 10.0.4.1
-    description dc02-sp01\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n   neighbor
-    10.0.4.2 remote-as 65560\n   neighbor 10.0.4.2 description dc02-sp02\n   neighbor
-    10.0.10.48 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.48 remote-as 65560\n
-    \  neighbor 10.0.10.48 description dc02-sp01_Ethernet9\n   neighbor 10.0.10.50
-    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.50 remote-as 65560\n   neighbor
-    10.0.10.50 description dc02-sp02_Ethernet9\n   neighbor 10.0.12.13 peer group
-    MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.13 description dc02-srv01b\n   redistribute
-    connected route-map RM-CONN-2-BGP\n   !\n   vlan 204\n      rd 65000:10204\n      route-target
-    both 10204:10204\n      redistribute learned\n   !\n   vlan 205\n      rd 65000:10205\n
+    prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-EVPN-FILTER-AS65560 deny
+    10\n   match as 65560\n!\nroute-map RM-EVPN-FILTER-AS65560 permit 20\n!\nroute-map
+    RM-MLAG-PEER-IN permit 10\n   description Make routes learned over MLAG Peer-link
+    less preferred on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter
+    bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65597\n
+    \  router-id 10.0.4.11\n   distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n
+    \  no bgp default ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor
+    EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop
+    4\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
+    \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
+    maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65597\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc02-srv01b\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 remote-as
+    65560\n   neighbor 10.0.4.1 description dc02-sp01\n   neighbor 10.0.4.1 route-map
+    RM-EVPN-FILTER-AS65560 out\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.4.2 remote-as 65560\n   neighbor 10.0.4.2 description dc02-sp02\n
+    \  neighbor 10.0.4.2 route-map RM-EVPN-FILTER-AS65560 out\n   neighbor 10.0.10.48
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.48 remote-as 65560\n   neighbor
+    10.0.10.48 description dc02-sp01_Ethernet9\n   neighbor 10.0.10.50 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.50 remote-as 65560\n   neighbor 10.0.10.50
+    description dc02-sp02_Ethernet9\n   neighbor 10.0.12.13 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \  neighbor 10.0.12.13 description dc02-srv01b\n   redistribute connected route-map
+    RM-CONN-2-BGP\n   !\n   vlan 204\n      rd 65000:10204\n      route-target both
+    10204:10204\n      redistribute learned\n   !\n   vlan 205\n      rd 65000:10205\n
     \     route-target both 10205:10205\n      redistribute learned\n   !\n   vlan
     206\n      rd 65000:10206\n      route-target both 10206:10206\n      redistribute
     learned\n   !\n   vlan 207\n      rd 65000:10207\n      route-target both 10207:10207\n
@@ -2721,12 +2752,12 @@ cvp_configlets:
   acme_dc02-srv01b: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
-    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
-    routing protocols model multi-agent\n!\nlldp management-address all\nlldp management-address
-    vrf default\n!\nhostname dc02-srv01b\n!\nspanning-tree mode mstp\nno spanning-tree
-    vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa authorization exec
-    default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
-    15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
+    internal order ascending range 1006 1199\n!\nno ip igmp snooping\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nlldp
+    management-address all\nlldp management-address vrf default\n!\nhostname dc02-srv01b\n!\nspanning-tree
+    mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa
+    authorization exec default local\n!\nno enable password\nno aaa root\n!\nusername
+    arista privilege 15 role network-admin secret sha512 $6$ZGX/X07MoiWP9hvX$3UaAtOAiBGc54DYHdQt5dsr5P2HLydxjrda51Zw69tSsF4tahXPVj26PwOiZUy/xFRZL3CAkT7.lsOPqWfIbU0\nusername
     cvpadmin privilege 15 role network-admin secret sha512 $6$VkEn9bBEs2QqmMw7$tp1RpJKwlxGZZYnUSSvDtT8Jnk23Liow9QzRXiU6yNBvEFU9097mhUb4DZboVDA3NYYIqbnGzUNpcaW2SRXKi/\n!\nclock
     timezone CET\n!\nvlan 43\n   name ACME_GENERAL_FW_43\n!\nvlan 45\n   name ACME_GENERAL_FW_45\n!\nvlan
     53\n   name ACME_DT_FW_53\n!\nvlan 55\n   name ACME_DT_FW_55\n!\nvlan 204\n   name
@@ -2805,33 +2836,36 @@ cvp_configlets:
     route vrf ACME-GENERAL 10.4.43.0/24 Vlan204 10.0.0.94 name FW_ACME_GENERAL_43\nip
     route vrf ACME-GENERAL 10.4.45.0/24 Vlan208 10.0.0.142 name FW_ACME_GENERAL_45_EXTENDED\n!\narp
     aging timeout default 275\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address
-    prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN permit 10\n
-    \  description Make routes learned over MLAG Peer-link less preferred on spines
-    to ensure optimal routing\n   set origin incomplete\n!\nrouter bfd\n   multihop
-    interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65597\n   router-id 10.0.4.12\n
-    \  distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   no bgp default ipv4-unicast\n
-    \  neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS update-source
-    Loopback0\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 4\n   neighbor EVPN-OVERLAY-PEERS
-    password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n   neighbor EVPN-OVERLAY-PEERS send-community\n
-    \  neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
-    peer group\n   neighbor IPv4-UNDERLAY-PEERS password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n
-    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER remote-as 65597\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
-    \  neighbor MLAG-IPv4-UNDERLAY-PEER description dc02-srv01a\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n   neighbor MLAG-IPv4-UNDERLAY-PEER
-    send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
-    MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.0.4.1 peer
-    group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 remote-as 65560\n   neighbor 10.0.4.1
-    description dc02-sp01\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n   neighbor
-    10.0.4.2 remote-as 65560\n   neighbor 10.0.4.2 description dc02-sp02\n   neighbor
-    10.0.10.56 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.56 remote-as 65560\n
-    \  neighbor 10.0.10.56 description dc02-sp01_Ethernet10\n   neighbor 10.0.10.58
-    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.58 remote-as 65560\n   neighbor
-    10.0.10.58 description dc02-sp02_Ethernet10\n   neighbor 10.0.12.12 peer group
-    MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.0.12.12 description dc02-srv01a\n   redistribute
-    connected route-map RM-CONN-2-BGP\n   !\n   vlan 204\n      rd 65000:10204\n      route-target
-    both 10204:10204\n      redistribute learned\n   !\n   vlan 205\n      rd 65000:10205\n
+    prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-EVPN-FILTER-AS65560 deny
+    10\n   match as 65560\n!\nroute-map RM-EVPN-FILTER-AS65560 permit 20\n!\nroute-map
+    RM-MLAG-PEER-IN permit 10\n   description Make routes learned over MLAG Peer-link
+    less preferred on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter
+    bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65597\n
+    \  router-id 10.0.4.12\n   distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n
+    \  no bgp default ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor
+    EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop
+    4\n   neighbor EVPN-OVERLAY-PEERS password 7 hCAawBQGfCnaIbhPRT8jl4ounMM+V8Kf\n
+    \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
+    maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
+    password 7 OrD4gpT3JYQrZR7rYGfBbP0zCFZd5CTQPPvlhBHKwwI=\n   neighbor IPv4-UNDERLAY-PEERS
+    send-community\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as
+    65597\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    description dc02-srv01a\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 fMH1B0Z8PUPAhKs+d5stFahLW0QxGN1z\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN
+    in\n   neighbor 10.0.4.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.0.4.1 remote-as
+    65560\n   neighbor 10.0.4.1 description dc02-sp01\n   neighbor 10.0.4.1 route-map
+    RM-EVPN-FILTER-AS65560 out\n   neighbor 10.0.4.2 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.0.4.2 remote-as 65560\n   neighbor 10.0.4.2 description dc02-sp02\n
+    \  neighbor 10.0.4.2 route-map RM-EVPN-FILTER-AS65560 out\n   neighbor 10.0.10.56
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.56 remote-as 65560\n   neighbor
+    10.0.10.56 description dc02-sp01_Ethernet10\n   neighbor 10.0.10.58 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.0.10.58 remote-as 65560\n   neighbor 10.0.10.58
+    description dc02-sp02_Ethernet10\n   neighbor 10.0.12.12 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \  neighbor 10.0.12.12 description dc02-srv01a\n   redistribute connected route-map
+    RM-CONN-2-BGP\n   !\n   vlan 204\n      rd 65000:10204\n      route-target both
+    10204:10204\n      redistribute learned\n   !\n   vlan 205\n      rd 65000:10205\n
     \     route-target both 10205:10205\n      redistribute learned\n   !\n   vlan
     206\n      rd 65000:10206\n      route-target both 10206:10206\n      redistribute
     learned\n   !\n   vlan 207\n      rd 65000:10207\n      route-target both 10207:10207\n

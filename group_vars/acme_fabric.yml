@@ -3,6 +3,7 @@ design:
   type: l3ls-evpn
 fabric_name: acme_fabric
 p2p_uplinks_mtu: 1500
+#underlay_multicast: true
 
 # BGP SETTINGS ###
 bgp_update_wait_install: false

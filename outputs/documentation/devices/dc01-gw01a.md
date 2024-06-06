@@ -1026,11 +1026,13 @@ router bfd
 
 | IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
 | ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
-| Enabled | - | - | - | - | - |
+| Disabled | - | - | - | - | - |
 
 #### IP IGMP Snooping Device Configuration
 
 ```eos
+!
+no ip igmp snooping
 ```
 
 ## Filters

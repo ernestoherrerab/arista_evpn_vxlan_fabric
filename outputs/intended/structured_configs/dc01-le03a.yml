@@ -298,7 +298,7 @@ vlans:
   name: ACME_DT_FW_55
   tenant: acme
 ip_igmp_snooping:
-  globally_enabled: true
+  globally_enabled: false
 ip_virtual_router_mac_address: 00:1c:73:00:00:99
 vlan_interfaces:
 - name: Vlan50

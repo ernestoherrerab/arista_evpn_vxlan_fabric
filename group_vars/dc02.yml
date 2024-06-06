@@ -1,7 +1,7 @@
 ### DC VARIABLES ###
 dc_name: dc02
 evpn_overlay_bgp_rtc: true
-#evpn_prevent_readvertise_to_server: true
+evpn_prevent_readvertise_to_server: true
 
 # Spine Variables
 spine:
@@ -91,6 +91,8 @@ l3leaf:
     - group: dc02-gw01
       bgp_as: 65599
       evpn_role: server
+      filter:
+        tags: [ gateway ]
       nodes:
         - name: dc02-gw01a
           id: 9

@@ -67,16 +67,19 @@ router_bgp:
     peer: dc01-gw01b
     description: dc01-gw01b
     remote_as: '65559'
+    route_map_out: RM-EVPN-FILTER-AS65559
   - ip_address: 10.0.4.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: dc02-sp01
     description: dc02-sp01
     remote_as: '65560'
+    route_map_out: RM-EVPN-FILTER-AS65560
   - ip_address: 10.0.4.2
     peer_group: EVPN-OVERLAY-PEERS
     peer: dc02-sp02
     description: dc02-sp02
     remote_as: '65560'
+    route_map_out: RM-EVPN-FILTER-AS65560
   - ip_address: 10.0.0.2
     remote_as: '65559'
     peer: dc01-gw01b
@@ -586,6 +589,22 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-EVPN-FILTER-AS65559
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - as 65559
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-FILTER-AS65560
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - as 65560
+  - sequence: 20
+    type: permit
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
@@ -608,7 +627,7 @@ router_bfd:
     min_rx: 1200
     multiplier: 3
 ip_igmp_snooping:
-  globally_enabled: true
+  globally_enabled: false
 ip_virtual_router_mac_address: 00:1c:73:00:00:99
 vxlan_interface:
   Vxlan1:
