@@ -43,12 +43,17 @@
   - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
+  - [Router Multicast](#router-multicast)
+  - [PIM Sparse Mode](#pim-sparse-mode)
 - [Filters](#filters)
   - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [Virtual Source NAT](#virtual-source-nat)
+  - [Virtual Source NAT Summary](#virtual-source-nat-summary)
+  - [Virtual Source NAT Configuration](#virtual-source-nat-configuration)
 
 ## Management
 
@@ -364,6 +369,7 @@ interface Ethernet1
    mtu 1500
    no switchport
    ip address 10.0.10.33/31
+   pim ipv4 sparse-mode
 !
 interface Ethernet2
    description P2P_LINK_TO_DC02-SP02_Ethernet3
@@ -371,6 +377,7 @@ interface Ethernet2
    mtu 1500
    no switchport
    ip address 10.0.10.35/31
+   pim ipv4 sparse-mode
 !
 interface Ethernet3
    description server19_Ethernet1
@@ -500,6 +507,8 @@ interface Port-Channel31
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | EVPN_Overlay_Peering | default | 10.0.4.9/32 |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 10.0.5.9/32 |
+| Loopback101 | ACME-GENERAL_DIAGNOSTIC | ACME-GENERAL | 10.0.6.137/32 |
+| Loopback102 | ACME-DT_DIAGNOSTIC | ACME-DT | 10.0.6.201/32 |
 
 ##### IPv6
 
@@ -507,6 +516,8 @@ interface Port-Channel31
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | EVPN_Overlay_Peering | default | - |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback101 | ACME-GENERAL_DIAGNOSTIC | ACME-GENERAL | - |
+| Loopback102 | ACME-DT_DIAGNOSTIC | ACME-DT | - |
 
 #### Loopback Interfaces Device Configuration
 
@@ -521,6 +532,18 @@ interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    no shutdown
    ip address 10.0.5.9/32
+!
+interface Loopback101
+   description ACME-GENERAL_DIAGNOSTIC
+   no shutdown
+   vrf ACME-GENERAL
+   ip address 10.0.6.137/32
+!
+interface Loopback102
+   description ACME-DT_DIAGNOSTIC
+   no shutdown
+   vrf ACME-DT
+   ip address 10.0.6.201/32
 ```
 
 ### VLAN Interfaces
@@ -561,30 +584,40 @@ interface Vlan42
    description ACME_GENERAL_42
    no shutdown
    vrf ACME-GENERAL
+   pim ipv4 sparse-mode
+   pim ipv4 local-interface Loopback101
    ip address virtual 10.4.42.1/24
 !
 interface Vlan44
    description ACME_GENERAL_EXT_44
    no shutdown
    vrf ACME-GENERAL
+   pim ipv4 sparse-mode
+   pim ipv4 local-interface Loopback101
    ip address virtual 10.4.44.1/24
 !
 interface Vlan49
    description ACME_GENERAL_49
    no shutdown
    vrf ACME-GENERAL
+   pim ipv4 sparse-mode
+   pim ipv4 local-interface Loopback101
    ip address virtual 10.4.49.1/24
 !
 interface Vlan52
    description ACME_DT_V50
    no shutdown
    vrf ACME-DT
+   pim ipv4 sparse-mode
+   pim ipv4 local-interface Loopback102
    ip address virtual 10.5.52.1/24
 !
 interface Vlan54
    description ACME_DT_V54
    no shutdown
    vrf ACME-DT
+   pim ipv4 sparse-mode
+   pim ipv4 local-interface Loopback102
    ip address virtual 10.5.54.1/24
 !
 interface Vlan4001
@@ -606,6 +639,7 @@ interface Vlan4093
    no shutdown
    mtu 1500
    ip address 10.0.12.8/31
+   pim ipv4 sparse-mode
 !
 interface Vlan4094
    description MLAG_PEER
@@ -621,7 +655,8 @@ interface Vlan4094
 
 | Setting | Value |
 | ------- | ----- |
-| Source Interface | Loopback1 |
+| Source Interface | Loopback0 |
+| MLAG Source Interface | Loopback1 |
 | UDP port | 4789 |
 | EVPN MLAG Shared Router MAC | mlag-system-id |
 
@@ -629,22 +664,22 @@ interface Vlan4094
 
 | VLAN | VNI | Flood List | Multicast Group |
 | ---- | --- | ---------- | --------------- |
-| 42 | 10042 | - | - |
-| 43 | 10043 | - | - |
-| 44 | 10044 | - | - |
-| 45 | 10045 | - | - |
-| 49 | 10049 | - | - |
-| 52 | 10052 | - | - |
-| 53 | 10053 | - | - |
-| 54 | 10054 | - | - |
-| 55 | 10055 | - | - |
+| 42 | 10042 | - | 232.48.0.41 |
+| 43 | 10043 | - | 232.48.0.42 |
+| 44 | 10044 | - | 232.48.0.43 |
+| 45 | 10045 | - | 232.48.0.44 |
+| 49 | 10049 | - | 232.48.0.48 |
+| 52 | 10052 | - | 232.48.0.51 |
+| 53 | 10053 | - | 232.48.0.52 |
+| 54 | 10054 | - | 232.48.0.53 |
+| 55 | 10055 | - | 232.48.0.54 |
 
 ##### VRF to VNI and Multicast Group Mappings
 
 | VRF | VNI | Multicast Group |
 | ---- | --- | --------------- |
-| ACME-DT | 4405 | - |
-| ACME-GENERAL | 4401 | - |
+| ACME-DT | 4405 | 232.64.17.52 |
+| ACME-GENERAL | 4401 | 232.64.17.48 |
 
 #### VXLAN Interface Device Configuration
 
@@ -652,7 +687,7 @@ interface Vlan4094
 !
 interface Vxlan1
    description dc02-le02a_VTEP
-   vxlan source-interface Loopback1
+   vxlan source-interface Loopback0
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
    vxlan vlan 42 vni 10042
@@ -666,6 +701,18 @@ interface Vxlan1
    vxlan vlan 55 vni 10055
    vxlan vrf ACME-DT vni 4405
    vxlan vrf ACME-GENERAL vni 4401
+   vxlan mlag source-interface Loopback1
+   vxlan vlan 42 multicast group 232.48.0.41
+   vxlan vlan 43 multicast group 232.48.0.42
+   vxlan vlan 44 multicast group 232.48.0.43
+   vxlan vlan 45 multicast group 232.48.0.44
+   vxlan vlan 49 multicast group 232.48.0.48
+   vxlan vlan 52 multicast group 232.48.0.51
+   vxlan vlan 53 multicast group 232.48.0.52
+   vxlan vlan 54 multicast group 232.48.0.53
+   vxlan vlan 55 multicast group 232.48.0.54
+   vxlan vrf ACME-DT multicast group 232.64.17.52
+   vxlan vrf ACME-GENERAL multicast group 232.64.17.48
 ```
 
 ## Routing
@@ -803,22 +850,22 @@ ASN Notation: asplain
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 42 | 65000:10042 | 10042:10042 | - | - | learned |
-| 43 | 65000:10043 | 10043:10043 | - | - | learned |
-| 44 | 65000:10044 | 10044:10044 | - | - | learned |
-| 45 | 65000:10045 | 10045:10045 | - | - | learned |
-| 49 | 65000:10049 | 10049:10049 | - | - | learned |
-| 52 | 65000:10052 | 10052:10052 | - | - | learned |
-| 53 | 65000:10053 | 10053:10053 | - | - | learned |
-| 54 | 65000:10054 | 10054:10054 | - | - | learned |
-| 55 | 65000:10055 | 10055:10055 | - | - | learned |
+| 42 | 10.0.4.9:10042 | 10042:10042 | - | - | learned<br>igmp |
+| 43 | 10.0.4.9:10043 | 10043:10043 | - | - | learned<br>igmp |
+| 44 | 10.0.4.9:10044 | 10044:10044 | - | - | learned<br>igmp |
+| 45 | 10.0.4.9:10045 | 10045:10045 | - | - | learned<br>igmp |
+| 49 | 10.0.4.9:10049 | 10049:10049 | - | - | learned<br>igmp |
+| 52 | 10.0.4.9:10052 | 10052:10052 | - | - | learned<br>igmp |
+| 53 | 10.0.4.9:10053 | 10053:10053 | - | - | learned<br>igmp |
+| 54 | 10.0.4.9:10054 | 10054:10054 | - | - | learned<br>igmp |
+| 55 | 10.0.4.9:10055 | 10055:10055 | - | - | learned<br>igmp |
 
 #### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| ACME-DT | 10.0.5.9:4405 | connected |
-| ACME-GENERAL | 10.0.5.9:4401 | connected |
+| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
+| --- | ------------------- | ------------ | -------------- |
+| ACME-DT | 10.0.4.9:4405 | connected | IPv4: True<br>Transit: False |
+| ACME-GENERAL | 10.0.4.9:4401 | connected | IPv4: True<br>Transit: False |
 
 #### Router BGP Device Configuration
 
@@ -866,48 +913,57 @@ router bgp 65562
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan 42
-      rd 65000:10042
+      rd 10.0.4.9:10042
       route-target both 10042:10042
+      redistribute igmp
       redistribute learned
    !
    vlan 43
-      rd 65000:10043
+      rd 10.0.4.9:10043
       route-target both 10043:10043
+      redistribute igmp
       redistribute learned
    !
    vlan 44
-      rd 65000:10044
+      rd 10.0.4.9:10044
       route-target both 10044:10044
+      redistribute igmp
       redistribute learned
    !
    vlan 45
-      rd 65000:10045
+      rd 10.0.4.9:10045
       route-target both 10045:10045
+      redistribute igmp
       redistribute learned
    !
    vlan 49
-      rd 65000:10049
+      rd 10.0.4.9:10049
       route-target both 10049:10049
+      redistribute igmp
       redistribute learned
    !
    vlan 52
-      rd 65000:10052
+      rd 10.0.4.9:10052
       route-target both 10052:10052
+      redistribute igmp
       redistribute learned
    !
    vlan 53
-      rd 65000:10053
+      rd 10.0.4.9:10053
       route-target both 10053:10053
+      redistribute igmp
       redistribute learned
    !
    vlan 54
-      rd 65000:10054
+      rd 10.0.4.9:10054
       route-target both 10054:10054
+      redistribute igmp
       redistribute learned
    !
    vlan 55
-      rd 65000:10055
+      rd 10.0.4.9:10055
       route-target both 10055:10055
+      redistribute igmp
       redistribute learned
    !
    address-family evpn
@@ -922,7 +978,8 @@ router bgp 65562
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
    !
    vrf ACME-DT
-      rd 10.0.5.9:4405
+      rd 10.0.4.9:4405
+      evpn multicast
       route-target import evpn 4405:4405
       route-target export evpn 4405:4405
       router-id 10.0.4.9
@@ -930,7 +987,8 @@ router bgp 65562
       redistribute connected
    !
    vrf ACME-GENERAL
-      rd 10.0.5.9:4401
+      rd 10.0.4.9:4401
+      evpn multicast
       route-target import evpn 4401:4401
       route-target export evpn 4401:4401
       router-id 10.0.4.9
@@ -964,14 +1022,104 @@ router bfd
 
 | IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
 | ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
-| Disabled | - | - | - | - | - |
+| Enabled | - | - | - | - | - |
+
+##### IP IGMP Snooping Vlan Summary
+
+| Vlan | IGMP Snooping | Fast Leave | Max Groups | Proxy |
+| ---- | ------------- | ---------- | ---------- | ----- |
+| 42 | - | - | - | - |
+| 43 | - | - | - | - |
+| 44 | - | - | - | - |
+| 45 | - | - | - | - |
+| 49 | - | - | - | - |
+| 52 | - | - | - | - |
+| 53 | - | - | - | - |
+| 54 | - | - | - | - |
+| 55 | - | - | - | - |
+
+| Vlan | Querier Enabled | IP Address | Query Interval | Max Response Time | Last Member Query Interval | Last Member Query Count | Startup Query Interval | Startup Query Count | Version |
+| ---- | --------------- | ---------- | -------------- | ----------------- | -------------------------- | ----------------------- | ---------------------- | ------------------- | ------- |
+| 42 | True | 10.0.4.9 | - | - | - | - | - | - | - |
+| 43 | True | 10.0.4.9 | - | - | - | - | - | - | - |
+| 44 | True | 10.0.4.9 | - | - | - | - | - | - | - |
+| 45 | True | 10.0.4.9 | - | - | - | - | - | - | - |
+| 49 | True | 10.0.4.9 | - | - | - | - | - | - | - |
+| 52 | True | 10.0.4.9 | - | - | - | - | - | - | - |
+| 53 | True | 10.0.4.9 | - | - | - | - | - | - | - |
+| 54 | True | 10.0.4.9 | - | - | - | - | - | - | - |
+| 55 | True | 10.0.4.9 | - | - | - | - | - | - | - |
 
 #### IP IGMP Snooping Device Configuration
 
 ```eos
 !
-no ip igmp snooping
+ip igmp snooping vlan 42 querier
+ip igmp snooping vlan 42 querier address 10.0.4.9
+ip igmp snooping vlan 43 querier
+ip igmp snooping vlan 43 querier address 10.0.4.9
+ip igmp snooping vlan 44 querier
+ip igmp snooping vlan 44 querier address 10.0.4.9
+ip igmp snooping vlan 45 querier
+ip igmp snooping vlan 45 querier address 10.0.4.9
+ip igmp snooping vlan 49 querier
+ip igmp snooping vlan 49 querier address 10.0.4.9
+ip igmp snooping vlan 52 querier
+ip igmp snooping vlan 52 querier address 10.0.4.9
+ip igmp snooping vlan 53 querier
+ip igmp snooping vlan 53 querier address 10.0.4.9
+ip igmp snooping vlan 54 querier
+ip igmp snooping vlan 54 querier address 10.0.4.9
+ip igmp snooping vlan 55 querier
+ip igmp snooping vlan 55 querier address 10.0.4.9
 ```
+
+### Router Multicast
+
+#### IP Router Multicast Summary
+
+- Routing for IPv4 multicast is enabled.
+- Software forwarding by the Software Forwarding Engine (SFE)
+
+#### IP Router Multicast VRFs
+
+| VRF Name | Multicast Routing |
+| -------- | ----------------- |
+| ACME-DT | enabled |
+| ACME-GENERAL | enabled |
+
+#### Router Multicast Device Configuration
+
+```eos
+!
+router multicast
+   ipv4
+      routing
+      software-forwarding sfe
+   !
+   vrf ACME-DT
+      ipv4
+         routing
+   !
+   vrf ACME-GENERAL
+      ipv4
+         routing
+```
+
+### PIM Sparse Mode
+
+#### PIM Sparse Mode Enabled Interfaces
+
+| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface |
+| -------------- | -------- | ---------- | ------------- | ----------- | --------------- |
+| Ethernet1 | - | IPv4 | - | - | - |
+| Ethernet2 | - | IPv4 | - | - | - |
+| Vlan42 | ACME-GENERAL | IPv4 | - | - | Loopback101 |
+| Vlan44 | ACME-GENERAL | IPv4 | - | - | Loopback101 |
+| Vlan49 | ACME-GENERAL | IPv4 | - | - | Loopback101 |
+| Vlan52 | ACME-DT | IPv4 | - | - | Loopback102 |
+| Vlan54 | ACME-DT | IPv4 | - | - | Loopback102 |
+| Vlan4093 | - | IPv4 | - | - | - |
 
 ## Filters
 
@@ -1051,4 +1199,21 @@ route-map RM-MLAG-PEER-IN permit 10
 vrf instance ACME-DT
 !
 vrf instance ACME-GENERAL
+```
+
+## Virtual Source NAT
+
+### Virtual Source NAT Summary
+
+| Source NAT VRF | Source NAT IP Address |
+| -------------- | --------------------- |
+| ACME-DT | 10.0.6.201 |
+| ACME-GENERAL | 10.0.6.137 |
+
+### Virtual Source NAT Configuration
+
+```eos
+!
+ip address virtual source-nat vrf ACME-DT address 10.0.6.201
+ip address virtual source-nat vrf ACME-GENERAL address 10.0.6.137
 ```

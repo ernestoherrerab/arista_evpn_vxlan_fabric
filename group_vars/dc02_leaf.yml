@@ -2,6 +2,12 @@ tenants:
   - name: acme
     enable_mlag_ibgp_peering_vrfs: true
     mac_vrf_vni_base: 10000
+    evpn_l2_multicast:
+      enabled: true
+      underlay_l2_multicast_group_ipv4_pool: 232.48.0.0/19
+    evpn_l3_multicast:
+      enabled: true
+      evpn_underlay_l3_multicast_group_ipv4_pool: 232.64.0.0/19
     l2vlans:
       - id: 43
         name: ACME_GENERAL_FW_43
@@ -27,6 +33,10 @@ tenants:
       - name: ACME-GENERAL
         vrf_vni: 4401
         mlag_ibgp_peering_vlan: 4001
+        vtep_diagnostic:
+          loopback: 101
+          loopback_description: ACME-GENERAL_DIAGNOSTIC
+          loopback_ip_range: 10.0.6.128/26
         svis:
           - id: 42
             enabled: true
@@ -140,6 +150,10 @@ tenants:
       - name: ACME-DT
         vrf_vni: 4405
         mlag_ibgp_peering_vlan: 4005
+        vtep_diagnostic:
+          loopback: 102
+          loopback_description: ACME-DT_DIAGNOSTIC
+          loopback_ip_range: 10.0.6.192/26
         svis:
           - id: 52
             enabled: true

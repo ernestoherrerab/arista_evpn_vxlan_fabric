@@ -87,7 +87,7 @@ router_bgp:
   vrfs:
   - name: ACME-DT
     router_id: 10.0.2.14
-    rd: 10.0.3.13:4405
+    rd: 10.0.2.14:4405
     route_targets:
       import:
       - address_family: evpn
@@ -97,6 +97,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 4405:4405
+    evpn_multicast: true
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: static
@@ -105,7 +106,7 @@ router_bgp:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
   - name: ACME-GENERAL
     router_id: 10.0.2.14
-    rd: 10.0.3.13:4401
+    rd: 10.0.2.14:4401
     route_targets:
       import:
       - address_family: evpn
@@ -115,6 +116,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 4401:4401
+    evpn_multicast: true
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: static
@@ -124,102 +126,125 @@ router_bgp:
   vlans:
   - id: 201
     tenant: acme
-    rd: 65000:10201
+    rd: 10.0.2.14:10201
     route_targets:
       both:
       - 10201:10201
     redistribute_routes:
     - learned
+    - igmp
   - id: 203
     tenant: acme
-    rd: 65000:10203
+    rd: 10.0.2.14:10203
     route_targets:
       both:
       - 10203:10203
     redistribute_routes:
     - learned
+    - igmp
   - id: 209
     tenant: acme
-    rd: 65000:10209
+    rd: 10.0.2.14:10209
     route_targets:
       both:
       - 10209:10209
     redistribute_routes:
     - learned
+    - igmp
   - id: 211
     tenant: acme
-    rd: 65000:10211
+    rd: 10.0.2.14:10211
     route_targets:
       both:
       - 10211:10211
     redistribute_routes:
     - learned
+    - igmp
   - id: 200
     tenant: acme
-    rd: 65000:10200
+    rd: 10.0.2.14:10200
     route_targets:
       both:
       - 10200:10200
     redistribute_routes:
     - learned
+    - igmp
   - id: 202
     tenant: acme
-    rd: 65000:10202
+    rd: 10.0.2.14:10202
     route_targets:
       both:
       - 10202:10202
     redistribute_routes:
     - learned
+    - igmp
   - id: 208
     tenant: acme
-    rd: 65000:10208
+    rd: 10.0.2.14:10208
     route_targets:
       both:
       - 10208:10208
     redistribute_routes:
     - learned
+    - igmp
   - id: 210
     tenant: acme
-    rd: 65000:10210
+    rd: 10.0.2.14:10210
     route_targets:
       both:
       - 10210:10210
     redistribute_routes:
     - learned
+    - igmp
   - id: 41
     tenant: acme
-    rd: 65000:10041
+    rd: 10.0.2.14:10041
     route_targets:
       both:
       - 10041:10041
     redistribute_routes:
     - learned
+    - igmp
   - id: 45
     tenant: acme
-    rd: 65000:10045
+    rd: 10.0.2.14:10045
     route_targets:
       both:
       - 10045:10045
     redistribute_routes:
     - learned
+    - igmp
   - id: 51
     tenant: acme
-    rd: 65000:10051
+    rd: 10.0.2.14:10051
     route_targets:
       both:
       - 10051:10051
     redistribute_routes:
     - learned
+    - igmp
   - id: 55
     tenant: acme
-    rd: 65000:10055
+    rd: 10.0.2.14:10055
     route_targets:
       both:
       - 10055:10055
     redistribute_routes:
     - learned
+    - igmp
 service_routing_protocols_model: multi-agent
 ip_routing: true
+router_multicast:
+  ipv4:
+    routing: true
+    software_forwarding: sfe
+  vrfs:
+  - name: ACME-DT
+    ipv4:
+      routing: true
+  - name: ACME-GENERAL
+    ipv4:
+      routing: true
 vlan_internal_order:
   allocation: ascending
   range:
@@ -326,6 +351,9 @@ vlan_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.0.12.17/31
+  pim:
+    ipv4:
+      sparse_mode: true
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
@@ -341,6 +369,9 @@ vlan_interfaces:
   ip_address: 10.0.0.75/29
   ip_virtual_router_addresses:
   - 10.0.0.73
+  pim:
+    ipv4:
+      sparse_mode: true
   vrf: ACME-DT
 - name: Vlan203
   tenant: acme
@@ -351,6 +382,9 @@ vlan_interfaces:
   ip_address: 10.0.0.83/29
   ip_virtual_router_addresses:
   - 10.0.0.81
+  pim:
+    ipv4:
+      sparse_mode: true
   vrf: ACME-DT
 - name: Vlan209
   tenant: acme
@@ -361,6 +395,9 @@ vlan_interfaces:
   ip_address: 10.0.0.163/28
   ip_virtual_router_addresses:
   - 10.0.0.161
+  pim:
+    ipv4:
+      sparse_mode: true
   vrf: ACME-DT
 - name: Vlan211
   tenant: acme
@@ -371,6 +408,9 @@ vlan_interfaces:
   ip_address: 10.0.0.179/28
   ip_virtual_router_addresses:
   - 10.0.0.177
+  pim:
+    ipv4:
+      sparse_mode: true
   vrf: ACME-DT
 - name: Vlan4005
   tenant: acme
@@ -389,6 +429,9 @@ vlan_interfaces:
   ip_address: 10.0.0.59/29
   ip_virtual_router_addresses:
   - 10.0.0.57
+  pim:
+    ipv4:
+      sparse_mode: true
   vrf: ACME-GENERAL
 - name: Vlan202
   tenant: acme
@@ -399,6 +442,9 @@ vlan_interfaces:
   ip_address: 10.0.0.67/29
   ip_virtual_router_addresses:
   - 10.0.0.65
+  pim:
+    ipv4:
+      sparse_mode: true
   vrf: ACME-GENERAL
 - name: Vlan208
   tenant: acme
@@ -409,6 +455,9 @@ vlan_interfaces:
   ip_address: 10.0.0.131/28
   ip_virtual_router_addresses:
   - 10.0.0.129
+  pim:
+    ipv4:
+      sparse_mode: true
   vrf: ACME-GENERAL
 - name: Vlan210
   tenant: acme
@@ -419,6 +468,9 @@ vlan_interfaces:
   ip_address: 10.0.0.147/28
   ip_virtual_router_addresses:
   - 10.0.0.145
+  pim:
+    ipv4:
+      sparse_mode: true
   vrf: ACME-GENERAL
 - name: Vlan4001
   tenant: acme
@@ -481,6 +533,9 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.0.9.73/31
+  pim:
+    ipv4:
+      sparse_mode: true
 - name: Ethernet2
   peer: dc01-sp02
   peer_interface: Ethernet10
@@ -490,6 +545,9 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.0.9.75/31
+  pim:
+    ipv4:
+      sparse_mode: true
 - name: Ethernet27
   peer: dc01_fw01
   peer_interface: Ethernet2
@@ -550,6 +608,16 @@ loopback_interfaces:
   description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
   ip_address: 10.0.3.13/32
+- name: Loopback102
+  description: ACME-DT_DIAGNOSTIC
+  shutdown: false
+  vrf: ACME-DT
+  ip_address: 10.0.6.78/32
+- name: Loopback101
+  description: ACME-GENERAL_DIAGNOSTIC
+  shutdown: false
+  vrf: ACME-GENERAL
+  ip_address: 10.0.6.14/32
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -563,7 +631,56 @@ router_bfd:
     min_rx: 1200
     multiplier: 3
 ip_igmp_snooping:
-  globally_enabled: false
+  globally_enabled: true
+  vlans:
+  - id: 201
+    querier:
+      enabled: true
+      address: 10.0.2.14
+  - id: 203
+    querier:
+      enabled: true
+      address: 10.0.2.14
+  - id: 209
+    querier:
+      enabled: true
+      address: 10.0.2.14
+  - id: 211
+    querier:
+      enabled: true
+      address: 10.0.2.14
+  - id: 200
+    querier:
+      enabled: true
+      address: 10.0.2.14
+  - id: 202
+    querier:
+      enabled: true
+      address: 10.0.2.14
+  - id: 208
+    querier:
+      enabled: true
+      address: 10.0.2.14
+  - id: 210
+    querier:
+      enabled: true
+      address: 10.0.2.14
+  - id: 41
+    querier:
+      enabled: true
+      address: 10.0.2.14
+  - id: 45
+    querier:
+      enabled: true
+      address: 10.0.2.14
+  - id: 51
+    querier:
+      enabled: true
+      address: 10.0.2.14
+  - id: 55
+    querier:
+      enabled: true
+      address: 10.0.2.14
 ip_virtual_router_mac_address: 00:1c:73:00:00:99
 static_routes:
 - destination_address_prefix: 10.4.40.0/24
@@ -631,38 +748,58 @@ vxlan_interface:
     description: dc01-srv01b_VTEP
     vxlan:
       udp_port: 4789
-      source_interface: Loopback1
+      source_interface: Loopback0
+      mlag_source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:
       - id: 201
         vni: 10201
+        multicast_group: 232.0.0.200
       - id: 203
         vni: 10203
+        multicast_group: 232.0.0.202
       - id: 209
         vni: 10209
+        multicast_group: 232.0.0.208
       - id: 211
         vni: 10211
+        multicast_group: 232.0.0.210
       - id: 200
         vni: 10200
+        multicast_group: 232.0.0.199
       - id: 202
         vni: 10202
+        multicast_group: 232.0.0.201
       - id: 208
         vni: 10208
+        multicast_group: 232.0.0.207
       - id: 210
         vni: 10210
+        multicast_group: 232.0.0.209
       - id: 41
         vni: 10041
+        multicast_group: 232.0.0.40
       - id: 45
         vni: 10045
+        multicast_group: 232.0.0.44
       - id: 51
         vni: 10051
+        multicast_group: 232.0.0.50
       - id: 55
         vni: 10055
+        multicast_group: 232.0.0.54
       vrfs:
       - name: ACME-DT
         vni: 4405
+        multicast_group: 232.32.17.52
       - name: ACME-GENERAL
         vni: 4401
+        multicast_group: 232.32.17.48
+virtual_source_nat_vrfs:
+- name: ACME-DT
+  ip_address: 10.0.6.78
+- name: ACME-GENERAL
+  ip_address: 10.0.6.14
 metadata:
   platform: vEOS-LAB
 lldp:

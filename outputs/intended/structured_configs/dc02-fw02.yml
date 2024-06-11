@@ -2,6 +2,9 @@ hostname: dc02-fw02
 is_deployed: true
 service_routing_protocols_model: multi-agent
 ip_routing: true
+router_multicast:
+  ipv4:
+    routing: true
 vlan_internal_order:
   allocation: ascending
   range:
@@ -72,7 +75,7 @@ vlans:
   name: TRANSIT_TO_ACME_GENERAL_EXT
   tenant: acme
 ip_igmp_snooping:
-  globally_enabled: false
+  globally_enabled: true
 vlan_interfaces:
 - name: Vlan55
   tenant: acme

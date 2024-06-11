@@ -131,6 +131,9 @@ router_bgp:
         only: true
 service_routing_protocols_model: multi-agent
 ip_routing: true
+router_multicast:
+  ipv4:
+    routing: true
 vlan_internal_order:
   allocation: ascending
   range:
@@ -174,6 +177,9 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.0.10.16/31
+  pim:
+    ipv4:
+      sparse_mode: true
 - name: Ethernet2
   peer: dc02-le01b
   peer_interface: Ethernet1
@@ -183,6 +189,9 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.0.10.24/31
+  pim:
+    ipv4:
+      sparse_mode: true
 - name: Ethernet3
   peer: dc02-le02a
   peer_interface: Ethernet1
@@ -192,6 +201,9 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.0.10.32/31
+  pim:
+    ipv4:
+      sparse_mode: true
 - name: Ethernet4
   peer: dc02-le02b
   peer_interface: Ethernet1
@@ -201,6 +213,9 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.0.10.40/31
+  pim:
+    ipv4:
+      sparse_mode: true
 - name: Ethernet9
   peer: dc02-srv01a
   peer_interface: Ethernet1
@@ -210,6 +225,9 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.0.10.48/31
+  pim:
+    ipv4:
+      sparse_mode: true
 - name: Ethernet10
   peer: dc02-srv01b
   peer_interface: Ethernet1
@@ -219,6 +237,9 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.0.10.56/31
+  pim:
+    ipv4:
+      sparse_mode: true
 - name: Ethernet11
   peer: dc02-gw01a
   peer_interface: Ethernet1
@@ -228,6 +249,9 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.0.10.64/31
+  pim:
+    ipv4:
+      sparse_mode: true
 - name: Ethernet12
   peer: dc02-gw01b
   peer_interface: Ethernet1
@@ -237,6 +261,9 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.0.10.72/31
+  pim:
+    ipv4:
+      sparse_mode: true
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

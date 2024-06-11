@@ -1,0 +1,21 @@
+router multicast
+   ipv4
+      routing
+      software-forwarding sfe
+!
+router pim sparse-mode
+   ipv4
+      rp address 10.12.12.12
+!
+interface  ethernet3-6
+   pim ipv4 sparse-mode
+!
+interface Vlan101
+  pim ipv4 sparse-mode
+!
+interface Ethernet7
+ pim ipv4 sparse-mode
+!
+router pim sparse-mode
+   ipv4
+     rp candidate loopback 0

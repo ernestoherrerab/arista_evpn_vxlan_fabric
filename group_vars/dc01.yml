@@ -2,6 +2,8 @@
 dc_name: dc01
 evpn_overlay_bgp_rtc: true
 evpn_prevent_readvertise_to_server: true
+underlay_multicast: true
+evpn_multicast: true 
 
 ### SPINES ###
 spine:

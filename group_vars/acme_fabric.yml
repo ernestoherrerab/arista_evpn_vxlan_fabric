@@ -3,7 +3,6 @@ design:
   type: l3ls-evpn
 fabric_name: acme_fabric
 p2p_uplinks_mtu: 1500
-#underlay_multicast: true
 
 # BGP SETTINGS ###
 bgp_update_wait_install: false
@@ -28,11 +27,6 @@ bfd_multihop:
   interval: 1200
   min_rx: 1200
   multiplier: 3
-
-### RD/RT Format ###
-overlay_rd_type:
-  admin_subfield: 65000
-  vrf_admin_subfield: vtep_loopback
 
 ### CLI CONFIG GEN ###
 custom_structured_configuration_prefix: [ cs_fabric_]
